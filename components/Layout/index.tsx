@@ -1,7 +1,7 @@
 import NavBar from "../NavBar";
 import { Inter } from '@next/font/google'
 import Head from 'next/head'
-import { Flex } from '@chakra-ui/react'
+import { Box, Flex } from '@chakra-ui/react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,7 +16,7 @@ export default function Layout({ children }: Props) {
             </Head>
             <Flex className={inter.className}>
                 <NavBar />
-                <main>{children}</main>
+                <Box flex={1}>{children}</Box>
             </Flex>
         </>
     )
