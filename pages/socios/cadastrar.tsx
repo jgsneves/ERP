@@ -1,22 +1,66 @@
 import MainContent from "../../components/Containers/MainContent";
 import { Button, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { Partner } from "../../models/Partner";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import Link from "next/link";
+import { Pessoas } from "@prisma/client";
+import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
 
 export default function CadastrarSocio() {
-  const [formData, setFormData] = useState<Partner>({
-    nome: "",
-    cpf: "",
-    dataNascimento: "",
-    cotaSocietaria: 0,
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [formData, setFormData] = useState<Pessoas>({
+    Nome: "",
+    Cpf: "",
+    DataNascimento: new Date(),
+    CriadoEm: new Date(),
+    Id: uuidv4(),
+    Tipo: "SOCIO",
+    Participacao: 0,
+    Crm: null,
+    EmpresaMedicaId: null,
+    EnderecoId: null,
+    ModificadoEm: null,
+    Salario: null,
+    StatusAdmissao: null,
   });
 
   const handleInputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const { id, value } = event.target;
-    setFormData((partner) => ({ ...partner, [id]: value }));
+
+    setFormData((partner) => {
+      if (id === "Participacao") {
+        return {
+          ...partner,
+          [id]: Number(value),
+        };
+      }
+      return {
+        ...partner,
+        [id]: value,
+      };
+    });
+  };
+
+  const formatDate = (date: Date) => {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  };
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    await axios
+      .post("/api/socios", formData)
+      .catch((error) => console.log(error))
+      .finally(() => setIsLoading(false));
   };
 
   return (
@@ -31,32 +75,45 @@ export default function CadastrarSocio() {
       </Link>
 
       <FormControl maxW="500px" mt="14">
-        <FormLabel>Nome:</FormLabel>
-        <Input value={formData.nome} id="nome" onChange={handleInputOnChange} />
+        <FormLabel>
+          Nome:
+          <Input
+            value={formData.Nome}
+            id="Nome"
+            onChange={handleInputOnChange}
+          />
+        </FormLabel>
 
-        <FormLabel mt="5">Cpf:</FormLabel>
-        <Input value={formData.cpf} id="cpf" onChange={handleInputOnChange} />
+        <FormLabel mt="5">
+          Cpf:
+          <Input value={formData.Cpf} id="Cpf" onChange={handleInputOnChange} />
+        </FormLabel>
 
-        <FormLabel mt="5">Data de nascimento:</FormLabel>
-        <Input
-          value={formData.dataNascimento}
-          id="dataNascimento"
-          type="date"
-          onChange={handleInputOnChange}
-        />
+        <FormLabel mt="5">
+          Data de nascimento:
+          <Input
+            value={formatDate(formData.DataNascimento)}
+            id="DataNascimento"
+            type="date"
+            onChange={handleInputOnChange}
+          />
+        </FormLabel>
 
-        <FormLabel mt="5">Cota societária:</FormLabel>
-        <Input
-          value={formData.cotaSocietaria}
-          type="number"
-          id="cotaSocietaria"
-          onChange={handleInputOnChange}
-        />
+        <FormLabel mt="5">
+          Cota societária:
+          <Input
+            value={formData.Participacao?.toString()}
+            type="number"
+            id="Participacao"
+            onChange={handleInputOnChange}
+          />
+        </FormLabel>
 
         <Button
           colorScheme="green"
           mt="10"
-          onClick={() => console.log(formData)}
+          onClick={handleSubmit}
+          isLoading={isLoading}
         >
           Cadastrar
         </Button>
