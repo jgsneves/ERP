@@ -1,7 +1,7 @@
 import { Text } from "@chakra-ui/react";
 import { PessoasTipo } from "@prisma/client";
 import MainContent from "../../components/Containers/MainContent";
-import EmptyPartners from "../../components/Partner/EmptyPartners";
+import EmptyEntityList from "../../components/EmptyEntityList";
 import PartnersList from "../../components/Partner/PartnersList";
 import { server } from "../../config/server";
 
@@ -49,7 +49,11 @@ export default function Socios({ partners }: Props) {
         Sócios
       </Text>
       <Text>Todos os sócios cadastrados da empresa.</Text>
-      {partners ? <PartnersList partners={partners} /> : <EmptyPartners />}
+      {partners ? (
+        <PartnersList partners={partners} />
+      ) : (
+        <EmptyEntityList helperText="Ainda não há sócios cadastrados." />
+      )}
     </MainContent>
   );
 }

@@ -1,7 +1,11 @@
 import { Button, Text, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 
-export default function EmptyPartners() {
+interface Props {
+  helperText: string;
+}
+
+export default function EmptyEntityList({ helperText }: Props) {
   return (
     <VStack
       border="2px"
@@ -12,7 +16,7 @@ export default function EmptyPartners() {
       maxWidth="600"
       mt="10"
     >
-      <Text mb="6">Ainda não há sócios cadastrados.</Text>
+      <Text mb="6">{helperText}</Text>
       <Button colorScheme="green">
         <Link href="/socios/cadastrar">Cadastrar</Link>
       </Button>

@@ -2,8 +2,11 @@ import Image from "next/image";
 import Button from "./button";
 import brandLogo from "../../public/lysimed.png";
 import { VStack } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 
 export default function NavBar() {
+  const router = useRouter();
+
   return (
     <VStack
       borderRight="4px"
@@ -14,10 +17,22 @@ export default function NavBar() {
       alignItems="start"
     >
       <Image src={brandLogo} alt="LysiMed" />
-      <Button href="/" content="Métricas" />
-      <Button href="/socios" content="Sócios" />
-      <Button href="/empregados" content="Empregados" />
-      <Button href="/financeiro" content="Financeiro" />
+      <Button selected={router.route === "/"} href="/" content="Métricas" />
+      <Button
+        selected={router.route.includes("socios")}
+        href="/socios"
+        content="Sócios"
+      />
+      <Button
+        selected={router.route.includes("empregados")}
+        href="/empregados"
+        content="Empregados"
+      />
+      <Button
+        selected={router.route.includes("financeiro")}
+        href="/financeiro"
+        content="Financeiro"
+      />
     </VStack>
   );
 }

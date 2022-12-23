@@ -12,6 +12,7 @@ import { GetServerSidePropsContext } from "next";
 import Link from "next/link";
 import { useState } from "react";
 import MainContent from "../../components/Containers/MainContent";
+import FinancialData from "../../components/Partner/Partner/FinancialData";
 import PersonalData from "../../components/Partner/Partner/PersonalData";
 import { server } from "../../config/server";
 
@@ -64,6 +65,9 @@ export default function Socio({ partner }: Props) {
               nome={partner.Nome}
               participacao={partner.Participacao!}
             />
+          </TabPanel>
+          <TabPanel>
+            <FinancialData />
           </TabPanel>
         </TabPanels>
       </Tabs>
