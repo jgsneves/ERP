@@ -23,10 +23,8 @@
     "eslint-config-next": "13.0.7",
     "framer-motion": "^7.10.3",
     "next": "13.0.7",
-    "next-superjson-plugin": "^0.5.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "superjson": "^1.12.1",
     "typescript": "4.9.4",
     "uuid": "^9.0.0"
   },

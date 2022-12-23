@@ -9,7 +9,7 @@ export default async function handler(
     case "GET":
       try {
         const { id } = req.query;
-        const result = await prisma.pessoas.findFirst({
+        const result = await prisma.pessoas.findUnique({
           where: {
             Id: id as string,
           },
@@ -17,6 +17,7 @@ export default async function handler(
 
         if (result) {
           res.json(result);
+          return;
         }
 
         res.status(404).send({ message: "Sócio não encontrado." });

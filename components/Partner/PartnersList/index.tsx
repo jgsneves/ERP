@@ -1,5 +1,5 @@
-import { Box } from "@chakra-ui/react";
-import { Pessoas } from "@prisma/client";
+import { VStack, Button } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { SerializedPessoa } from "../../../pages/socios";
 import Partner from "../Partner";
 
@@ -8,16 +8,24 @@ interface Props {
 }
 
 export default function PartnersList({ partners }: Props) {
+  const router = useRouter();
   return (
-    <Box mt={5}>
+    <VStack mt={5} spacing={5} width="fit-content">
       {partners.map((partner) => (
         <Partner
           key={partner.Id}
           nome={partner.Nome}
           participacao={partner.Participacao}
           dataNascimento={partner.DataNascimento}
+          id={partner.Id}
         />
       ))}
-    </Box>
+      <Button
+        colorScheme="green"
+        onClick={() => router.push("/socios/cadastrar")}
+      >
+        Cadastrar novo sócio
+      </Button>
+    </VStack>
   );
 }

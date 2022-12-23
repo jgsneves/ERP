@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Pessoas } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 export default function CadastrarSocio() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -24,6 +25,8 @@ export default function CadastrarSocio() {
     Salario: null,
     StatusAdmissao: null,
   });
+
+  const router = useRouter();
 
   const handleInputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -60,7 +63,10 @@ export default function CadastrarSocio() {
     await axios
       .post("/api/socios", formData)
       .catch((error) => console.log(error))
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        setIsLoading(false);
+        router.push("/socios");
+      });
   };
 
   return (

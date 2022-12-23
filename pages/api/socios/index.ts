@@ -17,6 +17,20 @@ export default async function handler(
       }
       break;
 
+    case "GET":
+      try {
+        const result = await prisma.pessoas.findMany({
+          where: {
+            Tipo: "SOCIO",
+          },
+        });
+
+        res.json(result);
+      } catch (error) {
+        res.status(500).send({ error });
+      }
+      break;
+
     default:
       res.status(400).send({
         metodo: req.method,

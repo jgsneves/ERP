@@ -1,10 +1,9 @@
 import { Text } from "@chakra-ui/react";
 import { PessoasTipo } from "@prisma/client";
-import superjson from "superjson";
 import MainContent from "../../components/Containers/MainContent";
 import EmptyPartners from "../../components/Partner/EmptyPartners";
 import PartnersList from "../../components/Partner/PartnersList";
-import prisma from "../../services/Prisma";
+import { server } from "../../config/server";
 
 export interface SerializedPessoa {
   Id: string;
@@ -27,17 +26,20 @@ interface Props {
 }
 
 export async function getServerSideProps() {
-  const result = await prisma.pessoas.findMany({
-    where: {
-      Tipo: "SOCIO",
-    },
-  });
+  try {
+    const result = await fetch(`${server}/api/socios`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
 
-  const { json: partners } = superjson.serialize(result);
+    const partners = await result.json();
 
-  return {
-    props: { partners },
-  };
+    return {
+      props: { partners },
+    };
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export default function Socios({ partners }: Props) {
