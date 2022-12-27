@@ -63,6 +63,11 @@ enum PessoasTipo {
   MEDICO
 }
 
+enum StatusAdmissao {
+  EMPREGADO
+  DEMITIDO
+}
+
 model Pessoas {
   Id             String      @id() @db.Uuid
   Nome           String
@@ -88,5 +93,5 @@ model Pessoas {
 
   //Tipo: Empregado
   Salario        Float?
-  StatusAdmissao Int?
+  StatusAdmissao StatusAdmissao?
 }

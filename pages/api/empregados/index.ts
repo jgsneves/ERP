@@ -22,7 +22,7 @@ export default async function handler(
       try {
         const result = await prisma.pessoas.findMany({
           where: {
-            Tipo: "SOCIO",
+            Tipo: "EMPREGADO",
           },
         });
 
@@ -35,8 +35,7 @@ export default async function handler(
     default:
       res.status(400).send({
         metodo: req.method,
-        message: "Método não implementado para esta entidade",
+        message: "Método não implementado para esta entidade.",
       });
-      break;
   }
 }

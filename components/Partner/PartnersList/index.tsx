@@ -10,7 +10,7 @@ interface Props {
 export default function PartnersList({ partners }: Props) {
   const router = useRouter();
   return (
-    <VStack mt={5} spacing={5} width="fit-content">
+    <VStack mt={5} spacing={5} width="fit-content" alignItems="flex-start">
       {partners.map((partner) => (
         <Partner
           key={partner.Id}

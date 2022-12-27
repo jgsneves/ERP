@@ -10,7 +10,7 @@ import {
 import React, { useState } from "react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import Link from "next/link";
-import { PessoasTipo } from "@prisma/client";
+import { PessoasTipo, StatusAdmissao } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
@@ -22,19 +22,22 @@ interface FormData {
   Cpf: string;
   CriadoEm: Date;
   DataNascimento: Date;
-  Participacao: number;
+  Salario: number;
+  StatusAdmissao: StatusAdmissao;
 }
 
-export default function CadastrarSocio() {
+export default function CadastrarEmpregado() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [formData, setFormData] = useState<FormData>({
     Nome: "",
     Cpf: "",
     DataNascimento: new Date(),
     CriadoEm: new Date(),
     Id: uuidv4(),
-    Tipo: "SOCIO",
-    Participacao: 0,
+    Tipo: "EMPREGADO",
+    Salario: 0,
+    StatusAdmissao: "EMPREGADO",
   });
 
   const router = useRouter();
@@ -45,7 +48,7 @@ export default function CadastrarSocio() {
     const { id, value } = event.target;
 
     setFormData((partner) => {
-      if (id === "Participacao") {
+      if (id === "Salario") {
         return {
           ...partner,
           [id]: Number(value),
@@ -73,29 +76,36 @@ export default function CadastrarSocio() {
   const handleSubmit = async () => {
     setIsLoading(true);
     await axios
-      .post("/api/socios", formData)
-      .catch((error: AxiosError) =>
+      .post("/api/empregados", formData)
+      .catch((error: AxiosError) => {
         toast({
-          status: "error",
-          title: "Não foi possível cadastrar novo sócio.",
+          title: "Erro na criação de empregado.",
           description: error.message,
           duration: 9000,
-        })
-      )
+          status: "error",
+          isClosable: true,
+        });
+      })
       .finally(() => {
         setIsLoading(false);
-        router.push("/socios");
+        router.push("/empregados");
+        toast({
+          title: "Empregado criado com sucesso!",
+          duration: 9000,
+          status: "success",
+          isClosable: true,
+        });
       });
   };
 
   return (
     <MainContent>
       <Text fontSize="5xl" fontWeight={600}>
-        Cadastrar novo sócio
+        Cadastrar novo empregado
       </Text>
       <Text>Preencha todos os dados abaixo.</Text>
 
-      <Link href="/socios">
+      <Link href="/empregados">
         <ArrowBackIcon boxSize={8} mt="6" cursor="pointer" />
       </Link>
 
@@ -125,11 +135,11 @@ export default function CadastrarSocio() {
         </FormLabel>
 
         <FormLabel mt="5">
-          Cota societária:
+          Salário
           <Input
-            value={formData.Participacao?.toString()}
+            value={formData.Salario?.toString()}
             type="number"
-            id="Participacao"
+            id="Salario"
             onChange={handleInputOnChange}
           />
         </FormLabel>

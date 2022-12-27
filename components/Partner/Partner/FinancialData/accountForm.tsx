@@ -63,9 +63,8 @@ export default function AccountForm({ partnerId }: Props) {
     await axios
       .post<ContasCorrente>(`/api/contascorrente`, contaCorrente)
       .catch((error: AxiosError) => {
-        console.log(error.message);
         toast({
-          title: "Aconteceu algum erro.",
+          title: "Erro na criação de conta corrente.",
           description: error.message,
           status: "error",
           duration: 9000,

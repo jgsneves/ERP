@@ -21,8 +21,6 @@ export default function Account({ accountId }: Props) {
     fetcher
   );
 
-  console.log(error);
-
   if (isLoading) return <Spinner />;
 
   return (

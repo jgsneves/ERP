@@ -11,7 +11,9 @@ export default function Menu() {
     <VStack
       borderRight="4px"
       borderColor="gray.200"
-      h="100vh"
+      flex="1"
+      maxWidth="300px"
+      minHeight="100vh"
       p={3}
       spacing={5}
       alignItems="start"
