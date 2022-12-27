@@ -7,20 +7,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum TipoChavePix {
+  CPF
+  TELEFONE
+  EMAIL
+  HASH
+}
+
 model ContasCorrente {
-  Id            String    @id() @db.Uuid
+  Id            String        @id() @db.Uuid
   Agencia       Int
   AgenciaDigito Int
   Conta         Int
   ContaDigito   Int
   CodigoBanco   Int
   ChavePix      String?
-  TipoChavePix  Int?
-  CriadoEm      DateTime  @db.Timestamptz(6)
-  ModificadoEm  DateTime? @db.Timestamptz(6)
+  TipoChavePix  TipoChavePix?
+  CriadoEm      DateTime      @db.Timestamptz(6)
+  ModificadoEm  DateTime?     @db.Timestamptz(6)
 
-  Titular       Pessoas @relation(fields: [TitularId], references: [Id])
-  TitularId     String  @db.Uuid
+  Titular Pessoas?
+  TitularId String? @db.Uuid @unique
 }
 
 model EmpresasMedicas {
@@ -29,25 +36,25 @@ model EmpresasMedicas {
   CriadoEm     DateTime  @db.Timestamptz(6)
   ModificadoEm DateTime? @db.Timestamptz(6)
 
-  Endereco     Enderecos @relation(fields: [EnderecoId], references: [Id])
-  EnderecoId   String    @db.Uuid @unique
+  Endereco   Enderecos @relation(fields: [EnderecoId], references: [Id])
+  EnderecoId String    @unique @db.Uuid
 
-  Socios       Pessoas[]
+  Socios Pessoas[]
 }
 
 model Enderecos {
-  Id              String            @id() @db.Uuid
-  Cep             String
-  Logradouro      String
-  Complemento     String
-  Bairro          String
-  Cidade          String
-  Estado          String
-  CriadoEm        DateTime          @db.Timestamptz(6)
-  ModificadoEm    DateTime?         @db.Timestamptz(6)
+  Id           String    @id() @db.Uuid
+  Cep          String
+  Logradouro   String
+  Complemento  String
+  Bairro       String
+  Cidade       String
+  Estado       String
+  CriadoEm     DateTime  @db.Timestamptz(6)
+  ModificadoEm DateTime? @db.Timestamptz(6)
 
-  EmpresaMedica   EmpresasMedicas?
-  Pessoa          Pessoas?
+  EmpresaMedica EmpresasMedicas?
+  Pessoa        Pessoas?
 }
 
 enum PessoasTipo {
@@ -57,28 +64,29 @@ enum PessoasTipo {
 }
 
 model Pessoas {
-  Id              String           @id() @db.Uuid
-  Nome            String
-  Cpf             String
-  DataNascimento  DateTime         @db.Timestamptz(6)
-  CriadoEm        DateTime         @db.Timestamptz(6)
-  ModificadoEm    DateTime?        @db.Timestamptz(6)
-  Tipo            PessoasTipo
-  
-  ContasCorrente  ContasCorrente[]
-  
-  EnderecoId      String?          @db.Uuid @unique
-  Endereco        Enderecos?       @relation(fields: [EnderecoId], references: [Id])
-  
+  Id             String      @id() @db.Uuid
+  Nome           String
+  Cpf            String
+  DataNascimento DateTime    @db.Timestamptz(6)
+  CriadoEm       DateTime    @db.Timestamptz(6)
+  ModificadoEm   DateTime?   @db.Timestamptz(6)
+  Tipo           PessoasTipo
+
+  ContaCorrenteId String?         @unique @db.Uuid
+  ContasCorrente  ContasCorrente? @relation(fields: [ContaCorrenteId], references: [Id])
+
+  EnderecoId String?    @unique @db.Uuid
+  Endereco   Enderecos? @relation(fields: [EnderecoId], references: [Id])
+
   //Tipo: Médico
   Crm             String?
   EmpresaMedicaId String?          @db.Uuid
   EmpresaMedica   EmpresasMedicas? @relation(fields: [EmpresaMedicaId], references: [Id])
 
   //Tipo: Sócio
-  Participacao    Float?           @db.Real
+  Participacao Float? @db.Real
 
   //Tipo: Empregado
-  Salario         Float?
-  StatusAdmissao  Int?
+  Salario        Float?
+  StatusAdmissao Int?
 }

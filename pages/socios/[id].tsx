@@ -67,7 +67,10 @@ export default function Socio({ partner }: Props) {
             />
           </TabPanel>
           <TabPanel>
-            <FinancialData />
+            <FinancialData
+              accountId={partner.ContaCorrenteId}
+              partnerId={partner.Id}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>

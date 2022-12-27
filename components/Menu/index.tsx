@@ -4,7 +4,7 @@ import brandLogo from "../../public/lysimed.png";
 import { VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-export default function NavBar() {
+export default function Menu() {
   const router = useRouter();
 
   return (

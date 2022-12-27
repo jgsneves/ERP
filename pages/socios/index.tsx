@@ -52,7 +52,10 @@ export default function Socios({ partners }: Props) {
       {partners ? (
         <PartnersList partners={partners} />
       ) : (
-        <EmptyEntityList helperText="Ainda não há sócios cadastrados." />
+        <EmptyEntityList
+          helperText="Ainda não há sócios cadastrados."
+          hrefToRedirect="/socios/cadastrar"
+        />
       )}
     </MainContent>
   );

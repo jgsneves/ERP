@@ -24,6 +24,7 @@ export default function CadastrarSocio() {
     ModificadoEm: null,
     Salario: null,
     StatusAdmissao: null,
+    ContaCorrenteId: null,
   });
 
   const router = useRouter();
