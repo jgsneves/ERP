@@ -5,29 +5,49 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === "GET") {
-    try {
-      const { id } = req.query;
+  switch (req.method) {
+    case "GET":
+      try {
+        const { id } = req.query;
 
-      const result = await prisma.contasCorrente.findUnique({
-        where: {
-          Id: id as string,
-        },
-      });
+        const result = await prisma.contasCorrente.findUnique({
+          where: {
+            Id: id as string,
+          },
+        });
 
-      if (result) {
+        if (result) {
+          res.json(result);
+          return;
+        }
+
+        res.status(404).send({ message: "Conta corrente não encontrada." });
+      } catch (error) {
+        res.status(500).send({ error });
+      }
+      break;
+
+    case "DELETE":
+      try {
+        const { id } = req.query;
+
+        const result = prisma.contasCorrente.delete({
+          where: {
+            Id: id as string,
+          },
+        });
+
         res.json(result);
-        return;
+      } catch (error) {
+        res.status(500).send({ error });
       }
 
-      res.status(404).send({ message: "Conta corrente não encontrada." });
-    } catch (error) {
-      res.status(500).send({ error });
-    }
-  } else {
-    res.status(400).send({
-      metodo: req.method,
-      message: "Método não implementado para esta entidade",
-    });
+      break;
+    default:
+      res.status(400).send({
+        metodo: req.method,
+        message: "Método não implementado para esta entidade",
+      });
+      break;
   }
 }

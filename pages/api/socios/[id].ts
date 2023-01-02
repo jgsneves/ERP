@@ -26,6 +26,22 @@ export default async function handler(
       }
       break;
 
+    case "PATCH":
+      try {
+        const { id } = req.query;
+        const { body } = req;
+        const result = await prisma.pessoas.update({
+          where: {
+            Id: id as string,
+          },
+          data: body,
+        });
+        res.json(result)
+      } catch (error) {
+        res.status(500).send({ error });
+      }
+      break;
+
     default:
       res.status(400).send({
         metodo: req.method,

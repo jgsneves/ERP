@@ -1,7 +1,8 @@
-import { Text, VStack } from "@chakra-ui/react";
+import { Button, Text, useToast, VStack } from "@chakra-ui/react";
 import { ContasCorrente } from "@prisma/client";
 import { Spinner } from "@chakra-ui/react";
 import useSWR from "swr";
+import axios, { AxiosError } from "axios";
 
 interface Props {
   accountId: string;
@@ -16,10 +17,27 @@ export default function Account({ accountId }: Props) {
     return res.json();
   }
 
-  const { data, error, isLoading } = useSWR<ContasCorrente>(
+  const { data, isLoading } = useSWR<ContasCorrente>(
     `/api/contascorrente/${accountId}`,
     fetcher
   );
+
+  const toast = useToast();
+
+  const handleDeleteOnClick = () => {
+    axios
+      .delete(`api/contascorrente/${accountId}`)
+      .catch((error: AxiosError) =>
+        toast({
+          duration: 9000,
+          title: "Não foi possível deletar esta conta.",
+          description: error.message,
+          isClosable: true,
+          status: "error",
+        })
+      )
+      .then();
+  };
 
   if (isLoading) return <Spinner />;
 
@@ -32,6 +50,9 @@ export default function Account({ accountId }: Props) {
       <Text>Dígito: da conta: {data?.ContaDigito}</Text>
       <Text>Chave PIX: {data?.ChavePix}</Text>
       <Text>Tipo de chave PIX: {data?.TipoChavePix}</Text>
+      <Button colorScheme="red" onClick={handleDeleteOnClick}>
+        Deletar conta
+      </Button>
     </VStack>
   );
 }

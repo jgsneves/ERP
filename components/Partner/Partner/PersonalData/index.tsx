@@ -1,39 +1,38 @@
-import { FormControl, FormLabel, Input, Button } from "@chakra-ui/react";
-import { Pessoas } from "@prisma/client";
+import { Button, useToast, VStack, Text } from "@chakra-ui/react";
+import axios, { AxiosError } from "axios";
+import { useRouter } from "next/router";
 import { useState } from "react";
+import PersonalDataForm from "./form";
+
+export interface PersonalDataFormData {
+  Nome: string;
+  Cpf: string;
+  DataNascimento: Date;
+  ModificadoEm: Date;
+  Participacao: number;
+}
 
 interface Props {
   id: string;
   nome: string;
   cpf: string;
   participacao: number;
-  handleSubmit: () => void;
-  isLoading: boolean;
 }
 
-export default function PersonalData({
-  id,
-  cpf,
-  nome,
-  participacao,
-  handleSubmit,
-  isLoading,
-}: Props) {
-  const [formData, setFormData] = useState<Pessoas>({
+export default function PersonalData({ id, cpf, nome, participacao }: Props) {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [renderForm, setRenderForm] = useState<boolean>(false);
+
+  const [formData, setFormData] = useState<PersonalDataFormData>({
     Nome: nome,
     Cpf: cpf,
     DataNascimento: new Date(),
-    CriadoEm: new Date(),
-    Id: id,
-    Tipo: "SOCIO",
     Participacao: participacao,
-    Crm: null,
-    EmpresaMedicaId: null,
-    EnderecoId: null,
-    ModificadoEm: null,
-    Salario: null,
-    StatusAdmissao: null,
+    ModificadoEm: new Date(),
   });
+
+  const router = useRouter();
+  const toast = useToast();
 
   const handleInputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -53,57 +52,58 @@ export default function PersonalData({
     });
   };
 
-  const formatDate = (date: Date) => {
-    var d = new Date(date),
-      month = "" + (d.getMonth() + 1),
-      day = "" + d.getDate(),
-      year = d.getFullYear();
-
-    if (month.length < 2) month = "0" + month;
-    if (day.length < 2) day = "0" + day;
-
-    return [year, month, day].join("-");
+  const handleSubmit = () => {
+    setIsLoading(true);
+    axios
+      .patch(`/api/socios/${id}`, formData)
+      .catch((error: AxiosError) =>
+        toast({
+          status: "error",
+          title: "Não foi possível editar sócio.",
+          description: error.message,
+          duration: 9000,
+          isClosable: true,
+        })
+      )
+      .then(() => {
+        router.push("/socios");
+        toast({
+          status: "success",
+          title: "Dados pessoais do sócio atualizados com sucesso!",
+          duration: 5000,
+        });
+      })
+      .finally(() => setIsLoading(false));
   };
+
   return (
-    <FormControl maxW="500px" mt="14">
-      <FormLabel>
-        Nome:
-        <Input value={formData.Nome} id="Nome" onChange={handleInputOnChange} />
-      </FormLabel>
-
-      <FormLabel mt="5">
-        Cpf:
-        <Input value={formData.Cpf} id="Cpf" onChange={handleInputOnChange} />
-      </FormLabel>
-
-      <FormLabel mt="5">
-        Data de nascimento:
-        <Input
-          value={formatDate(formData.DataNascimento)}
-          id="DataNascimento"
-          type="date"
-          onChange={handleInputOnChange}
+    <>
+      {renderForm ? (
+        <PersonalDataForm
+          formData={formData}
+          handleInputOnChange={handleInputOnChange}
+          handleSubmit={handleSubmit}
+          isLoading={isLoading}
+          setRenderForm={setRenderForm}
         />
-      </FormLabel>
-
-      <FormLabel mt="5">
-        Cota societária:
-        <Input
-          value={formData.Participacao?.toString()}
-          type="number"
-          id="Participacao"
-          onChange={handleInputOnChange}
-        />
-      </FormLabel>
-
-      <Button
-        colorScheme="green"
-        mt="10"
-        onClick={handleSubmit}
-        isLoading={isLoading}
-      >
-        Salvar
-      </Button>
-    </FormControl>
+      ) : (
+        <VStack alignItems="flex-start">
+          <Text>Nome: {formData.Nome}</Text>
+          <Text>Cpf: {formData.Cpf}</Text>
+          <Text>
+            Data de nascimento: {formData.DataNascimento.toLocaleDateString()}
+          </Text>
+          <Text>Cota societária: {formData.Participacao}</Text>
+          <Button
+            colorScheme="green"
+            mt="10"
+            onClick={() => setRenderForm(true)}
+            isLoading={isLoading}
+          >
+            Editar
+          </Button>
+        </VStack>
+      )}
+    </>
   );
 }

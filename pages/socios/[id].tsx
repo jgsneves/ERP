@@ -14,6 +14,7 @@ import { useState } from "react";
 import MainContent from "../../components/Containers/MainContent";
 import FinancialData from "../../components/Partner/Partner/FinancialData";
 import PersonalData from "../../components/Partner/Partner/PersonalData";
+import AddressData from "../../components/Partner/Partner/AddressData";
 import { server } from "../../config/server";
 
 interface Props {
@@ -35,9 +36,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 export default function Socio({ partner }: Props) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const handleSubmit = () => {};
-
   return (
     <MainContent>
       <Text fontSize="5xl" fontWeight={600}>
@@ -53,6 +51,7 @@ export default function Socio({ partner }: Props) {
         <TabList>
           <Tab>Dados pessoais</Tab>
           <Tab>Dados financeiros</Tab>
+          <Tab>Dados de endereço</Tab>
         </TabList>
 
         <TabPanels>
@@ -60,8 +59,6 @@ export default function Socio({ partner }: Props) {
             <PersonalData
               id={partner.Id}
               cpf={partner.Cpf}
-              handleSubmit={handleSubmit}
-              isLoading={isLoading}
               nome={partner.Nome}
               participacao={partner.Participacao!}
             />
@@ -71,6 +68,9 @@ export default function Socio({ partner }: Props) {
               accountId={partner.ContaCorrenteId}
               partnerId={partner.Id}
             />
+          </TabPanel>
+          <TabPanel>
+            <AddressData />
           </TabPanel>
         </TabPanels>
       </Tabs>
