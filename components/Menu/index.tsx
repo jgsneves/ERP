@@ -1,11 +1,17 @@
 import Image from "next/image";
-import Button from "./button";
+import MenuButton from "./button";
 import brandLogo from "../../public/lysimed.png";
-import { VStack } from "@chakra-ui/react";
+import { Button, Flex, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 export default function Menu() {
   const router = useRouter();
+  const supabaseClient = useSupabaseClient();
+
+  const handleLogoutOnClick = async () => {
+    await supabaseClient.auth.signOut();
+  };
 
   return (
     <VStack
@@ -19,22 +25,28 @@ export default function Menu() {
       alignItems="start"
     >
       <Image src={brandLogo} alt="LysiMed" />
-      <Button selected={router.route === "/"} href="/" content="Métricas" />
-      <Button
+      <MenuButton selected={router.route === "/"} href="/" content="Métricas" />
+      <MenuButton
         selected={router.route.includes("socios")}
         href="/socios"
         content="Sócios"
       />
-      <Button
+      <MenuButton
         selected={router.route.includes("empregados")}
         href="/empregados"
         content="Empregados"
       />
-      <Button
+      <MenuButton
         selected={router.route.includes("financeiro")}
         href="/financeiro"
         content="Financeiro"
       />
+
+      <Flex width="100%" flex={1} alignItems="flex-end">
+        <Button colorScheme="green" width="100%" onClick={handleLogoutOnClick}>
+          sair
+        </Button>
+      </Flex>
     </VStack>
   );
 }

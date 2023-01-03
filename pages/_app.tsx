@@ -1,13 +1,24 @@
 import "../styles/globals.css";
+
 import type { AppProps } from "next/app";
-import Layout from "../components/Layout";
-import { ChakraProvider, Spinner } from "@chakra-ui/react";
-import { Router } from "next/router";
 import React from "react";
+import { useState } from "react";
+import { Router } from "next/router";
+
+import { ChakraProvider, Spinner } from "@chakra-ui/react";
+import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { SessionContextProvider, Session } from "@supabase/auth-helpers-react";
+
+import Layout from "../components/Layout";
 import Loading from "../components/Layout/loading";
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({
+  Component,
+  pageProps,
+}: AppProps<{ initialSession: Session }>) {
   const [loading, setLoading] = React.useState(false);
+  const [supabase] = useState(() => createBrowserSupabaseClient());
+
   React.useEffect(() => {
     const start = () => {
       setLoading(true);
@@ -26,16 +37,21 @@ export default function App({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <ChakraProvider>
-      {loading ? (
-        <Loading>
-          <Spinner size="xl" color="green.400" />
-        </Loading>
-      ) : (
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      )}
-    </ChakraProvider>
+    <SessionContextProvider
+      supabaseClient={supabase}
+      initialSession={pageProps.initialSession}
+    >
+      <ChakraProvider>
+        {loading ? (
+          <Loading>
+            <Spinner size="xl" color="green.400" />
+          </Loading>
+        ) : (
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        )}
+      </ChakraProvider>
+    </SessionContextProvider>
   );
 }
