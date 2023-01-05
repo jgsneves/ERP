@@ -52,9 +52,9 @@ export default function PersonalData({ id, cpf, nome, participacao }: Props) {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setIsLoading(true);
-    axios
+    await axios
       .patch(`/api/socios/${id}`, formData)
       .catch((error: AxiosError) =>
         toast({
@@ -66,7 +66,7 @@ export default function PersonalData({ id, cpf, nome, participacao }: Props) {
         })
       )
       .then(() => {
-        router.push("/socios");
+        router.push(`/socios/${id}`);
         toast({
           status: "success",
           title: "Dados pessoais do sócio atualizados com sucesso!",

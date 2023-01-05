@@ -3,12 +3,18 @@ import { ContasCorrente } from "@prisma/client";
 import { Spinner } from "@chakra-ui/react";
 import useSWR from "swr";
 import axios, { AxiosError } from "axios";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { server } from "../../../../config/server";
 
 interface Props {
   accountId: string;
+  partnerId: string;
 }
 
-export default function Account({ accountId }: Props) {
+export default function Account({ accountId, partnerId }: Props) {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   async function fetcher<JSON = any>(
     input: RequestInfo,
     init?: RequestInit
@@ -17,29 +23,34 @@ export default function Account({ accountId }: Props) {
     return res.json();
   }
 
-  const { data, isLoading } = useSWR<ContasCorrente>(
+  const { data, isLoading: fetchLoading } = useSWR<ContasCorrente>(
     `/api/contascorrente/${accountId}`,
     fetcher
   );
 
   const toast = useToast();
+  const router = useRouter();
 
-  const handleDeleteOnClick = () => {
-    axios
-      .delete(`api/contascorrente/${accountId}`)
-      .catch((error: AxiosError) =>
+  const handleDeleteOnClick = async () => {
+    setIsLoading(true);
+
+    await axios
+      .delete(`/api/contascorrente/${accountId}`)
+      .catch((error: AxiosError) => {
         toast({
           duration: 9000,
           title: "Não foi possível deletar esta conta.",
           description: error.message,
           isClosable: true,
           status: "error",
-        })
-      )
-      .then();
+        });
+        console.log(error);
+      })
+      .then(() => router.push(`/socios/${partnerId}`))
+      .finally(() => setIsLoading(false));
   };
 
-  if (isLoading) return <Spinner />;
+  if (fetchLoading) return <Spinner />;
 
   return (
     <VStack alignItems="flex-start" spacing={4}>
@@ -50,7 +61,12 @@ export default function Account({ accountId }: Props) {
       <Text>Dígito: da conta: {data?.ContaDigito}</Text>
       <Text>Chave PIX: {data?.ChavePix}</Text>
       <Text>Tipo de chave PIX: {data?.TipoChavePix}</Text>
-      <Button colorScheme="red" onClick={handleDeleteOnClick}>
+
+      <Button
+        colorScheme="red"
+        onClick={handleDeleteOnClick}
+        isLoading={isLoading}
+      >
         Deletar conta
       </Button>
     </VStack>

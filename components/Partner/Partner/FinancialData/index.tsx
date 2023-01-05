@@ -13,7 +13,7 @@ export default function FinancialData({ accountId, partnerId }: Props) {
   return (
     <>
       {accountId ? (
-        <Account accountId={accountId} />
+        <Account accountId={accountId} partnerId={partnerId} />
       ) : (
         <AccountForm partnerId={partnerId} />
       )}

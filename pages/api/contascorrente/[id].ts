@@ -31,7 +31,7 @@ export default async function handler(
       try {
         const { id } = req.query;
 
-        const result = prisma.contasCorrente.delete({
+        const result = await prisma.contasCorrente.delete({
           where: {
             Id: id as string,
           },

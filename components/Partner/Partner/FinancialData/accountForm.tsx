@@ -79,7 +79,7 @@ export default function AccountForm({ partnerId }: Props) {
             duration: 9000,
             isClosable: true,
           });
-          router.push("/socios");
+          router.push(`/socios/${partnerId}`);
         }
       })
       .finally(() => {
