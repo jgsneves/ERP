@@ -70,7 +70,10 @@ export default function Socio({ partner }: Props) {
             />
           </TabPanel>
           <TabPanel>
-            <AddressData />
+            <AddressData
+              addressId={partner.EnderecoId}
+              partnerId={partner.Id}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>

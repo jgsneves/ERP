@@ -5,7 +5,7 @@ import useSWR from "swr";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { server } from "../../../../config/server";
+import { fetcher } from "../../../../utils/fetcher";
 
 interface Props {
   accountId: string;
@@ -14,14 +14,6 @@ interface Props {
 
 export default function Account({ accountId, partnerId }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  async function fetcher<JSON = any>(
-    input: RequestInfo,
-    init?: RequestInit
-  ): Promise<JSON> {
-    const res = await fetch(input, init);
-    return res.json();
-  }
 
   const { data, isLoading: fetchLoading } = useSWR<ContasCorrente>(
     `/api/contascorrente/${accountId}`,
@@ -44,7 +36,6 @@ export default function Account({ accountId, partnerId }: Props) {
           isClosable: true,
           status: "error",
         });
-        console.log(error);
       })
       .then(() => router.push(`/socios/${partnerId}`))
       .finally(() => setIsLoading(false));

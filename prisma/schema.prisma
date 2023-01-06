@@ -49,18 +49,21 @@ model EmpresasMedicas {
 }
 
 model Enderecos {
-  Id            String    @id() @db.Uuid
-  Cep           String
-  Logradouro    String
-  Complemento   String
-  Bairro        String
-  Cidade        String
-  Estado        String
-  CriadoEm      DateTime  @db.Timestamptz(6)
-  ModificadoEm  DateTime? @db.Timestamptz(6)
+  Id              String            @id() @db.Uuid
+  Cep             String
+  Logradouro      String
+  Complemento     String
+  Bairro          String
+  Cidade          String
+  Estado          String
+  CriadoEm        DateTime          @db.Timestamptz(6)
+  ModificadoEm    DateTime?         @db.Timestamptz(6)
 
-  EmpresaMedica EmpresasMedicas?
-  Pessoa        Pessoas?
+  EmpresaMedica   EmpresasMedicas?
+  EmpresaMedicaId String?           @unique @db.Uuid
+
+  Pessoa          Pessoas?
+  PessoaId        String?           @unique @db.Uuid
 }
 
 enum PessoasTipo {
