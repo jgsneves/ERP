@@ -5,14 +5,19 @@ import useSWR from "swr";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { fetcher } from "../../../../utils/fetcher";
+import { fetcher } from "../../utils/fetcher";
 
 interface Props {
   accountId: string;
-  partnerId: string;
+  pessoaId?: string;
+  empresaMedicaId?: string;
 }
 
-export default function Account({ accountId, partnerId }: Props) {
+export default function Account({
+  accountId,
+  pessoaId,
+  empresaMedicaId,
+}: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { data, isLoading: fetchLoading } = useSWR<ContasCorrente>(
@@ -37,7 +42,13 @@ export default function Account({ accountId, partnerId }: Props) {
           status: "error",
         });
       })
-      .then(() => router.push(`/socios/${partnerId}`))
+      .then(() => {
+        if (pessoaId) {
+          router.push(`/socios/${pessoaId}`);
+        } else if (empresaMedicaId) {
+          router.push(`/empresas-medicas/${empresaMedicaId}`);
+        }
+      })
       .finally(() => setIsLoading(false));
   };
 

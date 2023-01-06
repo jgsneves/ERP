@@ -6,16 +6,21 @@ import useSWR from "swr";
 
 interface Props {
   accountId: string | null;
-  partnerId: string;
+  pessoaId?: string;
+  empresaMedicaId?: string;
 }
 
-export default function FinancialData({ accountId, partnerId }: Props) {
+export default function FinancialData({
+  accountId,
+  pessoaId,
+  empresaMedicaId,
+}: Props) {
   return (
     <>
       {accountId ? (
-        <Account accountId={accountId} partnerId={partnerId} />
+        <Account accountId={accountId} pessoaId={pessoaId} />
       ) : (
-        <AccountForm partnerId={partnerId} />
+        <AccountForm pessoaId={pessoaId} empresaMedicaId={empresaMedicaId} />
       )}
     </>
   );

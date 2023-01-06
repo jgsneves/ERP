@@ -12,13 +12,14 @@ import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { v4 as uuid4 } from "uuid";
-import { BrasilApi } from "../../../../services/BrasilApi";
+import { BrasilApi } from "../../services/BrasilApi";
 
 interface Props {
-  partnerId: string;
+  pessoaId?: string;
+  empresaMedicaId?: string;
 }
 
-export default function AddressForm({ partnerId }: Props) {
+export default function AddressForm({ pessoaId, empresaMedicaId }: Props) {
   const [formData, setFormData] = useState<Enderecos>({
     Bairro: "",
     Cep: "",
@@ -29,8 +30,8 @@ export default function AddressForm({ partnerId }: Props) {
     Id: uuid4(),
     Logradouro: "",
     ModificadoEm: null,
-    PessoaId: partnerId,
-    EmpresaMedicaId: null,
+    PessoaId: pessoaId ?? null,
+    EmpresaMedicaId: empresaMedicaId ?? null,
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -76,7 +77,11 @@ export default function AddressForm({ partnerId }: Props) {
           title: "Endereço salvo com sucesso!",
           duration: 5000,
         });
-        router.push(`/socios/${partnerId}`);
+        if (pessoaId) {
+          router.push(`/socios/${pessoaId}`);
+        } else if (empresaMedicaId) {
+          router.push(`/empresas-medicas/${empresaMedicaId}`);
+        }
       })
       .finally(() => setIsLoading(false));
   };

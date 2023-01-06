@@ -11,9 +11,9 @@ import { Pessoas } from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
 import Link from "next/link";
 import MainContent from "../../components/Containers/MainContent";
-import FinancialData from "../../components/Partner/Partner/FinancialData";
-import PersonalData from "../../components/Partner/Partner/PersonalData";
-import AddressData from "../../components/Partner/Partner/AddressData";
+import FinancialData from "../../components/FinancialData";
+import PersonalData from "../../components/Partner/PersonalData";
+import AddressData from "../../components/AddressData";
 import { server } from "../../config/server";
 
 interface Props {
@@ -65,14 +65,11 @@ export default function Socio({ partner }: Props) {
           <TabPanel>
             <FinancialData
               accountId={partner.ContaCorrenteId}
-              partnerId={partner.Id}
+              pessoaId={partner.Id}
             />
           </TabPanel>
           <TabPanel>
-            <AddressData
-              addressId={partner.EnderecoId}
-              partnerId={partner.Id}
-            />
+            <AddressData addressId={partner.EnderecoId} pessoaId={partner.Id} />
           </TabPanel>
         </TabPanels>
       </Tabs>

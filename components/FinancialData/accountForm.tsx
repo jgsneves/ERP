@@ -17,10 +17,11 @@ import React, { useState } from "react";
 import { v4 as uuid4 } from "uuid";
 
 interface Props {
-  partnerId: string;
+  pessoaId?: string;
+  empresaMedicaId?: string;
 }
 
-export default function AccountForm({ partnerId }: Props) {
+export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [contaCorrente, setContaCorrente] = useState<ContasCorrente>({
     Agencia: 0,
@@ -33,7 +34,8 @@ export default function AccountForm({ partnerId }: Props) {
     Id: uuid4(),
     TipoChavePix: TipoChavePix.EMAIL,
     ModificadoEm: null,
-    TitularId: partnerId,
+    TitularId: pessoaId ?? null,
+    EmpresaTitularId: empresaMedicaId ?? null,
   });
 
   const router = useRouter();
@@ -79,7 +81,11 @@ export default function AccountForm({ partnerId }: Props) {
             duration: 9000,
             isClosable: true,
           });
-          router.push(`/socios/${partnerId}`);
+          if (pessoaId) {
+            router.push(`/socios/${pessoaId}`);
+          } else if (empresaMedicaId) {
+            router.push(`/empresas-medicas/${empresaMedicaId}`);
+          }
         }
       })
       .finally(() => {

@@ -3,16 +3,21 @@ import AddressForm from "./form";
 
 interface Props {
   addressId: string | null;
-  partnerId: string;
+  pessoaId?: string;
+  empresaMedicaId?: string;
 }
 
-export default function AddressData({ addressId, partnerId }: Props) {
+export default function AddressData({
+  addressId,
+  pessoaId,
+  empresaMedicaId,
+}: Props) {
   return (
     <>
       {addressId ? (
         <Address addressId={addressId} />
       ) : (
-        <AddressForm partnerId={partnerId} />
+        <AddressForm pessoaId={pessoaId} empresaMedicaId={empresaMedicaId} />
       )}
     </>
   );
