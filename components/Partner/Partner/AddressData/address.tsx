@@ -1,6 +1,5 @@
 import { Spinner, Text, VStack } from "@chakra-ui/react";
 import { Enderecos } from "@prisma/client";
-import { useState } from "react";
 import useSWR from "swr";
 import { fetcher } from "../../../../utils/fetcher";
 

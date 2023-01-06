@@ -41,6 +41,11 @@ export default function Menu() {
         href="/financeiro"
         content="Financeiro"
       />
+      <MenuButton
+        selected={router.route.includes("empresas-medicas")}
+        href="/empresas-medicas"
+        content="Empresas Médicas"
+      />
 
       <Flex width="100%" flex={1} alignItems="flex-end">
         <Button colorScheme="green" width="100%" onClick={handleLogoutOnClick}>

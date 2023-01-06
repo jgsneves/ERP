@@ -10,7 +10,6 @@ import {
 import { Pessoas } from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
 import Link from "next/link";
-import { useState } from "react";
 import MainContent from "../../components/Containers/MainContent";
 import FinancialData from "../../components/Partner/Partner/FinancialData";
 import PersonalData from "../../components/Partner/Partner/PersonalData";
