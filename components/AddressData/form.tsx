@@ -90,10 +90,8 @@ export default function AddressForm({ pessoaId, empresaMedicaId }: Props) {
   };
 
   return (
-    <VStack spacing={5}>
-      <Text my={5}>
-        Nenhum endereço encontrado para este sócio. Cadastre um novo.
-      </Text>
+    <VStack spacing={5} alignItems="flex-start">
+      <Text my={5}>Nenhum endereço encontrado. Cadastre um novo.</Text>
       <FormControl>
         <FormLabel>
           CEP (apenas os números):

@@ -40,7 +40,7 @@ export default function Socio({ partner }: Props) {
       <Text fontSize="5xl" fontWeight={600}>
         {partner.Nome}
       </Text>
-      <Text>Edite os dados do sócio.</Text>
+      <Text>Confira os dados do sócio.</Text>
 
       <Link href="/socios">
         <ArrowBackIcon boxSize={8} mt="6" cursor="pointer" />

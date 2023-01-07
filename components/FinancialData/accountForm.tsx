@@ -110,9 +110,7 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
 
   return (
     <VStack alignItems="flex-start">
-      <Text my={5}>
-        Nenhuma conta encontrada para este sócio. Cadastre uma nova conta.
-      </Text>
+      <Text my={5}>Nenhuma conta encontrada. Cadastre uma nova conta.</Text>
       <FormControl w={2 / 3}>
         <FormLabel>
           Código do banco:

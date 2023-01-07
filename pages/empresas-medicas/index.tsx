@@ -24,6 +24,7 @@ import { EmpresasMedicasResponse } from "../api/empresasmedicas";
 import { useRouter } from "next/router";
 import { formatCNPJ } from "@brazilian-utils/brazilian-utils";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function EmpresasMedicasContainer() {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -73,14 +74,9 @@ export default function EmpresasMedicasContainer() {
                     <Td>{formatCNPJ(empresa.Cnpj)}</Td>
                     <Td>Nome dos sócios</Td>
                     <Td>
-                      <Button
-                        variant="ghost"
-                        onClick={() =>
-                          router.push(`/empresas-medicas/${empresa.Id}`)
-                        }
-                      >
+                      <Link href={`/empresas-medicas/${empresa.Id}`}>
                         <PlusSquareIcon />
-                      </Button>
+                      </Link>
                     </Td>
                   </Tr>
                 ))}
