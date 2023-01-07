@@ -1,6 +1,7 @@
 import { FormControl, FormLabel, Input, Button, Flex } from "@chakra-ui/react";
 import { Dispatch, SetStateAction } from "react";
 import { PersonalDataFormData } from ".";
+import { formatCPF } from "@brazilian-utils/brazilian-utils";
 
 interface Props {
   formData: PersonalDataFormData;
@@ -37,7 +38,11 @@ export default function PersonalDataForm({
 
       <FormLabel mt="5">
         Cpf:
-        <Input value={formData.Cpf} id="Cpf" onChange={handleInputOnChange} />
+        <Input
+          value={formatCPF(formData.Cpf)}
+          id="Cpf"
+          onChange={handleInputOnChange}
+        />
       </FormLabel>
 
       <FormLabel mt="5">

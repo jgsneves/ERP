@@ -35,6 +35,7 @@ model ContasCorrente {
 
 model EmpresasMedicas {
   Id              String           @id() @db.Uuid
+  RazaoSocial     String
   Cnpj            String
   CriadoEm        DateTime         @db.Timestamptz(6)
   ModificadoEm    DateTime?        @db.Timestamptz(6)

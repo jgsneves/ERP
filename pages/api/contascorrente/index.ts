@@ -8,44 +8,47 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     try {
-      const requestBody = req.body;
-
       const contaCorrenteData: ContasCorrente = {
-        Id: requestBody.Id,
-        Agencia: Number(requestBody.Agencia),
-        AgenciaDigito: Number(requestBody.AgenciaDigito),
-        Conta: Number(requestBody.Conta),
-        ContaDigito: Number(requestBody.ContaDigito),
-        CodigoBanco: Number(requestBody.CodigoBanco),
-        ChavePix: requestBody.ChavePix,
-        TipoChavePix: requestBody.TipoChavePix,
-        CriadoEm: requestBody.CriadoEm,
-        ModificadoEm: requestBody.ModificadoEm,
-        TitularId: requestBody.TitularId,
+        Id: req.body.Id,
+        Agencia: Number(req.body.Agencia),
+        AgenciaDigito: Number(req.body.AgenciaDigito),
+        Conta: Number(req.body.Conta),
+        ContaDigito: Number(req.body.ContaDigito),
+        CodigoBanco: Number(req.body.CodigoBanco),
+        ChavePix: req.body.ChavePix,
+        TipoChavePix: req.body.TipoChavePix,
+        CriadoEm: req.body.CriadoEm,
+        ModificadoEm: req.body.ModificadoEm,
+        TitularId: req.body.TitularId,
+        EmpresaTitularId: req.body.EmpresaTitularId,
       };
 
       const result = await prisma.contasCorrente.create({
         data: contaCorrenteData,
       });
 
-      if (result.TitularId) {
+      if (req.body.TitularId) {
         await prisma.pessoas.update({
-          where: { Id: result.TitularId },
-          data: { ContaCorrenteId: result.Id },
+          where: {
+            Id: req.body.TitularId,
+          },
+          data: {
+            ContaCorrenteId: result.Id,
+          },
+        });
+      } else if (req.body.EmpresaTitularId) {
+        await prisma.empresasMedicas.update({
+          where: {
+            Id: req.body.EmpresaTitularId,
+          },
+          data: {
+            ContaCorrenteId: result.Id,
+          },
         });
       }
 
       res.json(result);
     } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        res.status(500).send({
-          code: error.code,
-          message: error.message,
-          meta: error.meta,
-          cause: error.cause,
-        });
-        return;
-      }
       res.status(500).send({ error });
     }
   } else {

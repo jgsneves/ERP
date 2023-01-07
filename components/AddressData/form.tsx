@@ -1,3 +1,4 @@
+import { isValidCEP } from "@brazilian-utils/brazilian-utils";
 import {
   VStack,
   Text,
@@ -45,17 +46,19 @@ export default function AddressForm({ pessoaId, empresaMedicaId }: Props) {
   };
 
   const handleOnBlur = async () => {
-    setIsLoading(true);
-    const cep = await BrasilApi.getCep(Number(formData.Cep));
-    const { city, neighborhood, state: cepState, street } = cep.data;
-    setFormData((state) => ({
-      ...state,
-      Bairro: neighborhood,
-      Cidade: city,
-      Estado: cepState,
-      Logradouro: street,
-    }));
-    setIsLoading(false);
+    if (isValidCEP(formData.Cep)) {
+      setIsLoading(true);
+      const cep = await BrasilApi.getCep(Number(formData.Cep));
+      const { city, neighborhood, state: cepState, street } = cep.data;
+      setFormData((state) => ({
+        ...state,
+        Bairro: neighborhood,
+        Cidade: city,
+        Estado: cepState,
+        Logradouro: street,
+      }));
+      setIsLoading(false);
+    }
   };
 
   const handleSaveOnClick = async () => {
