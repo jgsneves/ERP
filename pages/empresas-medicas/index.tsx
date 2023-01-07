@@ -2,7 +2,6 @@ import MainContent from "../../components/Containers/MainContent";
 import {
   Button,
   Flex,
-  Select,
   Spinner,
   Table,
   TableContainer,
@@ -14,18 +13,33 @@ import {
   Tr,
   VStack,
 } from "@chakra-ui/react";
-import { PlusSquareIcon } from "@chakra-ui/icons";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  PlusSquareIcon,
+} from "@chakra-ui/icons";
 import useSWR from "swr";
 import { fetcher } from "../../utils/fetcher";
 import { EmpresasMedicasResponse } from "../api/empresasmedicas";
 import { useRouter } from "next/router";
 import { formatCNPJ } from "@brazilian-utils/brazilian-utils";
+import { useEffect, useState } from "react";
 
 export default function EmpresasMedicasContainer() {
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [pageAmount, setPageAmount] = useState<number>(1);
+
   const { data, isLoading } = useSWR<EmpresasMedicasResponse>(
-    `/api/empresasmedicas`,
+    `/api/empresasmedicas?pagina=${currentPage}`,
     fetcher
   );
+
+  useEffect(() => {
+    if (data) {
+      setCurrentPage(data.pagina);
+      setPageAmount(data.totalPaginas);
+    }
+  }, [data]);
 
   const router = useRouter();
 
@@ -59,7 +73,12 @@ export default function EmpresasMedicasContainer() {
                     <Td>{formatCNPJ(empresa.Cnpj)}</Td>
                     <Td>Nome dos sócios</Td>
                     <Td>
-                      <Button variant="ghost">
+                      <Button
+                        variant="ghost"
+                        onClick={() =>
+                          router.push(`/empresas-medicas/${empresa.Id}`)
+                        }
+                      >
                         <PlusSquareIcon />
                       </Button>
                     </Td>
@@ -69,6 +88,7 @@ export default function EmpresasMedicasContainer() {
             )}
           </Tbody>
         </Table>
+
         {data?.empresasMedicas.length === 0 && (
           <VStack mt={5}>
             <Text>Não há empresas médicas cadastradas</Text>
@@ -80,26 +100,28 @@ export default function EmpresasMedicasContainer() {
             </Button>
           </VStack>
         )}
+
         {data && data.empresasMedicas.length > 0 && (
-          <Flex
-            mt={5}
-            width="15%"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            Página:{" "}
-            <Select ml={2}>
-              {/* essa merda não funciona */}
-              {Array.from({ length: data.totalPagina }, (x, i) => i + 1).map(
-                (page) => (
-                  <option value={page} key={page}>
-                    {page}
-                  </option>
-                )
-              )}
-            </Select>
+          <Flex mt={5} justifyContent="space-between" alignItems="center">
+            <Button
+              variant="ghost"
+              isDisabled={currentPage <= 1}
+              onClick={() => setCurrentPage((state) => state - 1)}
+            >
+              <ArrowLeftIcon boxSize={3} mr={2} />
+              Anterior
+            </Button>
+            <Text>Página: {currentPage}</Text>
+            <Button
+              variant="ghost"
+              isDisabled={currentPage === pageAmount}
+              onClick={() => setCurrentPage((state) => state + 1)}
+            >
+              Próxima <ArrowRightIcon boxSize={3} ml={2} />
+            </Button>
           </Flex>
         )}
+
         {data && data.empresasMedicas.length > 0 && (
           <Button
             colorScheme="green"

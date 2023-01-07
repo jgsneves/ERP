@@ -1,5 +1,5 @@
 import { Text } from "@chakra-ui/react";
-import { PessoasTipo } from "@prisma/client";
+import { Pessoas, PessoasTipo } from "@prisma/client";
 import MainContent from "../../components/Containers/MainContent";
 import EmptyEntityList from "../../components/EmptyEntityList";
 import PartnersList from "../../components/Partner/PartnersList";
@@ -22,20 +22,16 @@ interface Props {
 }
 
 export async function getServerSideProps() {
-  try {
-    const result = await fetch(`${server}/api/socios`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
+  const result = await fetch(`${server}/api/socios`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
 
-    const partners = await result.json();
+  const partners = await result.json();
 
-    return {
-      props: { partners },
-    };
-  } catch (error) {
-    console.log(error);
-  }
+  return {
+    props: { partners },
+  };
 }
 
 export default function Socios({ partners }: Props) {
