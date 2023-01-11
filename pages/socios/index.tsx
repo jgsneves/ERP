@@ -1,24 +1,24 @@
 import { Text } from "@chakra-ui/react";
-import { Pessoas, PessoasTipo } from "@prisma/client";
+import { Pessoas } from "@prisma/client";
 import MainContent from "../../components/Containers/MainContent";
 import EmptyEntityList from "../../components/EmptyEntityList";
 import PartnersList from "../../components/Partner/PartnersList";
 import { server } from "../../config/server";
 
-export interface SerializedPessoa {
-  Id: string;
-  Nome: string;
-  Cpf: string;
+export interface Partner
+  extends Omit<
+    Pessoas,
+    | "DataNascimento"
+    | "Tipo"
+    | "Crm"
+    | "EmpresaMedicaId"
+    | "Salario"
+    | "StatusAdmissao"
+  > {
   DataNascimento: string;
-  CriadoEm: Date;
-  ModificadoEm: Date | null;
-  Tipo: PessoasTipo;
-  EnderecoId: string | null;
-  Participacao: number | null;
 }
-
 interface Props {
-  partners: SerializedPessoa[];
+  partners: Partner[];
 }
 
 export async function getServerSideProps() {
@@ -41,7 +41,7 @@ export default function Socios({ partners }: Props) {
         Sócios
       </Text>
       <Text>Todos os sócios cadastrados da empresa.</Text>
-      {partners ? (
+      {partners.length > 0 ? (
         <PartnersList partners={partners} />
       ) : (
         <EmptyEntityList

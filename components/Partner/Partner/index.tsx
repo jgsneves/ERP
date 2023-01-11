@@ -1,5 +1,6 @@
 import { Avatar, Grid, Text } from "@chakra-ui/react";
 import Link from "next/link";
+import { DateFormat } from "../../../utils/dateFormat";
 
 interface Props {
   nome: string;
@@ -25,7 +26,10 @@ export default function Partner({
       >
         <Avatar name={nome} src={undefined} />
         <Text>Nome: {nome}</Text>
-        <Text>Data de nascimento: {dataNascimento}</Text>
+        <Text>
+          Data de nascimento:{" "}
+          {DateFormat.formatISODateStringToLocale(dataNascimento)}
+        </Text>
         <Text>Cota Societária: {participacao}</Text>
       </Grid>
     </Link>

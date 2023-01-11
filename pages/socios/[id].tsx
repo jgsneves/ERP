@@ -7,7 +7,6 @@ import {
   TabPanels,
   TabPanel,
 } from "@chakra-ui/react";
-import { Pessoas } from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
 import Link from "next/link";
 import MainContent from "../../components/Containers/MainContent";
@@ -15,9 +14,11 @@ import FinancialData from "../../components/FinancialData";
 import PersonalData from "../../components/Partner/PersonalData";
 import AddressData from "../../components/AddressData";
 import { server } from "../../config/server";
+import { useRouter } from "next/router";
+import { Partner } from ".";
 
 interface Props {
-  partner: Pessoas;
+  partner: Partner;
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -35,6 +36,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 export default function Socio({ partner }: Props) {
+  const router = useRouter();
+
   return (
     <MainContent>
       <Text fontSize="5xl" fontWeight={600}>
@@ -59,6 +62,7 @@ export default function Socio({ partner }: Props) {
               id={partner.Id}
               cpf={partner.Cpf}
               nome={partner.Nome}
+              dataNascimento={partner.DataNascimento}
               participacao={partner.Participacao!}
             />
           </TabPanel>
@@ -69,7 +73,11 @@ export default function Socio({ partner }: Props) {
             />
           </TabPanel>
           <TabPanel>
-            <AddressData addressId={partner.EnderecoId} pessoaId={partner.Id} />
+            <AddressData
+              addressId={partner.EnderecoId}
+              pessoaId={partner.Id}
+              pushRouteAfterRequest={() => router.push(`/socios/${partner.Id}`)}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>

@@ -7,6 +7,7 @@ import {
   TabPanels,
   Tabs,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { GetServerSidePropsContext } from "next";
@@ -15,6 +16,9 @@ import { EmpresasMedicas } from "@prisma/client";
 import CompanyData from "../../components/MedicalCompany/CompanyData";
 import FinancialData from "../../components/FinancialData";
 import AddressData from "../../components/AddressData";
+import UploadFile from "../../components/UploadFile";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useRouter } from "next/router";
 
 interface Props {
   company: EmpresasMedicas;
@@ -36,6 +40,25 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 export default function EmpresaMedica({ company }: Props) {
+  const supabaseClient = useSupabaseClient();
+  const toast = useToast();
+  const router = useRouter();
+
+  const handleUploadFile = async (file: File | null, fileName: string) => {
+    if (file) {
+      const { error } = await supabaseClient.storage
+        .from("empresas-medicas-documentos")
+        .upload(fileName, file);
+      if (error)
+        toast({
+          duration: 9000,
+          title: "Não foi possível fazer upload de arquivo!",
+          status: "error",
+          isClosable: true,
+        });
+    }
+  };
+
   return (
     <MainContent>
       <Text fontSize="5xl" fontWeight={600}>
@@ -52,7 +75,7 @@ export default function EmpresaMedica({ company }: Props) {
           <Tab>Dados da sociedade</Tab>
           <Tab>Dados financeiros</Tab>
           <Tab>Dados de endereço</Tab>
-          <Tab>Sócios</Tab>
+          <Tab>Quadro societário</Tab>
           <Tab>Documentos</Tab>
           <Tab>CRM</Tab>
           <Tab>Notas fiscais</Tab>
@@ -74,8 +97,14 @@ export default function EmpresaMedica({ company }: Props) {
           <TabPanel>
             <AddressData
               addressId={company.EnderecoId}
-              empresaMedicaId={company.Id}
+              pushRouteAfterRequest={() =>
+                router.push(`/empresas-medicas/${company.Id}`)
+              }
             />
+          </TabPanel>
+          <TabPanel>Quadro societário</TabPanel>
+          <TabPanel>
+            <UploadFile handleSubmit={handleUploadFile} />
           </TabPanel>
         </TabPanels>
       </Tabs>

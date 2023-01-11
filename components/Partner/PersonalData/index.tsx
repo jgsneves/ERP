@@ -2,12 +2,13 @@ import { Button, useToast, VStack, Text } from "@chakra-ui/react";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { DateFormat } from "../../../utils/dateFormat";
 import PersonalDataForm from "./form";
 
 export interface PersonalDataFormData {
   Nome: string;
   Cpf: string;
-  DataNascimento: Date;
+  DataNascimento: string;
   ModificadoEm: Date;
   Participacao: number;
 }
@@ -17,16 +18,23 @@ interface Props {
   nome: string;
   cpf: string;
   participacao: number;
+  dataNascimento: string;
 }
 
-export default function PersonalData({ id, cpf, nome, participacao }: Props) {
+export default function PersonalData({
+  id,
+  cpf,
+  nome,
+  participacao,
+  dataNascimento,
+}: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [renderForm, setRenderForm] = useState<boolean>(false);
 
   const [formData, setFormData] = useState<PersonalDataFormData>({
     Nome: nome,
     Cpf: cpf,
-    DataNascimento: new Date(),
+    DataNascimento: dataNascimento,
     Participacao: participacao,
     ModificadoEm: new Date(),
   });
@@ -91,7 +99,8 @@ export default function PersonalData({ id, cpf, nome, participacao }: Props) {
           <Text>Nome: {formData.Nome}</Text>
           <Text>Cpf: {formData.Cpf}</Text>
           <Text>
-            Data de nascimento: {formData.DataNascimento.toLocaleDateString()}
+            Data de nascimento:{" "}
+            {DateFormat.formatISODateStringToLocale(formData.DataNascimento)}
           </Text>
           <Text>Cota societária: {formData.Participacao}</Text>
           <Button

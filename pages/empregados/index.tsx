@@ -24,20 +24,16 @@ interface Props {
 }
 
 export async function getServerSideProps() {
-  try {
-    const result = await fetch(`${server}/api/empregados`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
+  const result = await fetch(`${server}/api/empregados`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
 
-    const employees = await result.json();
+  const employees = await result.json();
 
-    return {
-      props: { employees },
-    };
-  } catch (error) {
-    console.log(error);
-  }
+  return {
+    props: { employees },
+  };
 }
 
 export default function Empregados({ employees }: Props) {

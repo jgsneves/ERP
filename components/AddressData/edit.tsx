@@ -7,37 +7,62 @@ import {
   Input,
   Button,
   useToast,
+  Spinner,
 } from "@chakra-ui/react";
 import { Enderecos } from "@prisma/client";
 import axios, { AxiosError } from "axios";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { v4 as uuid4 } from "uuid";
 import { BrasilApi } from "../../services/BrasilApi";
+import { fetcher } from "../../utils/fetcher";
+import useSWR from "swr";
 
 interface Props {
-  pessoaId?: string;
-  empresaMedicaId?: string;
+  addressId: string;
+  pushRouteAfterRequest: () => void;
 }
 
-export default function AddressForm({ pessoaId, empresaMedicaId }: Props) {
+export default function AddressForm({
+  addressId,
+  pushRouteAfterRequest,
+}: Props) {
+  const { data, isLoading: fetchLoading } = useSWR<Enderecos>(
+    `/api/enderecos/${addressId}`,
+    fetcher
+  );
+
+  console.log(data);
+
+  const {
+    Bairro,
+    Cep,
+    Cidade,
+    Complemento,
+    CriadoEm,
+    EmpresaMedicaId,
+    Estado,
+    Id,
+    Logradouro,
+    PessoaId,
+  } = data!;
+
   const [formData, setFormData] = useState<Enderecos>({
-    Bairro: "",
-    Cep: "",
-    Cidade: "",
-    Complemento: "",
-    CriadoEm: new Date(),
-    Estado: "",
-    Id: uuid4(),
-    Logradouro: "",
-    ModificadoEm: null,
-    PessoaId: pessoaId ?? null,
-    EmpresaMedicaId: empresaMedicaId ?? null,
+    Bairro,
+    Cep,
+    Cidade,
+    Complemento,
+    CriadoEm,
+    Estado,
+    Id,
+    Logradouro,
+    ModificadoEm: new Date(),
+    PessoaId: PessoaId ?? null,
+    EmpresaMedicaId: EmpresaMedicaId ?? null,
   });
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const toast = useToast();
-  const router = useRouter();
 
   const handleInputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -61,10 +86,11 @@ export default function AddressForm({ pessoaId, empresaMedicaId }: Props) {
     }
   };
 
-  const handleSaveOnClick = async () => {
+  const handleOnClick = async () => {
     setIsLoading(true);
+
     await axios
-      .post("/api/enderecos", formData)
+      .put(`/api/enderecos/${Id}`, formData)
       .catch((error: AxiosError) =>
         toast({
           duration: 9000,
@@ -80,18 +106,16 @@ export default function AddressForm({ pessoaId, empresaMedicaId }: Props) {
           title: "Endereço salvo com sucesso!",
           duration: 5000,
         });
-        if (pessoaId) {
-          router.push(`/socios/${pessoaId}`);
-        } else if (empresaMedicaId) {
-          router.push(`/empresas-medicas/${empresaMedicaId}`);
-        }
+        pushRouteAfterRequest();
       })
       .finally(() => setIsLoading(false));
   };
 
+  if (fetchLoading) return <Spinner />;
+
   return (
     <VStack spacing={5} alignItems="flex-start">
-      <Text my={5}>Nenhum endereço encontrado. Cadastre um novo.</Text>
+      <Text my={5}>Informe os dados de endereço.</Text>
       <FormControl>
         <FormLabel>
           CEP (apenas os números):
@@ -152,7 +176,7 @@ export default function AddressForm({ pessoaId, empresaMedicaId }: Props) {
         <Button
           mt={5}
           colorScheme="green"
-          onClick={handleSaveOnClick}
+          onClick={handleOnClick}
           isLoading={isLoading}
         >
           Salvar

@@ -24,6 +24,21 @@ export default async function handler(
       }
       break;
 
+    case "PUT":
+      try {
+        const { body, query } = req;
+        const result = await prisma.enderecos.update({
+          where: {
+            Id: query.id as string,
+          },
+          data: body,
+        });
+        res.status(200).send(result);
+      } catch (error) {
+        res.status(500).send({ error });
+      }
+      break;
+
     default:
       res.status(500).send({
         metodo: req.method,
