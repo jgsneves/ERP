@@ -19,6 +19,8 @@ import AddressData from "../../components/AddressData";
 import UploadFile from "../../components/UploadFile";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
+import QuadroSocietario from "../../components/MedicalCompany/QuadroSocietario";
+import Documentos from "../../components/MedicalCompany/Documentos";
 
 interface Props {
   company: EmpresasMedicas;
@@ -83,18 +85,21 @@ export default function EmpresaMedica({ company }: Props) {
 
         <TabPanels>
           <TabPanel>
+            {/* Dados da sociedade */}
             <CompanyData
               cnpj={company.Cnpj}
               razaoSocial={company.RazaoSocial}
             />
           </TabPanel>
           <TabPanel>
+            {/* Dados financeiros */}
             <FinancialData
               empresaMedicaId={company.Id}
               accountId={company.ContaCorrenteId}
             />
           </TabPanel>
           <TabPanel>
+            {/* Dados de endereço */}
             <AddressData
               addressId={company.EnderecoId}
               pushRouteAfterRequest={() =>
@@ -102,9 +107,13 @@ export default function EmpresaMedica({ company }: Props) {
               }
             />
           </TabPanel>
-          <TabPanel>Quadro societário</TabPanel>
           <TabPanel>
-            <UploadFile handleSubmit={handleUploadFile} />
+            {/* Quadro societário */}
+            <QuadroSocietario />
+          </TabPanel>
+          <TabPanel>
+            {/* Documentos */}
+            <Documentos />
           </TabPanel>
         </TabPanels>
       </Tabs>

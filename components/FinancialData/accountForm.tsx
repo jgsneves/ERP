@@ -111,7 +111,7 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
   return (
     <VStack alignItems="flex-start">
       <Text my={5}>Nenhuma conta encontrada. Cadastre uma nova conta.</Text>
-      <FormControl w={2 / 3}>
+      <FormControl width="500px">
         <FormLabel>
           Código do banco:
           <Input
@@ -121,7 +121,6 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
             type="number"
           />
         </FormLabel>
-        <Divider my={8} />
         <Flex>
           <FormLabel>
             Agência:
@@ -142,7 +141,6 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
             />
           </FormLabel>
         </Flex>
-        <Divider my={8} />
         <Flex>
           <FormLabel>
             Conta corrente:
@@ -163,7 +161,6 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
             />
           </FormLabel>
         </Flex>
-        <Divider my={8} />
         <Flex>
           <FormLabel>
             Chave Pix:

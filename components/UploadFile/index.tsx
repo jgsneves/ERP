@@ -1,13 +1,22 @@
-import { Button, FormLabel, Input, Text, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  FormLabel,
+  Input,
+  Select,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
 
 interface Props {
-  handleSubmit: (file: File | null, fileName: string) => Promise<void>;
+  handleSubmit: (file: File | null, fileName: string, type: string) => void;
+  fileTypeOptions: string[];
 }
 
-export default function UploadFile({ handleSubmit }: Props) {
+export default function UploadFile({ handleSubmit, fileTypeOptions }: Props) {
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string>("");
+  const [fileType, setFileType] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleInputFileOnChange = (
@@ -24,9 +33,13 @@ export default function UploadFile({ handleSubmit }: Props) {
     event: React.ChangeEvent<HTMLInputElement>
   ) => setFileName(event.target.value.trim().replace(" ", "-"));
 
-  const handleSaveOnClick = async () => {
+  const handleTypeInputOnChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => setFileType(event.target.value);
+
+  const handleSaveOnClick = () => {
     setIsLoading(true);
-    await handleSubmit(file, fileName);
+    handleSubmit(file, fileName, fileType);
     setFile(null);
     setFileName("");
     setIsLoading(false);
@@ -44,10 +57,18 @@ export default function UploadFile({ handleSubmit }: Props) {
         Nome do arquivo:
         <Input onChange={handleFileNameInputOnChange} isDisabled={isLoading} />
       </FormLabel>
+      <FormLabel>
+        Tipo do arquivo:
+        <Select onChange={handleTypeInputOnChange} isDisabled={isLoading}>
+          {fileTypeOptions.map((option) => (
+            <option key={option}>{option}</option>
+          ))}
+        </Select>
+      </FormLabel>
       <Button
         colorScheme="green"
         onClick={handleSaveOnClick}
-        isDisabled={isLoading}
+        isLoading={isLoading}
       >
         Salvar arquivo
       </Button>

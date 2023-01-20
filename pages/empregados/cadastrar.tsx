@@ -14,6 +14,8 @@ import { PessoasTipo, StatusAdmissao } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
+import { formatCPF } from "@brazilian-utils/brazilian-utils";
+import { DateFormat } from "../../utils/dateFormat";
 
 interface FormData {
   Id: string;
@@ -28,7 +30,7 @@ interface FormData {
 
 export default function CadastrarEmpregado() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
+  const [birthDateValue, setBirthDateValue] = useState<string>("");
   const [formData, setFormData] = useState<FormData>({
     Nome: "",
     Cpf: "",
@@ -61,16 +63,11 @@ export default function CadastrarEmpregado() {
     });
   };
 
-  const formatDate = (date: Date) => {
-    var d = new Date(date),
-      month = "" + (d.getMonth() + 1),
-      day = "" + d.getDate(),
-      year = d.getFullYear();
-
-    if (month.length < 2) month = "0" + month;
-    if (day.length < 2) day = "0" + day;
-
-    return [year, month, day].join("-");
+  const handleDateInputOnBlur = () => {
+    if (birthDateValue) {
+      const date = DateFormat.getDateTypeFromChakraString(birthDateValue);
+      setFormData((state) => ({ ...state, DataNascimento: date }));
+    }
   };
 
   const handleSubmit = async () => {
@@ -121,16 +118,21 @@ export default function CadastrarEmpregado() {
 
         <FormLabel mt="5">
           Cpf:
-          <Input value={formData.Cpf} id="Cpf" onChange={handleInputOnChange} />
+          <Input
+            value={formatCPF(formData.Cpf)}
+            id="Cpf"
+            onChange={handleInputOnChange}
+          />
         </FormLabel>
 
         <FormLabel mt="5">
           Data de nascimento:
           <Input
-            value={formatDate(formData.DataNascimento)}
+            value={birthDateValue}
             id="DataNascimento"
             type="date"
-            onChange={handleInputOnChange}
+            onChange={(event) => setBirthDateValue(event.target.value)}
+            onBlur={handleDateInputOnBlur}
           />
         </FormLabel>
 

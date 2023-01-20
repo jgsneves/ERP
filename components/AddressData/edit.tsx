@@ -31,8 +31,6 @@ export default function AddressForm({
     fetcher
   );
 
-  console.log(data);
-
   const {
     Bairro,
     Cep,
