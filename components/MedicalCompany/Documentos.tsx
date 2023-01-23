@@ -1,14 +1,32 @@
 import { Divider, Flex, Text, VStack } from "@chakra-ui/react";
+import { DocumentoTipo } from "@prisma/client";
+import { Mapper } from "../../utils/mappers";
 import UploadFile from "../UploadFile";
 
 export default function Documentos() {
   const handleSubmit = () => {};
 
+  const fileTypeOptions = Object.values(DocumentoTipo).map((document) => {
+    if (
+      document === "CONTRATO_SOCIAL" ||
+      document === "DAS" ||
+      document === "NOTA_FISCAL" ||
+      document === "TFF"
+    ) {
+      return (
+        <option key={document} value={document}>
+          {Mapper.mapDocumentType(document)}
+        </option>
+      );
+    }
+    return null;
+  });
+
   return (
     <VStack alignItems="flex-start">
       <UploadFile
         handleSubmit={handleSubmit}
-        fileTypeOptions={["Contrato social", "Nota fiscal", "TFF", "DAS"]}
+        fileTypeOptions={fileTypeOptions}
       />
 
       <Flex width="100%" alignItems="center" py={3}>

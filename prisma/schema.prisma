@@ -7,6 +7,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum DocumentoTipo {
+  CONTRATO_SOCIAL
+  NOTA_FISCAL
+  TFF
+  DAS
+}
+
+model Documentos {
+  Id               String           @id() @db.Uuid
+  Nome             String
+  Tipo             DocumentoTipo
+  Url              String
+
+  PessoaId         String?          @db.Uuid
+  Pessoa           Pessoas?         @relation(fields: [PessoaId], references: [Id])
+
+  EmpresaMedicaId  String?          @db.Uuid
+  EmpresaMedica    EmpresasMedicas? @relation(fields: [EmpresaMedicaId], references: [Id])
+}
+
 enum TipoChavePix {
   CPF
   TELEFONE
@@ -47,6 +67,8 @@ model EmpresasMedicas {
   ContasCorrente  ContasCorrente?  @relation(fields: [ContaCorrenteId], references: [Id])
 
   Socios          Pessoas[]
+
+  Documentos      Documentos[]
 }
 
 model Enderecos {
@@ -92,6 +114,8 @@ model Pessoas {
 
   EnderecoId      String?          @unique @db.Uuid
   Endereco        Enderecos?       @relation(fields: [EnderecoId], references: [Id])
+
+  Documentos      Documentos[]
 
   //Tipo: Médico
   Crm             String?
