@@ -16,7 +16,6 @@ import { EmpresasMedicas } from "@prisma/client";
 import CompanyData from "../../components/MedicalCompany/CompanyData";
 import FinancialData from "../../components/FinancialData";
 import AddressData from "../../components/AddressData";
-import UploadFile from "../../components/UploadFile";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import QuadroSocietario from "../../components/MedicalCompany/QuadroSocietario";

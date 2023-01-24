@@ -4,6 +4,7 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Link,
   Text,
   useToast,
   VStack,
@@ -15,6 +16,7 @@ import { BrasilApi } from "../../services/BrasilApi";
 import { useRouter } from "next/router";
 import axios, { AxiosError } from "axios";
 import { isValidCNPJ, formatCNPJ } from "@brazilian-utils/brazilian-utils";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 
 export default function CadastrarEmpresaMedica() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -75,7 +77,12 @@ export default function CadastrarEmpresaMedica() {
         Cadastrar empresa médica
       </Text>
       <Text>Preencha os dados abaixo para cadastrar uma nova empresa.</Text>
-      <VStack>
+
+      <Link href="/empresas-medicas">
+        <ArrowBackIcon boxSize={8} mt="6" cursor="pointer" />
+      </Link>
+
+      <VStack mt={2}>
         <FormControl>
           <FormLabel>
             CNPJ:
