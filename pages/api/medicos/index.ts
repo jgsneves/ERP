@@ -1,15 +1,15 @@
-import { EmpresasMedicas, Pessoas } from "@prisma/client";
+import { EmpresasMedicas, Pessoas, PessoasTipo } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../services/Prisma";
 
-interface Empresas extends EmpresasMedicas {
-  Socios: Pessoas[];
+interface Doctors extends Pessoas {
+  EmpresaMedica: EmpresasMedicas;
 }
 
-export interface EmpresasMedicasResponse {
+export interface MedicosResponse {
   pagina: number;
   totalPaginas: number;
-  empresasMedicas: Empresas[];
+  doctors: Doctors[];
 }
 
 export default async function handler(
@@ -21,21 +21,28 @@ export default async function handler(
       try {
         const pagina = parseInt(req.query.pagina as string) || 1;
         const perPage = parseInt(req.query.perPage as string) || 10;
+        const empresaId = (req.query.empresaMedicaId as string) ?? "";
 
-        const empresasMedicas = await prisma.empresasMedicas.findMany({
+        const whereClause = {
+          EmpresaMedicaId: empresaId.length === 0 ? undefined : empresaId,
+          Tipo: PessoasTipo.MEDICO,
+        };
+
+        const doctors = await prisma.pessoas.findMany({
           skip: (pagina - 1) * perPage,
           take: perPage,
           orderBy: {
-            RazaoSocial: "asc",
+            Nome: "asc",
           },
+          where: whereClause,
           include: {
-            Socios: true,
+            EmpresaMedica: true,
           },
         });
 
-        const totalCompanies = await prisma.empresasMedicas.count();
-        const totalPaginas = Math.ceil(totalCompanies / perPage);
-        res.json({ pagina, totalPaginas, empresasMedicas });
+        const count = doctors.length;
+        const totalPaginas = Math.ceil(count / perPage);
+        res.json({ pagina, totalPaginas, doctors });
       } catch (error) {
         res.status(500).send({ error });
       }
@@ -43,7 +50,7 @@ export default async function handler(
 
     case "POST":
       try {
-        const result = await prisma.empresasMedicas.create({
+        const result = await prisma.pessoas.create({
           data: req.body,
         });
         res.json(result);
@@ -51,7 +58,6 @@ export default async function handler(
         res.status(500).send({ error });
       }
       break;
-
     default:
       res.status(400).send({
         metodo: req.method,

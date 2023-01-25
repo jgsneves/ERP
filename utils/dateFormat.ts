@@ -1,6 +1,6 @@
 export class DateFormat {
   /**
-   * Retorna a data no formato "yyyy-MM-dd"
+   * Retorna a data-string no formato "yyyy-MM-dd"
    */
   public static getChakraDateFormat(date: Date): string {
     const getYear = date.toLocaleString("default", { year: "numeric" });
@@ -10,7 +10,7 @@ export class DateFormat {
   }
 
   /**
-   * name
+   * Transforma a data do Chakra (string) em Date
    */
   public static getDateTypeFromChakraString(dateString: string): Date {
     const [year, month, day] = dateString.split("-");
@@ -18,7 +18,7 @@ export class DateFormat {
   }
 
   /**
-   * formatISODateStringToLocale
+   * Formata a datastring em data brasileira
    */
   public static formatISODateStringToLocale(isoDate: string) {
     return new Date(isoDate).toLocaleDateString();

@@ -1,5 +1,5 @@
 import { FormControl, FormLabel, Input, Button, Flex } from "@chakra-ui/react";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { PersonalDataFormData } from ".";
 import { formatCPF } from "@brazilian-utils/brazilian-utils";
 
@@ -17,17 +17,9 @@ export default function PersonalDataForm({
   handleSubmit,
   setRenderForm,
 }: Props) {
-  const formatDate = (date: Date) => {
-    var d = new Date(date),
-      month = "" + (d.getMonth() + 1),
-      day = "" + d.getDate(),
-      year = d.getFullYear();
+  const [dateInputValue, setDateInputValue] = useState<string>("");
 
-    if (month.length < 2) month = "0" + month;
-    if (day.length < 2) day = "0" + day;
-
-    return [year, month, day].join("-");
-  };
+  //TODO: codar handleDateInputOnBlur
 
   return (
     <FormControl maxW="500px">
@@ -48,10 +40,10 @@ export default function PersonalDataForm({
       <FormLabel mt="5">
         Data de nascimento:
         <Input
-          value={formatDate(formData.DataNascimento)}
+          value={dateInputValue}
           id="DataNascimento"
           type="date"
-          onChange={handleInputOnChange}
+          onChange={(event) => setDateInputValue(event.target.value)}
         />
       </FormLabel>
 

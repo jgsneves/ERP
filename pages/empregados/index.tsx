@@ -1,7 +1,7 @@
 import { Text } from "@chakra-ui/react";
 import { PessoasTipo } from "@prisma/client";
 import MainContent from "../../components/Containers/MainContent";
-import EmployeesList from "../../components/Employee/EmployeeList";
+import EmployeesList from "../../components/Employee/EmployeesList";
 import EmptyEntityList from "../../components/EmptyEntityList";
 import { server } from "../../config/server";
 

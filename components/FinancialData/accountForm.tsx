@@ -115,6 +115,7 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
         <FormLabel>
           Código do banco:
           <Input
+            isDisabled={isLoading}
             onChange={handleInputOnChange}
             id="CodigoBanco"
             value={contaCorrente.CodigoBanco}
@@ -125,6 +126,7 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
           <FormLabel>
             Agência:
             <Input
+              isDisabled={isLoading}
               onChange={handleInputOnChange}
               id="Agencia"
               value={contaCorrente.Agencia}
@@ -134,6 +136,7 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
           <FormLabel>
             Dígito da agência:
             <Input
+              isDisabled={isLoading}
               onChange={handleInputOnChange}
               id="AgenciaDigito"
               value={contaCorrente.AgenciaDigito}
@@ -145,6 +148,7 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
           <FormLabel>
             Conta corrente:
             <Input
+              isDisabled={isLoading}
               onChange={handleInputOnChange}
               id="Conta"
               value={contaCorrente.Conta}
@@ -154,6 +158,7 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
           <FormLabel>
             Dígito da conta corrente:
             <Input
+              isDisabled={isLoading}
               onChange={handleInputOnChange}
               id="ContaDigito"
               value={contaCorrente.ContaDigito}
@@ -165,6 +170,7 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
           <FormLabel>
             Chave Pix:
             <Input
+              isDisabled={isLoading}
               onChange={handleInputOnChange}
               id="ChavePix"
               value={contaCorrente.ChavePix ?? undefined}

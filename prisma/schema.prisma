@@ -20,8 +20,8 @@ model Documentos {
   Tipo             DocumentoTipo
   Url              String
 
-  CriadoEm        DateTime         @db.Timestamptz(6)
-  ModificadoEm    DateTime?        @db.Timestamptz(6)
+  CriadoEm         DateTime         @db.Timestamptz(6)
+  ModificadoEm     DateTime?        @db.Timestamptz(6)
 
   PessoaId         String?          @db.Uuid
   Pessoa           Pessoas?         @relation(fields: [PessoaId], references: [Id])

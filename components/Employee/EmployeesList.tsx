@@ -1,7 +1,7 @@
 import { Button, Flex, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { SerializedEmployees } from "../../../pages/empregados";
-import Employee from "../Employee";
+import { SerializedEmployees } from "../../pages/empregados";
+import Employee from "./Employee";
 
 interface Props {
   employees: SerializedEmployees[];

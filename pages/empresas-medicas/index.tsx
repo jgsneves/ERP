@@ -47,6 +47,10 @@ export default function EmpresasMedicasContainer() {
   const handleRegisterNewCompanyOnClick = () =>
     router.push("/empresas-medicas/cadastrar");
 
+  const handleRowOnClick = (id: string) => {
+    router.push(`/empresas-medicas/${id}`);
+  };
+
   if (isLoading) return <Spinner />;
 
   return (
@@ -62,21 +66,27 @@ export default function EmpresasMedicasContainer() {
               <Th>Razão Social</Th>
               <Th>CNPJ</Th>
               <Th>Sócios</Th>
-              <Th>Ver detalhes</Th>
             </Tr>
           </Thead>
           <Tbody>
             {data && (
               <>
                 {data.empresasMedicas.map((empresa) => (
-                  <Tr key={empresa.Id}>
+                  <Tr
+                    key={empresa.Id}
+                    onClick={() => handleRowOnClick(empresa.Id)}
+                    cursor="pointer"
+                    _hover={{ outline: "2px solid black" }}
+                  >
                     <Td>{empresa.RazaoSocial}</Td>
                     <Td>{formatCNPJ(empresa.Cnpj)}</Td>
-                    <Td>Nome dos sócios</Td>
                     <Td>
-                      <Link href={`/empresas-medicas/${empresa.Id}`}>
-                        <PlusSquareIcon />
-                      </Link>
+                      {empresa.Socios.reduce((prev, current) => {
+                        if (prev === "") {
+                          return current.Nome;
+                        }
+                        return `${prev}, ${current.Nome}`;
+                      }, "")}
                     </Td>
                   </Tr>
                 ))}

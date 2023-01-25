@@ -78,8 +78,7 @@ export default function EmpresaMedica({ company }: Props) {
           <Tab>Dados de endereço</Tab>
           <Tab>Quadro societário</Tab>
           <Tab>Documentos</Tab>
-          <Tab>CRM</Tab>
-          <Tab>Notas fiscais</Tab>
+          <Tab>Serviços</Tab>
         </TabList>
 
         <TabPanels>
@@ -108,11 +107,17 @@ export default function EmpresaMedica({ company }: Props) {
           </TabPanel>
           <TabPanel>
             {/* Quadro societário */}
-            <QuadroSocietario />
+            <QuadroSocietario
+              empresaId={company.Id}
+              empresaName={company.RazaoSocial}
+            />
           </TabPanel>
           <TabPanel>
             {/* Documentos */}
             <Documentos />
+          </TabPanel>
+          <TabPanel>
+            <h1>serviços</h1>
           </TabPanel>
         </TabPanels>
       </Tabs>
