@@ -13,18 +13,13 @@ import {
   Tr,
   VStack,
 } from "@chakra-ui/react";
-import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  PlusSquareIcon,
-} from "@chakra-ui/icons";
+import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import useSWR from "swr";
 import { fetcher } from "../../utils/fetcher";
 import { EmpresasMedicasResponse } from "../api/empresasmedicas";
 import { useRouter } from "next/router";
 import { formatCNPJ } from "@brazilian-utils/brazilian-utils";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 
 export default function EmpresasMedicasContainer() {
   const [currentPage, setCurrentPage] = useState<number>(1);

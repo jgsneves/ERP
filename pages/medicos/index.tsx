@@ -2,7 +2,6 @@ import MainContent from "../../components/Containers/MainContent";
 import {
   Button,
   Flex,
-  Link,
   Spinner,
   Table,
   TableContainer,
@@ -13,7 +12,6 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { Pessoas } from "@prisma/client";
 import { formatCPF } from "@brazilian-utils/brazilian-utils";
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
@@ -21,14 +19,6 @@ import useSWR from "swr";
 import { fetcher } from "../../utils/fetcher";
 import { MedicosResponse } from "../api/medicos";
 import { useRouter } from "next/router";
-
-export interface DoctorEntity
-  extends Omit<
-    Pessoas,
-    "DataNascimento" | "Tipo" | "Participacao" | "Salario" | "StatusAdmissao"
-  > {
-  DataNascimento: string;
-}
 
 export default function Medicos() {
   const [currentPage, setCurrentPage] = useState<number>(1);

@@ -13,17 +13,13 @@ import {
 import { isValidCEP } from "@brazilian-utils/brazilian-utils";
 import axios, { AxiosError } from "axios";
 import { BrasilApi } from "../../services/BrasilApi";
+import { useRouter } from "next/router";
 
 interface Props {
   empresaMedicaId?: string;
   pessoaId?: string;
-  pushRouteAfterRequest: () => void;
 }
-export default function Register({
-  empresaMedicaId,
-  pessoaId,
-  pushRouteAfterRequest,
-}: Props) {
+export default function Register({ empresaMedicaId, pessoaId }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<Enderecos>({
     Id: uuid4(),
@@ -40,6 +36,7 @@ export default function Register({
   });
 
   const toast = useToast();
+  const router = useRouter();
 
   const handleInputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -82,7 +79,7 @@ export default function Register({
           title: "Endereço salvo com sucesso!",
           duration: 5000,
         });
-        pushRouteAfterRequest();
+        router.reload();
       })
       .finally(() => setIsLoading(false));
   };

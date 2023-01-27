@@ -12,7 +12,7 @@ import { v4 as uuid4 } from "uuid";
 import { formatCPF } from "@brazilian-utils/brazilian-utils";
 import { DateFormat } from "../../utils/dateFormat";
 import axios from "axios";
-import { useSWRConfig } from "swr";
+import { useRouter } from "next/router";
 
 interface Props {
   empresaId: string;
@@ -39,7 +39,7 @@ export default function CreateNewDoctor({ empresaId }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const toast = useToast();
-  const { mutate } = useSWRConfig();
+  const router = useRouter();
 
   const handleInputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
@@ -58,13 +58,13 @@ export default function CreateNewDoctor({ empresaId }: Props) {
 
     await axios
       .post("/api/medicos", formData)
-      .then(async () => {
+      .then(() => {
         toast({
           title: "Médico criado com sucesso!",
           duration: 5000,
           status: "success",
         });
-        await mutate(`/api/medicos?empresaMedicaId=${empresaId}`);
+        router.reload();
       })
       .catch((error) =>
         toast({

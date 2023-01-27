@@ -7,30 +7,18 @@ import {
   Input,
   Button,
   useToast,
-  Spinner,
 } from "@chakra-ui/react";
 import { Enderecos } from "@prisma/client";
 import axios, { AxiosError } from "axios";
 import React, { useState } from "react";
-import { v4 as uuid4 } from "uuid";
 import { BrasilApi } from "../../services/BrasilApi";
-import { fetcher } from "../../utils/fetcher";
-import useSWR from "swr";
+import { useRouter } from "next/router";
 
 interface Props {
-  addressId: string;
-  pushRouteAfterRequest: () => void;
+  endereco: Enderecos;
 }
 
-export default function AddressForm({
-  addressId,
-  pushRouteAfterRequest,
-}: Props) {
-  const { data, isLoading: fetchLoading } = useSWR<Enderecos>(
-    `/api/enderecos/${addressId}`,
-    fetcher
-  );
-
+export default function EditAddress({ endereco }: Props) {
   const {
     Bairro,
     Cep,
@@ -42,7 +30,7 @@ export default function AddressForm({
     Id,
     Logradouro,
     PessoaId,
-  } = data!;
+  } = endereco;
 
   const [formData, setFormData] = useState<Enderecos>({
     Bairro,
@@ -61,6 +49,7 @@ export default function AddressForm({
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const toast = useToast();
+  const router = useRouter();
 
   const handleInputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -104,12 +93,10 @@ export default function AddressForm({
           title: "Endereço salvo com sucesso!",
           duration: 5000,
         });
-        pushRouteAfterRequest();
+        router.reload();
       })
       .finally(() => setIsLoading(false));
   };
-
-  if (fetchLoading) return <Spinner />;
 
   return (
     <VStack spacing={5} alignItems="flex-start">

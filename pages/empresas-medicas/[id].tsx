@@ -7,22 +7,30 @@ import {
   TabPanels,
   Tabs,
   Text,
-  useToast,
 } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { GetServerSidePropsContext } from "next";
 import { server } from "../../config/server";
-import { EmpresasMedicas } from "@prisma/client";
+import {
+  ContasCorrente,
+  EmpresasMedicas,
+  Enderecos,
+  Pessoas,
+} from "@prisma/client";
 import CompanyData from "../../components/MedicalCompany/CompanyData";
 import FinancialData from "../../components/FinancialData";
 import AddressData from "../../components/AddressData";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import QuadroSocietario from "../../components/MedicalCompany/QuadroSocietario";
 import Documentos from "../../components/MedicalCompany/Documentos";
 
+interface Company extends EmpresasMedicas {
+  Endereco: Enderecos | null;
+  ContasCorrente: ContasCorrente | null;
+  Socios: Pessoas[];
+}
 interface Props {
-  company: EmpresasMedicas;
+  company: Company;
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -41,25 +49,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 export default function EmpresaMedica({ company }: Props) {
-  const supabaseClient = useSupabaseClient();
-  const toast = useToast();
-  const router = useRouter();
-
-  const handleUploadFile = async (file: File | null, fileName: string) => {
-    if (file) {
-      const { error } = await supabaseClient.storage
-        .from("empresas-medicas-documentos")
-        .upload(fileName, file);
-      if (error)
-        toast({
-          duration: 9000,
-          title: "Não foi possível fazer upload de arquivo!",
-          status: "error",
-          isClosable: true,
-        });
-    }
-  };
-
   return (
     <MainContent>
       <Text fontSize="5xl" fontWeight={600}>
@@ -99,10 +88,8 @@ export default function EmpresaMedica({ company }: Props) {
           <TabPanel>
             {/* Dados de endereço */}
             <AddressData
-              addressId={company.EnderecoId}
-              pushRouteAfterRequest={() =>
-                router.push(`/empresas-medicas/${company.Id}`)
-              }
+              endereco={company.Endereco}
+              empresaMedicaId={company.Id}
             />
           </TabPanel>
           <TabPanel>
@@ -110,6 +97,7 @@ export default function EmpresaMedica({ company }: Props) {
             <QuadroSocietario
               empresaId={company.Id}
               empresaName={company.RazaoSocial}
+              socios={company.Socios}
             />
           </TabPanel>
           <TabPanel>

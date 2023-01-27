@@ -12,6 +12,11 @@ export default async function handler(
           where: {
             Id: req.query.id as string,
           },
+          include: {
+            ContasCorrente: true,
+            Endereco: true,
+            Socios: true,
+          },
         });
 
         if (result) return res.json(result);

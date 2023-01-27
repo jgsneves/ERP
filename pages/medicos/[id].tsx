@@ -8,13 +8,25 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
+import { ContasCorrente, Enderecos, Pessoas } from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
-import router from "next/router";
-import { DoctorEntity } from ".";
 import AddressData from "../../components/AddressData";
 import MainContent from "../../components/Containers/MainContent";
 import FinancialData from "../../components/FinancialData";
 import { server } from "../../config/server";
+
+export interface DoctorEntity
+  extends Omit<
+    Pessoas,
+    "DataNascimento" | "Tipo" | "Participacao" | "Salario" | "StatusAdmissao"
+  > {
+  Endereco: Enderecos | null;
+  ContasCorrente: ContasCorrente | null;
+}
+
+interface Props {
+  doctor: DoctorEntity;
+}
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const url = `${server}/api/medicos/${context.params?.id}`;
@@ -28,10 +40,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     props: { doctor },
   };
-}
-
-interface Props {
-  doctor: DoctorEntity;
 }
 
 export default function Doctor({ doctor }: Props) {
@@ -65,11 +73,7 @@ export default function Doctor({ doctor }: Props) {
             />
           </TabPanel>
           <TabPanel>
-            <AddressData
-              addressId={doctor.EnderecoId}
-              pessoaId={doctor.Id}
-              pushRouteAfterRequest={() => router.push(`/medicos/${doctor.Id}`)}
-            />
+            <AddressData pessoaId={doctor.Id} endereco={doctor.Endereco} />
           </TabPanel>
           <TabPanel>
             <h1>Documentos</h1>

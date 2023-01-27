@@ -1,34 +1,43 @@
-import { Button, Spinner, Text, VStack } from "@chakra-ui/react";
+import { Button, Text, VStack } from "@chakra-ui/react";
 import { Enderecos } from "@prisma/client";
-import { Dispatch, SetStateAction } from "react";
-import { AddressDataState } from ".";
-import { fetcher } from "../../utils/fetcher";
-import useSWR from "swr";
+import { useState } from "react";
+import EditAddress from "./editAddress";
 
 interface Props {
-  addressId: string | null;
-  setState: Dispatch<SetStateAction<AddressDataState>>;
+  endereco: Enderecos;
 }
 
-export default function Address({ addressId, setState }: Props) {
-  const { data, isLoading: fetchLoading } = useSWR<Enderecos>(
-    `/api/enderecos/${addressId}`,
-    fetcher
+enum ComponentState {
+  EDIT,
+  SHOW_DATA,
+}
+
+export default function Address({ endereco }: Props) {
+  const [componentState, setComponentState] = useState<ComponentState>(
+    ComponentState.SHOW_DATA
   );
 
-  if (fetchLoading) return <Spinner />;
-
   return (
-    <VStack spacing={5} alignItems="flex-start">
-      <Text>CEP: {data?.Cep}</Text>
-      <Text>Logradouro: {data?.Logradouro}</Text>
-      <Text>Complemento: {data?.Complemento}</Text>
-      <Text>Bairro: {data?.Bairro}</Text>
-      <Text>Cidade: {data?.Cidade}</Text>
-      <Text>Estado: {data?.Estado}</Text>
-      <Button onClick={() => setState("edit")} mt={5} colorScheme="green">
-        Editar
-      </Button>
-    </VStack>
+    <>
+      {componentState === ComponentState.SHOW_DATA ? (
+        <VStack spacing={5} alignItems="flex-start">
+          <Text>CEP: {endereco.Cep}</Text>
+          <Text>Logradouro: {endereco.Logradouro}</Text>
+          <Text>Complemento: {endereco.Complemento}</Text>
+          <Text>Bairro: {endereco.Bairro}</Text>
+          <Text>Cidade: {endereco.Cidade}</Text>
+          <Text>Estado: {endereco.Estado}</Text>
+          <Button
+            onClick={() => setComponentState(ComponentState.EDIT)}
+            mt={5}
+            colorScheme="green"
+          >
+            Editar
+          </Button>
+        </VStack>
+      ) : (
+        <EditAddress endereco={endereco} />
+      )}
+    </>
   );
 }

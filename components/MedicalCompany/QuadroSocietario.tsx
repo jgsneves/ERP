@@ -1,42 +1,19 @@
-import {
-  Divider,
-  Flex,
-  VStack,
-  Text,
-  Spinner,
-  useToast,
-} from "@chakra-ui/react";
-import { MedicosResponse } from "../../pages/api/medicos";
-import useSWR from "swr";
-import { fetcher } from "../../utils/fetcher";
+import { Divider, Flex, VStack, Text } from "@chakra-ui/react";
 import Doctor from "../Doctor/DoctorCard";
 import CreateNewDoctor from "./CreateNewDoctor";
+import { Pessoas } from "@prisma/client";
 
 interface Props {
   empresaId: string;
   empresaName: string;
+  socios: Pessoas[];
 }
 
-export default function QuadroSocietario({ empresaId, empresaName }: Props) {
-  const { data, error, isLoading } = useSWR<MedicosResponse>(
-    `/api/medicos?empresaMedicaId=${empresaId}`,
-    fetcher
-  );
-
-  const toast = useToast();
-
-  if (isLoading) return <Spinner />;
-
-  if (error) {
-    toast({
-      title: "Houve algum erro.",
-      description: error,
-      isClosable: true,
-      duration: 9000,
-      status: "error",
-    });
-  }
-
+export default function QuadroSocietario({
+  empresaId,
+  empresaName,
+  socios,
+}: Props) {
   return (
     <VStack alignItems="flex-start">
       <Flex width="100%" alignItems="center" py={3}>
@@ -47,8 +24,8 @@ export default function QuadroSocietario({ empresaId, empresaName }: Props) {
       </Flex>
 
       <Flex wrap="wrap">
-        {data?.doctors.length! > 0 ? (
-          data?.doctors.map((doc) => (
+        {socios.length > 0 ? (
+          socios.map((doc) => (
             <Doctor
               key={doc.Id}
               id={doc.Id}

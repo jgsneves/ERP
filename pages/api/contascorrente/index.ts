@@ -1,4 +1,4 @@
-import { ContasCorrente, Prisma } from "@prisma/client";
+import { ContasCorrente } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../services/Prisma";
 
