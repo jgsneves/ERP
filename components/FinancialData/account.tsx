@@ -1,29 +1,15 @@
 import { Button, Text, useToast, VStack } from "@chakra-ui/react";
 import { ContasCorrente } from "@prisma/client";
-import { Spinner } from "@chakra-ui/react";
-import useSWR from "swr";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { fetcher } from "../../utils/fetcher";
 
 interface Props {
-  accountId: string;
-  pessoaId?: string;
-  empresaMedicaId?: string;
+  account: ContasCorrente;
 }
 
-export default function Account({
-  accountId,
-  pessoaId,
-  empresaMedicaId,
-}: Props) {
+export default function Account({ account }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const { data, isLoading: fetchLoading } = useSWR<ContasCorrente>(
-    `/api/contascorrente/${accountId}`,
-    fetcher
-  );
 
   const toast = useToast();
   const router = useRouter();
@@ -32,7 +18,7 @@ export default function Account({
     setIsLoading(true);
 
     await axios
-      .delete(`/api/contascorrente/${accountId}`)
+      .delete(`/api/contascorrente/${account.Id}`)
       .catch((error: AxiosError) => {
         toast({
           duration: 9000,
@@ -42,34 +28,26 @@ export default function Account({
           status: "error",
         });
       })
-      .then(() => {
-        if (pessoaId) {
-          router.push(`/socios/${pessoaId}`);
-        } else if (empresaMedicaId) {
-          router.push(`/empresas-medicas/${empresaMedicaId}`);
-        }
-      })
+      .then(() => router.reload())
       .finally(() => setIsLoading(false));
   };
 
-  if (fetchLoading) return <Spinner />;
-
   return (
     <VStack alignItems="flex-start" spacing={4}>
-      <Text>Código do banco: {data?.CodigoBanco}</Text>
-      <Text>Agência: {data?.Agencia}</Text>
-      <Text>Dígito da agência: {data?.AgenciaDigito}</Text>
-      <Text>Conta corrente: {data?.Conta}</Text>
-      <Text>Dígito: da conta: {data?.ContaDigito}</Text>
-      <Text>Chave PIX: {data?.ChavePix}</Text>
-      <Text>Tipo de chave PIX: {data?.TipoChavePix}</Text>
+      <Text>Código do banco: {account.CodigoBanco}</Text>
+      <Text>Agência: {account.Agencia}</Text>
+      <Text>Dígito da agência: {account.AgenciaDigito}</Text>
+      <Text>Conta corrente: {account.Conta}</Text>
+      <Text>Dígito: da conta: {account.ContaDigito}</Text>
+      <Text>Chave PIX: {account.ChavePix}</Text>
+      <Text>Tipo de chave PIX: {account.TipoChavePix}</Text>
 
       <Button
         colorScheme="red"
         onClick={handleDeleteOnClick}
         isLoading={isLoading}
       >
-        Deletar conta
+        deletar conta
       </Button>
     </VStack>
   );

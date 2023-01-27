@@ -68,7 +68,7 @@ export default function Doctor({ doctor }: Props) {
           </TabPanel>
           <TabPanel>
             <FinancialData
-              accountId={doctor.ContaCorrenteId}
+              account={doctor.ContasCorrente}
               pessoaId={doctor.Id}
             />
           </TabPanel>

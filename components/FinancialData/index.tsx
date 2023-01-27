@@ -1,21 +1,22 @@
+import { ContasCorrente } from "@prisma/client";
 import Account from "./account";
 import AccountForm from "./accountForm";
 
 interface Props {
-  accountId: string | null;
+  account: ContasCorrente | null;
   pessoaId?: string;
   empresaMedicaId?: string;
 }
 
 export default function FinancialData({
-  accountId,
+  account,
   pessoaId,
   empresaMedicaId,
 }: Props) {
   return (
     <>
-      {accountId ? (
-        <Account accountId={accountId} pessoaId={pessoaId} />
+      {account ? (
+        <Account account={account} />
       ) : (
         <AccountForm pessoaId={pessoaId} empresaMedicaId={empresaMedicaId} />
       )}

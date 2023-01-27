@@ -1,6 +1,5 @@
 import {
   Button,
-  Divider,
   Flex,
   FormControl,
   FormLabel,
@@ -63,7 +62,7 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
   const handleSubmit = async () => {
     setIsLoading(true);
     await axios
-      .post<ContasCorrente>(`/api/contascorrente`, contaCorrente)
+      .post(`/api/contascorrente`, contaCorrente)
       .catch((error: AxiosError) => {
         toast({
           title: "Erro na criação de conta corrente.",
@@ -73,20 +72,14 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
           isClosable: true,
         });
       })
-      .then((contaCorrente) => {
-        if (contaCorrente) {
-          toast({
-            title: "Conta corrente criada com sucesso!",
-            status: "success",
-            duration: 9000,
-            isClosable: true,
-          });
-          if (pessoaId) {
-            router.push(`/socios/${pessoaId}`);
-          } else if (empresaMedicaId) {
-            router.push(`/empresas-medicas/${empresaMedicaId}`);
-          }
-        }
+      .then(() => {
+        toast({
+          title: "Conta corrente criada com sucesso!",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+        router.reload();
       })
       .finally(() => {
         setIsLoading(false);
@@ -196,7 +189,7 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
           onClick={handleSubmit}
           isLoading={isLoading}
         >
-          Salvar
+          salvar
         </Button>
       </FormControl>
     </VStack>

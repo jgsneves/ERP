@@ -20,7 +20,6 @@ import {
 import CompanyData from "../../components/MedicalCompany/CompanyData";
 import FinancialData from "../../components/FinancialData";
 import AddressData from "../../components/AddressData";
-import { useRouter } from "next/router";
 import QuadroSocietario from "../../components/MedicalCompany/QuadroSocietario";
 import Documentos from "../../components/MedicalCompany/Documentos";
 
@@ -82,7 +81,7 @@ export default function EmpresaMedica({ company }: Props) {
             {/* Dados financeiros */}
             <FinancialData
               empresaMedicaId={company.Id}
-              accountId={company.ContaCorrenteId}
+              account={company.ContasCorrente}
             />
           </TabPanel>
           <TabPanel>
