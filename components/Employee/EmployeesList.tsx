@@ -1,10 +1,10 @@
 import { Button, Flex, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { SerializedEmployees } from "../../pages/empregados";
-import Employee from "./Employee";
+import { Employee } from "../../pages/empregados";
+import EmployeeCard from "./EmployeeCard";
 
 interface Props {
-  employees: SerializedEmployees[];
+  employees: Employee[];
 }
 
 export default function EmployeesList({ employees }: Props) {
@@ -13,7 +13,7 @@ export default function EmployeesList({ employees }: Props) {
     <VStack alignItems="flex-start" mt={5}>
       <Flex flexWrap="wrap" gap={5}>
         {employees.map((employee) => (
-          <Employee
+          <EmployeeCard
             key={employee.Id}
             id={employee.Id}
             name={employee.Nome}

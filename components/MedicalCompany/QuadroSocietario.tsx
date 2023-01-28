@@ -2,6 +2,7 @@ import { Divider, Flex, VStack, Text } from "@chakra-ui/react";
 import Doctor from "../Doctor/DoctorCard";
 import CreateNewDoctor from "./CreateNewDoctor";
 import { Pessoas } from "@prisma/client";
+import ContentTitle from "../Shared/ContentTitle";
 
 interface Props {
   empresaId: string;
@@ -16,12 +17,7 @@ export default function QuadroSocietario({
 }: Props) {
   return (
     <VStack alignItems="flex-start">
-      <Flex width="100%" alignItems="center" py={3}>
-        <Text as="b" minW="fit-content" mr={2}>
-          Sócios
-        </Text>
-        <Divider />
-      </Flex>
+      <ContentTitle title="Sócios" />
 
       <Flex wrap="wrap">
         {socios.length > 0 ? (
@@ -39,13 +35,7 @@ export default function QuadroSocietario({
         )}
       </Flex>
 
-      <Flex width="100%" alignItems="center" py={3}>
-        <Text as="b" minW="fit-content" mr={2}>
-          Cadastrar novo sócio
-        </Text>
-        <Divider />
-      </Flex>
-
+      <ContentTitle title="Cadastrar novo sócio" />
       <CreateNewDoctor empresaId={empresaId} />
     </VStack>
   );

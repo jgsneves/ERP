@@ -1,26 +1,26 @@
 import { Text } from "@chakra-ui/react";
-import { PessoasTipo } from "@prisma/client";
+import { Pessoas } from "@prisma/client";
 import MainContent from "../../components/Containers/MainContent";
 import EmployeesList from "../../components/Employee/EmployeesList";
 import EmptyEntityList from "../../components/EmptyEntityList";
 import { server } from "../../config/server";
 
-export interface SerializedEmployees {
-  Id: string;
-  Nome: string;
-  Cpf: string;
-  DataNascimento: Date;
-  CriadoEm: Date;
-  ModificadoEm: Date | null;
-  Tipo: PessoasTipo;
-  ContaCorrenteId: string | null;
-  EnderecoId: string | null;
-  Salario: number | null;
-  StatusAdmissao: number | null;
+export interface Employee
+  extends Omit<
+    Pessoas,
+    | "Tipo"
+    | "Crm"
+    | "EmpresaMedicaId"
+    | "Participacao"
+    | "DataNascimento"
+    | "CriadoEm"
+  > {
+  DataNascimento: string;
+  CriadoEm: string;
 }
 
 interface Props {
-  employees: SerializedEmployees[];
+  employees: Employee[];
 }
 
 export async function getServerSideProps() {

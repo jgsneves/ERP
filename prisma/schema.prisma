@@ -8,7 +8,17 @@ datasource db {
 }
 
 enum DocumentoTipo {
-  CONTRATO_SOCIAL
+  COMPROVANTE_ENDERECO
+  COMPROVANTE_CONTA_CORRENTE
+  COMPROVANTE_TRANSFERENCIA
+  CONTRATO_DE_TRABALHO_ASSINADO
+  CONTRATO_SOCIAL_ASSINADO
+  HOLERITE_ASSINADA
+  RECIBO_DE_VALE_DE_TRANSPORTE
+  ATESTADO
+  CRM
+  CONTRATO_PRESTACAO_DE_SERVICO
+  ALTERACAO_DE_CONTRATO_SOCIAL
   NOTA_FISCAL
   TFF
   DAS
@@ -44,34 +54,34 @@ model ContasCorrente {
   Conta            Int
   ContaDigito      Int
   CodigoBanco      Int
+  NomeBanco        String
   ChavePix         String?
   TipoChavePix     TipoChavePix?
   CriadoEm         DateTime           @db.Timestamptz(6)
   ModificadoEm     DateTime?          @db.Timestamptz(6)
 
-  Titular          Pessoas?
-  TitularId        String?            @db.Uuid @unique
+  PessoaId         String?            @db.Uuid
+  Pessoa           Pessoas?           @relation(fields: [PessoaId], references: [Id])
 
-  EmpresaTitular   EmpresasMedicas?
-  EmpresaTitularId String?            @unique @db.Uuid
+  EmpresaMedicaId  String?            @db.Uuid
+  EmpresaMedica    EmpresasMedicas?   @relation(fields: [EmpresaMedicaId], references: [Id])
 }
 
 model EmpresasMedicas {
-  Id              String           @id() @db.Uuid
-  RazaoSocial     String
-  Cnpj            String
-  CriadoEm        DateTime         @db.Timestamptz(6)
-  ModificadoEm    DateTime?        @db.Timestamptz(6)
+  Id               String           @id() @db.Uuid
+  RazaoSocial      String
+  Cnpj             String
+  CriadoEm         DateTime         @db.Timestamptz(6)
+  ModificadoEm     DateTime?        @db.Timestamptz(6)
 
-  Endereco        Enderecos?       @relation(fields: [EnderecoId], references: [Id])
-  EnderecoId      String?          @unique @db.Uuid
+  Endereco         Enderecos?       @relation(fields: [EnderecoId], references: [Id])
+  EnderecoId       String?          @unique @db.Uuid
 
-  ContaCorrenteId String?          @unique @db.Uuid
-  ContasCorrente  ContasCorrente?  @relation(fields: [ContaCorrenteId], references: [Id])
+  ContasCorrentes  ContasCorrente[] 
 
-  Socios          Pessoas[]
+  Socios           Pessoas[]
 
-  Documentos      Documentos[]
+  Documentos       Documentos[]
 }
 
 model Enderecos {
@@ -101,34 +111,52 @@ enum PessoasTipo {
 enum StatusAdmissao {
   EMPREGADO
   DEMITIDO
+  EXPERIENCIA
+}
+
+enum ModalidadeTrabalho {
+  REMOTO
+  HIBRIDO
+  PRESENCIAL
 }
 
 model Pessoas {
-  Id              String           @id() @db.Uuid
-  Nome            String
-  Cpf             String
-  DataNascimento  DateTime         @db.Timestamptz(6)
-  CriadoEm        DateTime         @db.Timestamptz(6)
-  ModificadoEm    DateTime?        @db.Timestamptz(6)
-  Tipo            PessoasTipo
+  Id                  String           @id() @db.Uuid
+  Nome                String
+  Cpf                 String
+  DataNascimento      DateTime         @db.Timestamptz(6)
+  CriadoEm            DateTime         @db.Timestamptz(6)
+  ModificadoEm        DateTime?        @db.Timestamptz(6)
+  Tipo                PessoasTipo
 
-  ContaCorrenteId String?          @unique @db.Uuid
-  ContasCorrente  ContasCorrente?  @relation(fields: [ContaCorrenteId], references: [Id])
+  ContaCorrenteId     String?          @unique @db.Uuid
+  ContasCorrentes     ContasCorrente[]
 
-  EnderecoId      String?          @unique @db.Uuid
-  Endereco        Enderecos?       @relation(fields: [EnderecoId], references: [Id])
+  EnderecoId          String?          @unique @db.Uuid
+  Endereco            Enderecos?       @relation(fields: [EnderecoId], references: [Id])
 
-  Documentos      Documentos[]
+  Documentos          Documentos[]
 
   //Tipo: Médico
-  Crm             String?
-  EmpresaMedicaId String?          @db.Uuid
-  EmpresaMedica   EmpresasMedicas? @relation(fields: [EmpresaMedicaId], references: [Id])
+  Crm                 String?
+  EmpresaMedicaId     String?          @db.Uuid
+  EmpresaMedica       EmpresasMedicas? @relation(fields: [EmpresaMedicaId], references: [Id])
 
   //Tipo: Sócio
-  Participacao    Float?           @db.Real
+  Participacao        Float?           @db.Real
 
   //Tipo: Empregado
-  Salario         Float?
-  StatusAdmissao  StatusAdmissao?
+  Salario             Float?
+  StatusAdmissao      StatusAdmissao?
+  ModalidadeTrabalho  ModalidadeTrabalho?
+  Observacoes         EmpregadosObservacoes[]
+}
+
+model EmpregadosObservacoes {
+  Id          String    @id @db.Uuid()
+  Data        DateTime  @db.Timestamptz(6)
+  Conteudo    String
+  
+  EmpregadoId String    @unique @db.Uuid()
+  Empregado   Pessoas   @relation(fields: [EmpregadoId], references: [Id])
 }

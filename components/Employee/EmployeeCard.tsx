@@ -8,7 +8,7 @@ interface Props {
   salary: number | null;
 }
 
-export default function Employee({ id, name, salary }: Props) {
+export default function EmployeeCard({ id, name, salary }: Props) {
   return (
     <Link href={`empregados/${id}`}>
       <Grid

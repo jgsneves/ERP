@@ -66,7 +66,7 @@ export default function EmpresaMedica({ company }: Props) {
           <Tab>Dados de endereço</Tab>
           <Tab>Quadro societário</Tab>
           <Tab>Documentos</Tab>
-          <Tab>Serviços</Tab>
+          <Tab>Notas fiscais</Tab>
         </TabList>
 
         <TabPanels>
@@ -104,7 +104,10 @@ export default function EmpresaMedica({ company }: Props) {
             <Documentos />
           </TabPanel>
           <TabPanel>
-            <h1>serviços</h1>
+            <h1>
+              uma tabela com todos o serviços médicos prestados pela empresa,
+              mostrando o médico que fez, onde foi feito e a data
+            </h1>
           </TabPanel>
         </TabPanels>
       </Tabs>
