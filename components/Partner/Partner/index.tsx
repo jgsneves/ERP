@@ -1,6 +1,6 @@
 import { Avatar, Grid, Text } from "@chakra-ui/react";
 import Link from "next/link";
-import { DateFormat } from "../../../utils/dateFormat";
+import { DateFormat } from "../../../utils/DateFormat";
 
 interface Props {
   nome: string;

@@ -16,7 +16,7 @@ import { v4 as uuidv4 } from "uuid";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { formatCPF } from "@brazilian-utils/brazilian-utils";
-import { DateFormat } from "../../utils/dateFormat";
+import { DateFormat } from "../../utils/DateFormat";
 
 export default function CadastrarEmpregado() {
   const [isLoading, setIsLoading] = useState<boolean>(false);

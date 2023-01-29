@@ -1,6 +1,5 @@
 import { Divider, Flex, Text, VStack } from "@chakra-ui/react";
 import { DocumentoTipo } from "@prisma/client";
-import { Mapper } from "../../utils/mappers";
 import UploadFile from "../UploadFile";
 
 export default function Documentos() {

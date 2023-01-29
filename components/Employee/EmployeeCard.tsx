@@ -1,6 +1,7 @@
 import { Grid, Avatar } from "@chakra-ui/react";
 import Link from "next/link";
 import { Text } from "@chakra-ui/react";
+import { CurrencyFormat } from "../../utils/CurrencyFormat";
 
 interface Props {
   name: string;
@@ -21,7 +22,10 @@ export default function EmployeeCard({ id, name, salary }: Props) {
       >
         <Avatar name={name} src={undefined} />
         <Text>Nome: {name}</Text>
-        <Text>Salário: {salary}</Text>
+        <Text>
+          Salário:{" "}
+          {salary ? CurrencyFormat.formatNumberToBrazilianCurrency(salary) : 0}
+        </Text>
       </Grid>
     </Link>
   );

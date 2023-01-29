@@ -1,8 +1,18 @@
-import { Flex, VStack, Text, Button, FormLabel, Input } from "@chakra-ui/react";
+import {
+  Flex,
+  VStack,
+  Text,
+  Button,
+  FormLabel,
+  Input,
+  useToast,
+} from "@chakra-ui/react";
 import { Pessoas } from "@prisma/client";
+import axios from "axios";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { EmployeeWithAccountAndAddress } from "../../pages/empregados/[id]";
-import { DateFormat } from "../../utils/dateFormat";
+import { DateFormat } from "../../utils/DateFormat";
 import ContentTitle from "../Shared/ContentTitle";
 import EmployeeContract from "./EmployeeContract";
 import EmployeeSalary from "./EmployeeSalary";
@@ -32,12 +42,15 @@ export default function Summary({ employee }: Props) {
     Salario: employee.Salario,
     StatusAdmissao: employee.StatusAdmissao,
     Tipo: "EMPREGADO",
-    ModalidadeTrabalho: "PRESENCIAL",
+    ModalidadeTrabalho: employee.ModalidadeTrabalho,
   });
 
   const [dateInputValue, setDateInputValue] = useState<string>(
     DateFormat.getChakraDateFormat(formData.DataNascimento)
   );
+
+  const toast = useToast();
+  const router = useRouter();
 
   const handleInputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
@@ -51,9 +64,29 @@ export default function Summary({ employee }: Props) {
     }
   };
 
-  const handleSubmitOnClick = () => {
+  const handleSubmitOnClick = async () => {
     setIsLoading(true);
-    //put empregado
+
+    await axios
+      .patch(`/api/empregados/${employee.Id}`, formData)
+      .then(() => {
+        toast({
+          duration: 5000,
+          title: "Alterações salvas com sucesso!",
+          status: "success",
+        });
+        router.reload();
+      })
+      .catch((error) =>
+        toast({
+          duration: 9000,
+          title: "Não foi possível salvar as alterações",
+          description: error,
+          status: "error",
+          isClosable: true,
+        })
+      )
+      .finally(() => setIsLoading(false));
   };
 
   return (

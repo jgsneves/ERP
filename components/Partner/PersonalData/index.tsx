@@ -2,7 +2,7 @@ import { Button, useToast, VStack, Text } from "@chakra-ui/react";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { DateFormat } from "../../../utils/dateFormat";
+import { DateFormat } from "../../../utils/DateFormat";
 import PersonalDataForm from "./form";
 
 export interface PersonalDataFormData {

@@ -1,4 +1,5 @@
 import { Stat, StatNumber, VStack } from "@chakra-ui/react";
+import { CurrencyFormat } from "../../utils/CurrencyFormat";
 import ContentTitle from "../Shared/ContentTitle";
 
 interface Props {
@@ -9,7 +10,9 @@ export default function EmployeeSalary({ salary }: Props) {
     <VStack w="300px" alignItems="flex-start">
       <ContentTitle title="Salário" />
       <Stat>
-        <StatNumber>R$ {salary ? salary.toFixed(2) : 0}</StatNumber>
+        <StatNumber>
+          {salary ? CurrencyFormat.formatNumberToBrazilianCurrency(salary) : 0}
+        </StatNumber>
       </Stat>
     </VStack>
   );
