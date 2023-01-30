@@ -11,12 +11,19 @@ enum DocumentoTipo {
   COMPROVANTE_ENDERECO
   COMPROVANTE_CONTA_CORRENTE
   COMPROVANTE_TRANSFERENCIA
+
+  // Empregado
   CONTRATO_DE_TRABALHO_ASSINADO
-  CONTRATO_SOCIAL_ASSINADO
   HOLERITE_ASSINADA
   RECIBO_DE_VALE_DE_TRANSPORTE
+  RECIBO_DE_REEMBOLSO
   ATESTADO
+
+  // Médico & Empresa Médica
   CRM
+
+  //Empresa médica
+  CONTRATO_SOCIAL_ASSINADO
   CONTRATO_PRESTACAO_DE_SERVICO
   ALTERACAO_DE_CONTRATO_SOCIAL
   NOTA_FISCAL
@@ -156,6 +163,6 @@ model EmpregadosObservacoes {
   Data        DateTime  @db.Timestamptz(6)
   Conteudo    String
   
-  EmpregadoId String    @unique @db.Uuid()
+  EmpregadoId String    @db.Uuid()
   Empregado   Pessoas   @relation(fields: [EmpregadoId], references: [Id])
 }

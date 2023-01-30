@@ -15,6 +15,7 @@ export default async function handler(
           include: {
             ContasCorrentes: true,
             Endereco: true,
+            Observacoes: true,
           },
         });
 

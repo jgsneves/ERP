@@ -7,12 +7,17 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import { ContasCorrente, Enderecos } from "@prisma/client";
+import {
+  ContasCorrente,
+  EmpregadosObservacoes,
+  Enderecos,
+} from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
 import Link from "next/link";
 import { Employee } from ".";
 import AddressData from "../../components/AddressData";
 import MainContent from "../../components/Containers/MainContent";
+import EmployeePerformance from "../../components/Employee/EmployeePerformance";
 import Summary from "../../components/Employee/Summary";
 import FinancialData from "../../components/FinancialData";
 import { server } from "../../config/server";
@@ -37,9 +42,14 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   }
 }
 
+export interface Observacoes extends Omit<EmpregadosObservacoes, "Data"> {
+  Data: string;
+}
+
 export interface EmployeeWithAccountAndAddress extends Employee {
   ContasCorrentes: ContasCorrente[];
   Endereco: Enderecos;
+  Observacoes: Observacoes[];
 }
 
 interface Props {
@@ -92,6 +102,10 @@ export default function Empregado({ employee }: Props) {
             {/* Desempenho */}
             Aqui vamos colocar upload de folha de ponto, atestados, e um campo
             para observações com linha do tempo
+            <EmployeePerformance
+              observacoes={employee.Observacoes}
+              employeeId={employee.Id}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>
