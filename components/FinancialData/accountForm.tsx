@@ -14,6 +14,8 @@ import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { v4 as uuid4 } from "uuid";
+import { BrasilApi } from "../../services/BrasilApi";
+import { ErrorHandler } from "../../utils/ErrorHandler";
 
 interface Props {
   pessoaId?: string;
@@ -33,8 +35,9 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
     Id: uuid4(),
     TipoChavePix: TipoChavePix.EMAIL,
     ModificadoEm: null,
-    TitularId: pessoaId ?? null,
-    EmpresaTitularId: empresaMedicaId ?? null,
+    PessoaId: pessoaId ?? null,
+    EmpresaMedicaId: empresaMedicaId ?? null,
+    NomeBanco: "",
   });
 
   const router = useRouter();
@@ -44,79 +47,83 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { id, value } = event.target;
-    setContaCorrente((state) => {
-      if (id === "TipoChavePix") {
-        return {
-          ...state,
-          [id]: parseTipoChavePixEnum(value),
-        };
-      } else {
-        return {
-          ...state,
-          [id]: value,
-        };
-      }
-    });
+    setContaCorrente((state) => ({ ...state, [id]: value }));
   };
 
-  const handleSubmit = async () => {
+  const handleCodigoDoBancoOnBlur = async () => {
     setIsLoading(true);
-    await axios
+    await BrasilApi.getBank(contaCorrente.CodigoBanco)
+      .then(
+        (response) =>
+          setContaCorrente((state) => ({
+            ...state,
+            NomeBanco: response.data.fullName,
+          })),
+        () =>
+          toast({
+            title: "Não foi encontrado nenhum banco com este código.",
+            status: "error",
+            duration: 9000,
+            isClosable: true,
+          })
+      )
+      .catch((error) => ErrorHandler.logBrasilApiError(error))
+      .finally(() => setIsLoading(false));
+  };
+
+  const handleSubmit = () => {
+    setIsLoading(true);
+    axios
       .post(`/api/contascorrente`, contaCorrente)
-      .catch((error: AxiosError) => {
-        toast({
-          title: "Erro na criação de conta corrente.",
-          description: error.message,
-          status: "error",
-          duration: 9000,
-          isClosable: true,
-        });
-      })
-      .then(() => {
-        toast({
-          title: "Conta corrente criada com sucesso!",
-          status: "success",
-          duration: 9000,
-          isClosable: true,
-        });
-        router.reload();
-      })
+      .then(
+        () => {
+          toast({
+            title: "Conta corrente criada com sucesso!",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+          });
+          router.reload();
+        },
+        () =>
+          toast({
+            title: "Erro na criação de conta corrente.",
+            status: "error",
+            duration: 9000,
+            isClosable: true,
+          })
+      )
+      .catch((error: AxiosError) => ErrorHandler.logAxiosPostError(error))
       .finally(() => {
         setIsLoading(false);
       });
   };
 
-  const parseTipoChavePixEnum = (tipo: string): TipoChavePix => {
-    switch (tipo) {
-      case "CPF":
-        return TipoChavePix.CPF;
-      case "TELEFONE":
-        return TipoChavePix.TELEFONE;
-      case "EMAIL":
-        return TipoChavePix.EMAIL;
-      case "HASH":
-        return TipoChavePix.HASH;
-      default:
-        return TipoChavePix.CPF;
-    }
-  };
-
   return (
-    <VStack alignItems="flex-start">
-      <Text my={5}>Nenhuma conta encontrada. Cadastre uma nova conta.</Text>
-      <FormControl width="500px">
-        <FormLabel>
+    <>
+      <Flex gap={5} wrap="wrap" justifyItems="space-between" w="950px">
+        <FormLabel width="150px">
           Código do banco:
           <Input
             isDisabled={isLoading}
             onChange={handleInputOnChange}
+            onBlur={handleCodigoDoBancoOnBlur}
             id="CodigoBanco"
             value={contaCorrente.CodigoBanco}
             type="number"
           />
         </FormLabel>
+        <FormLabel>
+          Nome do banco:
+          <Input
+            isDisabled={isLoading}
+            onChange={handleInputOnChange}
+            id="NomeBanco"
+            value={contaCorrente.NomeBanco}
+          />
+        </FormLabel>
         <Flex>
-          <FormLabel>
+          <FormLabel width="150px">
             Agência:
             <Input
               isDisabled={isLoading}
@@ -126,7 +133,7 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
               type="number"
             />
           </FormLabel>
-          <FormLabel>
+          <FormLabel width="150px">
             Dígito da agência:
             <Input
               isDisabled={isLoading}
@@ -138,7 +145,7 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
           </FormLabel>
         </Flex>
         <Flex>
-          <FormLabel>
+          <FormLabel width="150px">
             Conta corrente:
             <Input
               isDisabled={isLoading}
@@ -148,8 +155,8 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
               type="number"
             />
           </FormLabel>
-          <FormLabel>
-            Dígito da conta corrente:
+          <FormLabel width="150px">
+            Dígito da conta:
             <Input
               isDisabled={isLoading}
               onChange={handleInputOnChange}
@@ -166,7 +173,7 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
               isDisabled={isLoading}
               onChange={handleInputOnChange}
               id="ChavePix"
-              value={contaCorrente.ChavePix ?? undefined}
+              value={contaCorrente.ChavePix ?? ""}
             />
           </FormLabel>
           <FormLabel>
@@ -174,24 +181,24 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
             <Select
               id="TipoChavePix"
               onChange={handleInputOnChange}
-              value={contaCorrente.TipoChavePix ?? undefined}
+              value={contaCorrente.TipoChavePix ?? ""}
             >
-              <option value="EMAIL">Email</option>
-              <option value="TELEFONE">Telefone</option>
-              <option value="CPF">Cpf</option>
-              <option value="HASH">Chave aleatória</option>
+              <option value={TipoChavePix.EMAIL}>Email</option>
+              <option value={TipoChavePix.TELEFONE}>Telefone</option>
+              <option value={TipoChavePix.CPF}>Cpf</option>
+              <option value={TipoChavePix.HASH}>Chave aleatória</option>
             </Select>
           </FormLabel>
         </Flex>
-        <Button
-          colorScheme="green"
-          mt={2}
-          onClick={handleSubmit}
-          isLoading={isLoading}
-        >
-          salvar
-        </Button>
-      </FormControl>
-    </VStack>
+      </Flex>
+      <Button
+        colorScheme="green"
+        mt={2}
+        onClick={handleSubmit}
+        isLoading={isLoading}
+      >
+        salvar
+      </Button>
+    </>
   );
 }

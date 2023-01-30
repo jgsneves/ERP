@@ -1,11 +1,11 @@
-import { DocumentoTipo } from "@prisma/client";
+import { DocumentoTipo, TipoChavePix } from "@prisma/client";
 
 export class EnumFormat {
   /**
    * Formata o valor do enum DocumentoTipo em string
    */
   public static formatDocumentTypeEnum(documentType: DocumentoTipo): string {
-    const iterator: { [key in DocumentoTipo]: string } = {
+    const literal: { [key in DocumentoTipo]: string } = {
       ALTERACAO_DE_CONTRATO_SOCIAL: "Alteração de contrato social",
       ATESTADO: "Atestado",
       COMPROVANTE_CONTA_CORRENTE: "Comprovante de conta corrente",
@@ -21,6 +21,6 @@ export class EnumFormat {
       RECIBO_DE_VALE_DE_TRANSPORTE: "Recibo de vale de transporte",
       TFF: "TFF",
     };
-    return iterator[documentType];
+    return literal[documentType];
   }
 }

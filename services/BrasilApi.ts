@@ -15,6 +15,13 @@ interface CNPJ {
   natureza_juridica: string;
 }
 
+interface Banco {
+  ispb: string;
+  name: string;
+  code: number;
+  fullName: string;
+}
+
 export class BrasilApi {
   static baseUrl: string = "https://brasilapi.com.br/api";
   /**
@@ -33,5 +40,12 @@ export class BrasilApi {
    */
   public static getCNPJ(cnpj: number) {
     return axios.get<CNPJ>(`${this.baseUrl}/cnpj/v1/${cnpj}`);
+  }
+
+  /**
+   * Retorna informações de um banco por meio de seu código bancário
+   */
+  public static getBank(codigo: number) {
+    return axios.get<Banco>(`${this.baseUrl}/banks/v1/${codigo}`);
   }
 }

@@ -22,7 +22,6 @@ export default function CadastrarEmpresaMedica() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<EmpresasMedicas>({
     Cnpj: "",
-    ContaCorrenteId: null,
     CriadoEm: new Date(),
     EnderecoId: null,
     Id: uuid4(),

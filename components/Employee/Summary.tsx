@@ -1,3 +1,4 @@
+import { formatCPF } from "@brazilian-utils/brazilian-utils";
 import {
   Flex,
   VStack,
@@ -13,6 +14,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { EmployeeWithAccountAndAddress } from "../../pages/empregados/[id]";
 import { DateFormat } from "../../utils/DateFormat";
+import { ErrorHandler } from "../../utils/ErrorHandler";
 import ContentTitle from "../Shared/ContentTitle";
 import EmployeeContract from "./EmployeeContract";
 import EmployeeSalary from "./EmployeeSalary";
@@ -28,7 +30,6 @@ export default function Summary({ employee }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [formData, setFormData] = useState<Pessoas>({
-    ContaCorrenteId: employee.ContaCorrenteId,
     Cpf: employee.Cpf,
     CriadoEm: new Date(employee.CriadoEm),
     Crm: null,
@@ -64,28 +65,30 @@ export default function Summary({ employee }: Props) {
     }
   };
 
-  const handleSubmitOnClick = async () => {
+  const handleSubmitOnClick = () => {
     setIsLoading(true);
 
-    await axios
+    axios
       .patch(`/api/empregados/${employee.Id}`, formData)
-      .then(() => {
-        toast({
-          duration: 5000,
-          title: "Alterações salvas com sucesso!",
-          status: "success",
-        });
-        router.reload();
-      })
-      .catch((error) =>
-        toast({
-          duration: 9000,
-          title: "Não foi possível salvar as alterações",
-          description: error,
-          status: "error",
-          isClosable: true,
-        })
+      .then(
+        () => {
+          toast({
+            duration: 5000,
+            title: "Alterações salvas com sucesso!",
+            status: "success",
+          });
+          router.reload();
+        },
+        () => {
+          toast({
+            duration: 9000,
+            title: "Não foi possível salvar as alterações",
+            status: "error",
+            isClosable: true,
+          });
+        }
       )
+      .catch((error) => ErrorHandler.logAxiosPatchError(error))
       .finally(() => setIsLoading(false));
   };
 
@@ -108,7 +111,7 @@ export default function Summary({ employee }: Props) {
               Cpf
               <Input
                 id="Cpf"
-                value={formData.Cpf}
+                value={formatCPF(formData.Cpf)}
                 onChange={handleInputOnChange}
                 isDisabled={isLoading}
               />

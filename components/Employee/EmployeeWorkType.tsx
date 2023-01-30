@@ -15,6 +15,7 @@ import { ModalidadeTrabalho } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { ErrorHandler } from "../../utils/ErrorHandler";
 import ContentTitle from "../Shared/ContentTitle";
 
 interface Props {
@@ -29,28 +30,30 @@ export default function EmployeeWorkType({ type, id }: Props) {
   const toast = useToast();
   const router = useRouter();
 
-  const handleSaveButtonOnClick = async () => {
+  const handleSaveButtonOnClick = () => {
     setIsLoading(true);
 
-    await axios
+    axios
       .patch(`/api/empregados/${id}`, data)
-      .then(() => {
-        toast({
-          duration: 5000,
-          title: "Status de admissão modificado com sucesso!",
-          status: "success",
-        });
-        router.reload();
-      })
-      .catch((error) =>
-        toast({
-          duration: 9000,
-          title: "Não foi possível modificar o status da admissão.",
-          description: error,
-          status: "error",
-          isClosable: true,
-        })
+      .then(
+        () => {
+          toast({
+            duration: 5000,
+            title: "Status de admissão modificado com sucesso!",
+            status: "success",
+          });
+          router.reload();
+        },
+        () => {
+          toast({
+            duration: 9000,
+            title: "Não foi possível modificar o status da admissão.",
+            status: "error",
+            isClosable: true,
+          });
+        }
       )
+      .catch((error) => ErrorHandler.logAxiosPatchError(error))
       .finally(() => setIsLoading(false));
   };
   return (

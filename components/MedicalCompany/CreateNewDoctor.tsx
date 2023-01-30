@@ -13,6 +13,7 @@ import { formatCPF } from "@brazilian-utils/brazilian-utils";
 import { DateFormat } from "../../utils/DateFormat";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { ErrorHandler } from "../../utils/ErrorHandler";
 
 interface Props {
   empresaId: string;
@@ -20,7 +21,6 @@ interface Props {
 
 export default function CreateNewDoctor({ empresaId }: Props) {
   const [formData, setFormData] = useState<Pessoas>({
-    ContaCorrenteId: null,
     Cpf: "",
     CriadoEm: new Date(),
     Crm: "",
@@ -34,6 +34,7 @@ export default function CreateNewDoctor({ empresaId }: Props) {
     Salario: null,
     StatusAdmissao: null,
     Tipo: "MEDICO",
+    ModalidadeTrabalho: null,
   });
   const [dateInputValue, setDateInputValue] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -53,28 +54,30 @@ export default function CreateNewDoctor({ empresaId }: Props) {
     }
   };
 
-  const handleSubmitOnClick = async () => {
+  const handleSubmitOnClick = () => {
     setIsLoading(true);
 
-    await axios
+    axios
       .post("/api/medicos", formData)
-      .then(() => {
-        toast({
-          title: "Médico criado com sucesso!",
-          duration: 5000,
-          status: "success",
-        });
-        router.reload();
-      })
-      .catch((error) =>
-        toast({
-          title: "Não foi possível criar um novo médico!",
-          description: error,
-          duration: 9000,
-          isClosable: true,
-          status: "error",
-        })
+      .then(
+        () => {
+          toast({
+            title: "Médico criado com sucesso!",
+            duration: 5000,
+            status: "success",
+          });
+          router.reload();
+        },
+        () => {
+          toast({
+            title: "Não foi possível criar um novo médico!",
+            duration: 9000,
+            isClosable: true,
+            status: "error",
+          });
+        }
       )
+      .catch((error) => ErrorHandler.logAxiosPostError(error))
       .finally(() => setIsLoading(false));
   };
 

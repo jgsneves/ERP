@@ -1,4 +1,4 @@
-import { Divider, Flex, VStack, Text } from "@chakra-ui/react";
+import { Flex, VStack, Text, Alert, AlertIcon } from "@chakra-ui/react";
 import Doctor from "../Doctor/DoctorCard";
 import CreateNewDoctor from "./CreateNewDoctor";
 import { Pessoas } from "@prisma/client";
@@ -31,7 +31,10 @@ export default function QuadroSocietario({
             />
           ))
         ) : (
-          <Text>Ainda não há médicos cadastrados nessa empresa.</Text>
+          <Alert status="info">
+            <AlertIcon />
+            <Text>Ainda não há médicos cadastrados nessa empresa.</Text>
+          </Alert>
         )}
       </Flex>
 

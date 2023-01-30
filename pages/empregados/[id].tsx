@@ -16,24 +16,29 @@ import MainContent from "../../components/Containers/MainContent";
 import Summary from "../../components/Employee/Summary";
 import FinancialData from "../../components/FinancialData";
 import { server } from "../../config/server";
+import { ErrorHandler } from "../../utils/ErrorHandler";
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  const url = `${server}/api/empregados/${ctx.params?.id}`;
+  try {
+    const url = `${server}/api/empregados/${ctx.params?.id}`;
 
-  const result = await fetch(url, {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  });
+    const result = await fetch(url, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
 
-  const employee = await result.json();
+    const employee = await result.json();
 
-  return {
-    props: { employee },
-  };
+    return {
+      props: { employee },
+    };
+  } catch (error) {
+    ErrorHandler.logAxiosGetError(error);
+  }
 }
 
 export interface EmployeeWithAccountAndAddress extends Employee {
-  ContasCorrente: ContasCorrente;
+  ContasCorrentes: ContasCorrente[];
   Endereco: Enderecos;
 }
 
@@ -71,15 +76,12 @@ export default function Empregado({ employee }: Props) {
             {/* Dados financeiros */}
             <FinancialData
               pessoaId={employee.Id}
-              account={employee.ContasCorrente}
+              accounts={employee.ContasCorrentes}
             />
           </TabPanel>
           <TabPanel>
             {/* Dados de endereço */}
-            <AddressData
-              endereco={employee.Endereco}
-              empresaMedicaId={employee.Id}
-            />
+            <AddressData endereco={employee.Endereco} pessoaId={employee.Id} />
           </TabPanel>
           <TabPanel>
             {/* Pagamentos */}

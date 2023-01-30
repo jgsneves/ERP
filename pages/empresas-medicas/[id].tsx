@@ -22,10 +22,11 @@ import FinancialData from "../../components/FinancialData";
 import AddressData from "../../components/AddressData";
 import QuadroSocietario from "../../components/MedicalCompany/QuadroSocietario";
 import Documentos from "../../components/MedicalCompany/Documentos";
+import { ErrorHandler } from "../../utils/ErrorHandler";
 
 interface Company extends EmpresasMedicas {
   Endereco: Enderecos | null;
-  ContasCorrente: ContasCorrente | null;
+  ContasCorrentes: ContasCorrente[];
   Socios: Pessoas[];
 }
 interface Props {
@@ -33,18 +34,22 @@ interface Props {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const url = `${server}/api/empresasmedicas/${context.params?.id}`;
+  try {
+    const url = `${server}/api/empresasmedicas/${context.params?.id}`;
 
-  const result = await fetch(url, {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  });
+    const result = await fetch(url, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
 
-  const company = await result.json();
+    const company = await result.json();
 
-  return {
-    props: { company },
-  };
+    return {
+      props: { company },
+    };
+  } catch (error) {
+    ErrorHandler.logAxiosGetError(error);
+  }
 }
 
 export default function EmpresaMedica({ company }: Props) {
@@ -81,7 +86,7 @@ export default function EmpresaMedica({ company }: Props) {
             {/* Dados financeiros */}
             <FinancialData
               empresaMedicaId={company.Id}
-              account={company.ContasCorrente}
+              accounts={company.ContasCorrentes}
             />
           </TabPanel>
           <TabPanel>

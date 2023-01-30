@@ -11,9 +11,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { isValidCEP } from "@brazilian-utils/brazilian-utils";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { BrasilApi } from "../../services/BrasilApi";
 import { useRouter } from "next/router";
+import { ErrorHandler } from "../../utils/ErrorHandler";
 
 interface Props {
   empresaMedicaId?: string;
@@ -44,48 +45,55 @@ export default function Register({ empresaMedicaId, pessoaId }: Props) {
     setFormData((state) => ({ ...state, [id]: value }));
   };
 
-  const handleOnBlur = async () => {
+  const handleOnBlur = () => {
     if (isValidCEP(formData.Cep)) {
       setIsLoading(true);
-      const cep = await BrasilApi.getCep(Number(formData.Cep));
-      const { city, neighborhood, state: cepState, street } = cep.data;
-      setFormData((state) => ({
-        ...state,
-        Bairro: neighborhood,
-        Cidade: city,
-        Estado: cepState,
-        Logradouro: street,
-      }));
-      setIsLoading(false);
+
+      BrasilApi.getCep(Number(formData.Cep))
+        .then((res) => {
+          const { city, neighborhood, state: cepState, street } = res.data;
+          setFormData((state) => ({
+            ...state,
+            Bairro: neighborhood,
+            Cidade: city,
+            Estado: cepState,
+            Logradouro: street,
+          }));
+        })
+        .catch((error) => ErrorHandler.logBrasilApiError(error))
+        .finally(() => setIsLoading(false));
     }
   };
 
-  const handleOnClick = async () => {
+  const handleOnClick = () => {
     setIsLoading(true);
-    await axios
-      .post("/api/enderecos", formData)
-      .catch((error: AxiosError) =>
-        toast({
-          duration: 9000,
-          title: "Não foi possível salvar o endereço!",
-          description: error.message,
-          status: "error",
-          isClosable: true,
-        })
+
+    axios
+      .post<Enderecos>("/api/enderecos", formData)
+      .then(
+        () => {
+          toast({
+            status: "success",
+            title: "Endereço salvo com sucesso!",
+            duration: 5000,
+          });
+          router.reload();
+        },
+        () => {
+          toast({
+            duration: 9000,
+            title: "Não foi possível salvar o endereço!",
+            status: "error",
+            isClosable: true,
+          });
+        }
       )
-      .then(() => {
-        toast({
-          status: "success",
-          title: "Endereço salvo com sucesso!",
-          duration: 5000,
-        });
-        router.reload();
-      })
+      .catch((error) => ErrorHandler.logAxiosPostError(error))
       .finally(() => setIsLoading(false));
   };
 
   return (
-    <VStack spacing={5} alignItems="flex-start">
+    <VStack spacing={5} alignItems="flex-start" w="600px">
       <Text my={5}>Informe os dados de endereço.</Text>
       <FormControl>
         <FormLabel>

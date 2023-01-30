@@ -13,6 +13,7 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 import { State } from ".";
 import { useRouter } from "next/router";
+import { ErrorHandler } from "../../utils/ErrorHandler";
 
 interface Props {
   setState: Dispatch<SetStateAction<State>>;
@@ -45,25 +46,30 @@ export default function Form({ setState }: Props) {
 
   const handleForgetPasswordOnClick = () => setState(State.RESET_PASSWORD);
 
-  const handleLoginOnClick = async () => {
+  const handleLoginOnClick = () => {
     setIsLoading(true);
-
-    const { error } = await supabaseClient.auth.signInWithPassword({
-      email: formData.email,
-      password: formData.password,
-    });
-
-    if (error) {
-      toast({
-        duration: 9000,
-        title: "Não foi fazer login",
-        isClosable: true,
-        status: "error",
-      });
-      setIsLoading(false);
-    } else {
-      router.push("/");
-    }
+    supabaseClient.auth
+      .signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      })
+      .then(
+        (res) => {
+          console.log(res);
+          router.push("/");
+        },
+        () => {
+          toast({
+            duration: 9000,
+            title: "Não foi fazer login",
+            isClosable: true,
+            status: "error",
+          });
+          setIsLoading(false);
+        }
+      )
+      .catch((error) => ErrorHandler.logSigInSupabaseError(error))
+      .finally(() => setIsLoading(false));
   };
 
   return (

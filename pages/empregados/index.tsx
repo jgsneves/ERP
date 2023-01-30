@@ -4,6 +4,7 @@ import MainContent from "../../components/Containers/MainContent";
 import EmployeesList from "../../components/Employee/EmployeesList";
 import EmptyEntityList from "../../components/EmptyEntityList";
 import { server } from "../../config/server";
+import { ErrorHandler } from "../../utils/ErrorHandler";
 
 export interface Employee
   extends Omit<
@@ -24,16 +25,20 @@ interface Props {
 }
 
 export async function getServerSideProps() {
-  const result = await fetch(`${server}/api/empregados`, {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  });
+  try {
+    const result = await fetch(`${server}/api/empregados`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
 
-  const employees = await result.json();
+    const employees = await result.json();
 
-  return {
-    props: { employees },
-  };
+    return {
+      props: { employees },
+    };
+  } catch (error) {
+    ErrorHandler.logAxiosGetError(error);
+  }
 }
 
 export default function Empregados({ employees }: Props) {

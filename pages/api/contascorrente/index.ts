@@ -19,33 +19,14 @@ export default async function handler(
         TipoChavePix: req.body.TipoChavePix,
         CriadoEm: req.body.CriadoEm,
         ModificadoEm: req.body.ModificadoEm,
-        TitularId: req.body.TitularId,
-        EmpresaTitularId: req.body.EmpresaTitularId,
+        PessoaId: req.body.PessoaId,
+        EmpresaMedicaId: req.body.EmpresaMedicaId,
+        NomeBanco: req.body.NomeBanco,
       };
 
       const result = await prisma.contasCorrente.create({
         data: contaCorrenteData,
       });
-
-      if (req.body.TitularId) {
-        await prisma.pessoas.update({
-          where: {
-            Id: req.body.TitularId,
-          },
-          data: {
-            ContaCorrenteId: result.Id,
-          },
-        });
-      } else if (req.body.EmpresaTitularId) {
-        await prisma.empresasMedicas.update({
-          where: {
-            Id: req.body.EmpresaTitularId,
-          },
-          data: {
-            ContaCorrenteId: result.Id,
-          },
-        });
-      }
 
       res.json(result);
     } catch (error) {

@@ -13,6 +13,7 @@ import axios, { AxiosError } from "axios";
 import React, { useState } from "react";
 import { BrasilApi } from "../../services/BrasilApi";
 import { useRouter } from "next/router";
+import { ErrorHandler } from "../../utils/ErrorHandler";
 
 interface Props {
   endereco: Enderecos;
@@ -73,28 +74,30 @@ export default function EditAddress({ endereco }: Props) {
     }
   };
 
-  const handleOnClick = async () => {
+  const handleOnClick = () => {
     setIsLoading(true);
 
-    await axios
+    axios
       .put(`/api/enderecos/${Id}`, formData)
-      .catch((error: AxiosError) =>
-        toast({
-          duration: 9000,
-          title: "Não foi possível salvar o endereço!",
-          description: error.message,
-          status: "error",
-          isClosable: true,
-        })
+      .then(
+        () => {
+          toast({
+            status: "success",
+            title: "Endereço salvo com sucesso!",
+            duration: 5000,
+          });
+          router.reload();
+        },
+        () => {
+          toast({
+            duration: 9000,
+            title: "Não foi possível salvar o endereço!",
+            status: "error",
+            isClosable: true,
+          });
+        }
       )
-      .then(() => {
-        toast({
-          status: "success",
-          title: "Endereço salvo com sucesso!",
-          duration: 5000,
-        });
-        router.reload();
-      })
+      .catch((error) => ErrorHandler.logAxiosPutError(error))
       .finally(() => setIsLoading(false));
   };
 

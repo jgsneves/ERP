@@ -129,7 +129,6 @@ model Pessoas {
   ModificadoEm        DateTime?        @db.Timestamptz(6)
   Tipo                PessoasTipo
 
-  ContaCorrenteId     String?          @unique @db.Uuid
   ContasCorrentes     ContasCorrente[]
 
   EnderecoId          String?          @unique @db.Uuid

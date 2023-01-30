@@ -6,6 +6,7 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 import { State } from ".";
 import { server } from "../../config/server";
+import { ErrorHandler } from "../../utils/ErrorHandler";
 
 interface Props {
   setState: Dispatch<SetStateAction<State>>;
@@ -21,35 +22,32 @@ export default function ResetPassword({ setState }: Props) {
   const handleInputOnChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setEmail(event.target.value);
 
-  const handleSendEmailOnClick = async () => {
+  const handleSendEmailOnClick = () => {
     if (email) {
       setIsLoading(true);
 
-      const { data, error } = await supabaseClient.auth.resetPasswordForEmail(
-        email,
-        { redirectTo: `${server}/mudar-a-senha` }
-      );
-
-      if (error) {
-        toast({
-          duration: 9000,
-          title: "Não foi possível enviar e-mail",
-          isClosable: true,
-          status: "error",
-        });
-        setIsLoading(false);
-      }
-
-      if (data) {
-        toast({
-          duration: 9000,
-          title: "Verifique o e-mail cadastrado para a mudança de senha",
-          isClosable: true,
-          status: "success",
-        });
-        setIsLoading(false);
-        setState(State.LOGIN);
-      }
+      supabaseClient.auth
+        .resetPasswordForEmail(email, { redirectTo: `${server}/mudar-a-senha` })
+        .then(
+          () => {
+            toast({
+              duration: 9000,
+              title: "Verifique o e-mail cadastrado para a mudança de senha",
+              isClosable: true,
+              status: "success",
+            });
+            setState(State.LOGIN);
+          },
+          () =>
+            toast({
+              duration: 9000,
+              title: "Não foi possível enviar e-mail",
+              isClosable: true,
+              status: "error",
+            })
+        )
+        .catch((error) => ErrorHandler.logResetPasswordSupabaseError(error))
+        .finally(() => setIsLoading(false));
     }
   };
 

@@ -17,6 +17,7 @@ import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { formatCPF } from "@brazilian-utils/brazilian-utils";
 import { DateFormat } from "../../utils/DateFormat";
+import { ErrorHandler } from "../../utils/ErrorHandler";
 
 export default function CadastrarEmpregado() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -30,7 +31,6 @@ export default function CadastrarEmpregado() {
     Tipo: "EMPREGADO",
     Salario: 0,
     StatusAdmissao: "EMPREGADO",
-    ContaCorrenteId: null,
     Crm: null,
     EmpresaMedicaId: null,
     EnderecoId: null,
@@ -69,28 +69,32 @@ export default function CadastrarEmpregado() {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     setIsLoading(true);
-    await axios
+    axios
       .post("/api/empregados", formData)
-      .catch((error: AxiosError) => {
-        toast({
-          title: "Erro na criação de empregado.",
-          description: error.message,
-          duration: 9000,
-          status: "error",
-          isClosable: true,
-        });
-      })
+      .then(
+        () => {
+          toast({
+            title: "Empregado criado com sucesso!",
+            duration: 9000,
+            status: "success",
+            isClosable: true,
+          });
+          router.push("/empregados");
+        },
+        () => {
+          toast({
+            title: "Erro na criação de empregado.",
+            duration: 9000,
+            status: "error",
+            isClosable: true,
+          });
+        }
+      )
+      .catch((error) => ErrorHandler.logAxiosPostError(error))
       .finally(() => {
         setIsLoading(false);
-        router.push("/empregados");
-        toast({
-          title: "Empregado criado com sucesso!",
-          duration: 9000,
-          status: "success",
-          isClosable: true,
-        });
       });
   };
 
