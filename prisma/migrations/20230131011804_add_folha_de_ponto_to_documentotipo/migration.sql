@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "DocumentoTipo" ADD VALUE 'FOLHA_DE_PONTO_ASSINADA';

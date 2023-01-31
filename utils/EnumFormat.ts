@@ -20,6 +20,8 @@ export class EnumFormat {
       NOTA_FISCAL: "Nota fiscal",
       RECIBO_DE_VALE_DE_TRANSPORTE: "Recibo de vale de transporte",
       TFF: "TFF",
+      RECIBO_DE_REEMBOLSO: "Recibo de reembolso",
+      FOLHA_DE_PONTO_ASSINADA: "Folha de ponto assinada",
     };
     return literal[documentType];
   }

@@ -100,8 +100,6 @@ export default function Empregado({ employee }: Props) {
           </TabPanel>
           <TabPanel>
             {/* Desempenho */}
-            Aqui vamos colocar upload de folha de ponto, atestados, e um campo
-            para observações com linha do tempo
             <EmployeePerformance
               observacoes={employee.Observacoes}
               employeeId={employee.Id}

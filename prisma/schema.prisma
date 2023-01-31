@@ -18,6 +18,7 @@ enum DocumentoTipo {
   RECIBO_DE_VALE_DE_TRANSPORTE
   RECIBO_DE_REEMBOLSO
   ATESTADO
+  FOLHA_DE_PONTO_ASSINADA
 
   // Médico & Empresa Médica
   CRM
