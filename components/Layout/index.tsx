@@ -1,12 +1,13 @@
 import { Inter } from "@next/font/google";
 import Head from "next/head";
 
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Spinner } from "@chakra-ui/react";
 
-import { useSession } from "@supabase/auth-helpers-react";
+import { useSessionContext } from "@supabase/auth-helpers-react";
 
 import Menu from "../Menu";
 import Login from "../Login";
+import Loading from "./loading";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,14 +16,22 @@ interface Props {
 }
 
 export default function Layout({ children }: Props) {
-  const supabaseSession = useSession();
+  const { session, isLoading } = useSessionContext();
+
+  if (isLoading) {
+    return (
+      <Loading>
+        <Spinner size="xl" color="green.400" />
+      </Loading>
+    );
+  }
 
   return (
     <>
       <Head>
         <title>LysiMed</title>
       </Head>
-      {supabaseSession ? (
+      {session ? (
         <Flex className={inter.className}>
           <Menu />
           <Box flex={1}>{children}</Box>

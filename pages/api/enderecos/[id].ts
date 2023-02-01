@@ -18,7 +18,7 @@ export default async function handler(
           res.json(result);
           return;
         }
-        res.status(404).send({ message: "Sócio não encontrado." });
+        res.status(404).send({ message: "Endereço não encontrado." });
       } catch (error) {
         res.status(500).send({ error });
       }

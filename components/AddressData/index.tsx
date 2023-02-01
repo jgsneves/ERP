@@ -1,22 +1,23 @@
-import { Enderecos } from "@prisma/client";
 import Address from "./address";
 import Register from "./register";
 
 interface Props {
-  endereco: Enderecos | null;
+  enderecoId: string | null;
   pessoaId?: string;
   empresaMedicaId?: string;
+  isActive: boolean;
 }
 
 export default function AddressData({
-  endereco,
+  enderecoId,
   pessoaId,
   empresaMedicaId,
+  isActive,
 }: Props) {
   return (
     <>
-      {endereco ? (
-        <Address endereco={endereco} />
+      {enderecoId ? (
+        <Address enderecoId={enderecoId} isActive={isActive} />
       ) : (
         <Register empresaMedicaId={empresaMedicaId} pessoaId={pessoaId} />
       )}

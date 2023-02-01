@@ -10,38 +10,55 @@ import { Documentos, DocumentoTipo } from "@prisma/client";
 import { useState } from "react";
 import ContentTitle from "../Shared/ContentTitle";
 import { v4 as uuid4 } from "uuid";
-import { UploadFileHelper } from "../../utils/UploadFileHelper";
 import axios from "axios";
 import { ErrorHandler } from "../../utils/ErrorHandler";
-import { useRouter } from "next/router";
+import { UploadFileService } from "../../services/UploadFileService";
+import { BoundedMutationHelper } from "../../utils/BoundedMutationHelper";
 
 interface Props {
   employeeId: string;
 }
 
 export default function EmployeeUploadPerformance({ employeeId }: Props) {
-  const [formData, setFormData] = useState<Documentos>({
+  const formInitialData: Documentos = {
     Id: uuid4(),
     CriadoEm: new Date(),
     ModificadoEm: null,
     Nome: "",
     PessoaId: employeeId,
     Tipo: DocumentoTipo.ATESTADO,
-    Url: "ble",
+    Url: "",
     EmpresaMedicaId: null,
-  });
+  };
+
+  const [formData, setFormData] = useState<Documentos>(formInitialData);
+  const [file, setFile] = useState<File | null>(null);
+  const [fileInputValue, setFileInputValue] = useState<string | undefined>(
+    undefined
+  );
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const router = useRouter();
   const toast = useToast();
+  const mutation = BoundedMutationHelper.getEmployeePerformanceTableMutator();
 
-  const handleSaveOnClick = () => {
+  const handleInputFileOnChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { files } = event.target;
+    if (files) {
+      const pdfFile = files.item(0);
+      setFile(pdfFile);
+    }
+  };
+
+  const handleSaveOnClick = async () => {
     setIsLoading(true);
+    const { url } = await UploadFileService.uploadFile();
+    setFormData((state) => ({ ...state, Url: url }));
+
     axios
-      .post(`/api/documentos`, {
-        ...formData,
-        Nome: UploadFileHelper.formatFileName(formData.Nome),
-      })
+      .post(`/api/documentos`, formData)
       .then(
         () => {
           toast({
@@ -50,7 +67,8 @@ export default function EmployeeUploadPerformance({ employeeId }: Props) {
             duration: 5000,
             isClosable: true,
           });
-          router.reload();
+          mutation();
+          setFormData(formInitialData);
         },
         () => {
           toast({
@@ -62,7 +80,10 @@ export default function EmployeeUploadPerformance({ employeeId }: Props) {
         }
       )
       .catch((error) => ErrorHandler.logAxiosPostError(error))
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        setIsLoading(false);
+        setFileInputValue("");
+      });
   };
 
   return (
@@ -85,6 +106,7 @@ export default function EmployeeUploadPerformance({ employeeId }: Props) {
         Tipo de documento
         <Select
           isDisabled={isLoading}
+          value={formData.Tipo}
           onChange={(event) =>
             setFormData((state) => ({
               ...state,
@@ -97,6 +119,14 @@ export default function EmployeeUploadPerformance({ employeeId }: Props) {
             Folha de ponto
           </option>
         </Select>
+      </FormLabel>
+      <FormLabel>
+        <input
+          value={fileInputValue}
+          type="file"
+          accept="application/pdf"
+          onChange={handleInputFileOnChange}
+        />
       </FormLabel>
       <Button
         colorScheme="green"

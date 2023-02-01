@@ -6,36 +6,58 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === "POST") {
-    try {
-      const contaCorrenteData: ContasCorrente = {
-        Id: req.body.Id,
-        Agencia: Number(req.body.Agencia),
-        AgenciaDigito: Number(req.body.AgenciaDigito),
-        Conta: Number(req.body.Conta),
-        ContaDigito: Number(req.body.ContaDigito),
-        CodigoBanco: Number(req.body.CodigoBanco),
-        ChavePix: req.body.ChavePix,
-        TipoChavePix: req.body.TipoChavePix,
-        CriadoEm: req.body.CriadoEm,
-        ModificadoEm: req.body.ModificadoEm,
-        PessoaId: req.body.PessoaId,
-        EmpresaMedicaId: req.body.EmpresaMedicaId,
-        NomeBanco: req.body.NomeBanco,
-      };
+  switch (req.method) {
+    case "GET":
+      try {
+        const pessoaId = req.query.pessoaId;
+        const empresaMedicaId = req.query.empresaMedicaId;
 
-      const result = await prisma.contasCorrente.create({
-        data: contaCorrenteData,
-      });
+        const contas = await prisma.contasCorrente.findMany({
+          where: {
+            PessoaId: typeof pessoaId === "string" ? pessoaId : undefined,
+            EmpresaMedicaId:
+              typeof empresaMedicaId === "string" ? empresaMedicaId : undefined,
+          },
+        });
 
-      res.json(result);
-    } catch (error) {
-      res.status(500).send({ error });
-    }
-  } else {
-    res.status(400).send({
-      metodo: req.method,
-      message: "Método não implementado para esta entidade",
-    });
+        res.json(contas);
+      } catch (error) {
+        res.status(500).send({ error });
+      }
+      break;
+
+    case "POST":
+      try {
+        const contaCorrenteData: ContasCorrente = {
+          Id: req.body.Id,
+          Agencia: Number(req.body.Agencia),
+          AgenciaDigito: Number(req.body.AgenciaDigito),
+          Conta: Number(req.body.Conta),
+          ContaDigito: Number(req.body.ContaDigito),
+          CodigoBanco: Number(req.body.CodigoBanco),
+          ChavePix: req.body.ChavePix,
+          TipoChavePix: req.body.TipoChavePix,
+          CriadoEm: req.body.CriadoEm,
+          ModificadoEm: req.body.ModificadoEm,
+          PessoaId: req.body.PessoaId,
+          EmpresaMedicaId: req.body.EmpresaMedicaId,
+          NomeBanco: req.body.NomeBanco,
+        };
+
+        const result = await prisma.contasCorrente.create({
+          data: contaCorrenteData,
+        });
+
+        res.json(result);
+      } catch (error) {
+        res.status(500).send({ error });
+      }
+      break;
+
+    default:
+      res
+        .status(400)
+        .send({ message: "Método não implementado para esta entidade!" });
+      break;
   }
 }

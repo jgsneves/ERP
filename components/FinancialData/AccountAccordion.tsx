@@ -64,44 +64,44 @@ export default function AccountAccordion({ account, position }: Props) {
           <AccordionIcon />
         </AccordionButton>
         <AccordionPanel>
-          <Flex gap={10} wrap="wrap" justifyContent="space-between">
+          <VStack alignItems="flex-start">
             <Text>
-              <Text as="strong">Código do banco: </Text>
+              Código do banco:
               {account.CodigoBanco}
             </Text>
             <Text>
-              <Text as="strong">Nome do banco: </Text>
+              Nome do banco:
               {account.NomeBanco}
             </Text>
             <Text>
-              <Text as="strong">Agência: </Text>
+              Agência:
               {account.Agencia}
             </Text>
             <Text>
-              <Text as="strong">Dígito da agência: </Text>
+              Dígito da agência:
               {account.AgenciaDigito}
             </Text>
             <Text>
-              <Text as="strong">Conta corrente: </Text>
+              Conta corrente:
               {account.Conta}
             </Text>
             <Text>
-              <Text as="strong">Dígito da conta: </Text>
+              Dígito da conta:
               {account.ContaDigito}
             </Text>
             {account.ChavePix && (
               <Text>
-                <Text as="strong">Chave PIX: </Text>
+                Chave PIX:
                 {account.ChavePix}
               </Text>
             )}
             {account.ChavePix && (
               <Text>
-                <Text as="strong">Tipo de chave PIX: </Text>
+                Tipo de chave PIX:
                 {account.TipoChavePix}
               </Text>
             )}
-          </Flex>
+          </VStack>
           <Button
             colorScheme="red"
             onClick={handleDeleteOnClick}

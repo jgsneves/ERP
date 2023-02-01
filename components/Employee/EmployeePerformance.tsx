@@ -1,23 +1,19 @@
 import { Flex } from "@chakra-ui/react";
-import { Observacoes } from "../../pages/empregados/[id]";
 import EmployeeObservacoes from "./EmployeeObservacoes";
 import EmployeePerformanceTable from "./EmployeePerformanceTable";
 import EmployeeUploadPerformance from "./EmployeeUploadPerformance";
 
 interface Props {
-  observacoes: Observacoes[];
   employeeId: string;
+  isActive: boolean;
 }
 
-export default function EmployeePerformance({
-  observacoes,
-  employeeId,
-}: Props) {
+export default function EmployeePerformance({ employeeId, isActive }: Props) {
   return (
     <Flex wrap="wrap" gap={4} justifyContent="space-between">
-      <EmployeePerformanceTable />
+      <EmployeePerformanceTable isActive={isActive} employeeId={employeeId} />
       <EmployeeUploadPerformance employeeId={employeeId} />
-      <EmployeeObservacoes employeeId={employeeId} observacoes={observacoes} />
+      <EmployeeObservacoes employeeId={employeeId} isActive={isActive} />
     </Flex>
   );
 }

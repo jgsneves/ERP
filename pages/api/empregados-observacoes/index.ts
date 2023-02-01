@@ -6,6 +6,23 @@ export default async function handler(
   res: NextApiResponse
 ) {
   switch (req.method) {
+    case "GET":
+      try {
+        const empregadoId = req.query.empregadoId;
+
+        const observacoes = await prisma.empregadosObservacoes.findMany({
+          where: {
+            EmpregadoId:
+              typeof empregadoId === "string" ? empregadoId : undefined,
+          },
+        });
+
+        res.json(observacoes);
+      } catch (error) {
+        res.status(500).send({ error });
+      }
+      break;
+
     case "POST":
       try {
         const result = await prisma.empregadosObservacoes.create({

@@ -7,11 +7,10 @@ import {
 } from "@chakra-ui/react";
 import { EmpregadosObservacoes } from "@prisma/client";
 import React, { useState } from "react";
-import ContentTitle from "../Shared/ContentTitle";
 import { v4 as uuid4 } from "uuid";
 import axios from "axios";
 import { ErrorHandler } from "../../utils/ErrorHandler";
-import { useRouter } from "next/router";
+import { BoundedMutationHelper } from "../../utils/BoundedMutationHelper";
 
 interface Props {
   empregadoId: string;
@@ -27,7 +26,7 @@ export default function EmployeeCreateComment({ empregadoId }: Props) {
   });
 
   const toast = useToast();
-  const router = useRouter();
+  const mutation = BoundedMutationHelper.getEmployeeObservacoesMutator();
 
   const handleInputOnChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
@@ -47,7 +46,7 @@ export default function EmployeeCreateComment({ empregadoId }: Props) {
             status: "success",
             duration: 5000,
           });
-          router.reload();
+          mutation();
         },
         () => {
           toast({
@@ -64,9 +63,8 @@ export default function EmployeeCreateComment({ empregadoId }: Props) {
 
   return (
     <VStack w="100%" alignItems="flex-start">
-      <ContentTitle title="Faça uma nova observação" />
       <FormLabel w="100%">
-        Observação
+        Escreva uma nova observação
         <Textarea
           value={formData.Conteudo}
           id="Conteudo"

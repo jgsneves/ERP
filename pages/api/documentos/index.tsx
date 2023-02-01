@@ -19,19 +19,35 @@ export default async function handler(
   switch (req.method) {
     case "GET":
       try {
-        const pagina = parseInt(req.query.pagina as string) || 1;
-        const quantidade = parseInt(req.query.quantidade as string) || 10;
-        const tipo = req.query.tipo as string;
+        const pagina =
+          typeof req.query.pagina === "string" ? parseInt(req.query.pagina) : 1;
+        const quantidade =
+          typeof req.query.quantidade === "string"
+            ? parseInt(req.query.quantidade)
+            : 5;
+        const tipo = req.query.tipo;
+        const pessoaId = req.query.pessoaId;
+        const empresaMedicaId = req.query.empresaMedicaId;
 
         const documentos = await prisma.documentos.findMany({
           skip: (pagina - 1) * quantidade,
           take: quantidade,
           where: {
-            Tipo: tipo in DocumentoTipo ? (tipo as DocumentoTipo) : undefined,
+            Tipo: tipo ? (tipo as DocumentoTipo) : undefined,
+            PessoaId: typeof pessoaId === "string" ? pessoaId : undefined,
+            EmpresaMedicaId:
+              typeof empresaMedicaId === "string" ? empresaMedicaId : undefined,
           },
         });
 
-        const count = documentos.length;
+        const count = await prisma.documentos.count({
+          where: {
+            PessoaId: typeof pessoaId === "string" ? pessoaId : undefined,
+            EmpresaMedicaId:
+              typeof empresaMedicaId === "string" ? empresaMedicaId : undefined,
+            Tipo: tipo ? (tipo as DocumentoTipo) : undefined,
+          },
+        });
         const totalPaginas = Math.ceil(count / quantidade);
         res.json({ pagina, totalPaginas, documentos });
       } catch (error) {

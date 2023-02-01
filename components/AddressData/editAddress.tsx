@@ -16,7 +16,7 @@ import { useRouter } from "next/router";
 import { ErrorHandler } from "../../utils/ErrorHandler";
 
 interface Props {
-  endereco: Enderecos;
+  endereco: Enderecos | undefined;
 }
 
 export default function EditAddress({ endereco }: Props) {
@@ -31,7 +31,7 @@ export default function EditAddress({ endereco }: Props) {
     Id,
     Logradouro,
     PessoaId,
-  } = endereco;
+  } = endereco!;
 
   const [formData, setFormData] = useState<Enderecos>({
     Bairro,

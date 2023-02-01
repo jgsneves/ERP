@@ -12,7 +12,6 @@ import { Pessoas } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { EmployeeWithAccountAndAddress } from "../../pages/empregados/[id]";
 import { DateFormat } from "../../utils/DateFormat";
 import { ErrorHandler } from "../../utils/ErrorHandler";
 import ContentTitle from "../Shared/ContentTitle";
@@ -20,9 +19,10 @@ import EmployeeContract from "./EmployeeContract";
 import EmployeeSalary from "./EmployeeSalary";
 import EmployeeStatus from "./EmployeeStatus";
 import EmployeeWorkType from "./EmployeeWorkType";
+import { Employee } from "../../pages/empregados/index";
 
 interface Props {
-  employee: EmployeeWithAccountAndAddress;
+  employee: Employee;
 }
 
 export default function Summary({ employee }: Props) {

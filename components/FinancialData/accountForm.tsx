@@ -1,13 +1,10 @@
 import {
   Button,
   Flex,
-  FormControl,
   FormLabel,
   Input,
   Select,
-  Text,
   useToast,
-  VStack,
 } from "@chakra-ui/react";
 import { ContasCorrente, TipoChavePix } from "@prisma/client";
 import axios, { AxiosError } from "axios";
@@ -15,6 +12,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { v4 as uuid4 } from "uuid";
 import { BrasilApi } from "../../services/BrasilApi";
+import { BoundedMutationHelper } from "../../utils/BoundedMutationHelper";
 import { ErrorHandler } from "../../utils/ErrorHandler";
 
 interface Props {
@@ -40,8 +38,8 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
     NomeBanco: "",
   });
 
-  const router = useRouter();
   const toast = useToast();
+  const mutation = BoundedMutationHelper.getFinancialDataMutator();
 
   const handleInputOnChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -83,7 +81,7 @@ export default function AccountForm({ pessoaId, empresaMedicaId }: Props) {
             duration: 9000,
             isClosable: true,
           });
-          router.reload();
+          mutation();
         },
         () =>
           toast({

@@ -7,13 +7,9 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import {
-  ContasCorrente,
-  EmpregadosObservacoes,
-  Enderecos,
-} from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
 import Link from "next/link";
+import { useState } from "react";
 import { Employee } from ".";
 import AddressData from "../../components/AddressData";
 import MainContent from "../../components/Containers/MainContent";
@@ -42,21 +38,15 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   }
 }
 
-export interface Observacoes extends Omit<EmpregadosObservacoes, "Data"> {
-  Data: string;
-}
-
-export interface EmployeeWithAccountAndAddress extends Employee {
-  ContasCorrentes: ContasCorrente[];
-  Endereco: Enderecos;
-  Observacoes: Observacoes[];
-}
-
 interface Props {
-  employee: EmployeeWithAccountAndAddress;
+  employee: Employee;
 }
 
 export default function Empregado({ employee }: Props) {
+  const [activeTabIndex, setActiveTabIndex] = useState<number | undefined>(
+    undefined
+  );
+
   return (
     <MainContent>
       <Text fontSize="5xl" fontWeight={600}>
@@ -68,7 +58,11 @@ export default function Empregado({ employee }: Props) {
         <ArrowBackIcon boxSize={8} mt="6" cursor="pointer" />
       </Link>
 
-      <Tabs mt={2}>
+      <Tabs
+        mt={2}
+        variant="enclosed"
+        onChange={(index) => setActiveTabIndex(index)}
+      >
         <TabList>
           <Tab>Sumário</Tab>
           <Tab>Dados financeiros</Tab>
@@ -86,12 +80,16 @@ export default function Empregado({ employee }: Props) {
             {/* Dados financeiros */}
             <FinancialData
               pessoaId={employee.Id}
-              accounts={employee.ContasCorrentes}
+              isActive={activeTabIndex === 1}
             />
           </TabPanel>
           <TabPanel>
             {/* Dados de endereço */}
-            <AddressData endereco={employee.Endereco} pessoaId={employee.Id} />
+            <AddressData
+              enderecoId={employee.EnderecoId}
+              pessoaId={employee.Id}
+              isActive={activeTabIndex === 2}
+            />
           </TabPanel>
           <TabPanel>
             {/* Pagamentos */}
@@ -101,8 +99,8 @@ export default function Empregado({ employee }: Props) {
           <TabPanel>
             {/* Desempenho */}
             <EmployeePerformance
-              observacoes={employee.Observacoes}
               employeeId={employee.Id}
+              isActive={activeTabIndex === 4}
             />
           </TabPanel>
         </TabPanels>

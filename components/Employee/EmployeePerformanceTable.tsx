@@ -18,58 +18,88 @@ import {
   Text,
   Select,
   FormLabel,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
 import { DocumentoTipo } from "@prisma/client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import useSWR from "swr";
 import { GetDocumentosResponse } from "../../pages/api/documentos";
+import { BoundedMutationHelper } from "../../utils/BoundedMutationHelper";
 import { DateFormat } from "../../utils/DateFormat";
 import { EnumFormat } from "../../utils/EnumFormat";
+import { ErrorHandler } from "../../utils/ErrorHandler";
 import { fetcher } from "../../utils/fetcher";
 import ContentTitle from "../Shared/ContentTitle";
 
-export default function EmployeePerformanceTable() {
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [pageAmount, setPageAmount] = useState<number>(1);
+interface Props {
+  isActive: boolean;
+  employeeId: string;
+}
+
+export default function EmployeePerformanceTable({
+  isActive,
+  employeeId,
+}: Props) {
+  const [pagina, setPagina] = useState<number>(1);
+  const [quantidade, setQuantidade] = useState<number>(5);
   const [documentType, setDocumentoType] = useState<DocumentoTipo>(
     DocumentoTipo.ATESTADO
   );
 
-  const { data, isLoading } = useSWR<GetDocumentosResponse>(
-    `/api/documentos?pagina=${currentPage}&tipo=${documentType}`,
+  const { data, isLoading, error, mutate } = useSWR<GetDocumentosResponse>(
+    isActive
+      ? `/api/documentos?pagina=${pagina}&quantidade=${quantidade}&tipo=${documentType}&pessoaId=${employeeId}`
+      : null,
     fetcher
   );
 
-  useEffect(() => {
-    if (data) {
-      setCurrentPage(data.pagina);
-      setPageAmount(data.totalPaginas);
-    }
-  }, [data]);
+  BoundedMutationHelper.setEmployeePerformanceTableMutator(mutate);
 
   const handleExternalLinkOnClick = (url: string) => {
     window.open(url, "_blank")?.focus();
   };
 
-  if (isLoading) return <Spinner />;
+  if (error) ErrorHandler.logAxiosGetError(error);
+
+  if (isLoading)
+    return (
+      <Flex w="900px" alignItems="center" justifyContent="center" h="500px">
+        <Spinner />
+      </Flex>
+    );
+
   return (
-    <TableContainer w="983px" mt={5}>
-      <ContentTitle title="Filtros" />
-      <FormLabel w="300px">
-        Tipo de documento
-        <Select
-          value={documentType}
-          onChange={(event) =>
-            setDocumentoType(event.target.value as DocumentoTipo)
-          }
-        >
-          <option value={DocumentoTipo.ATESTADO}>Atestado</option>
-          <option value={DocumentoTipo.FOLHA_DE_PONTO_ASSINADA}>
-            Folha de ponto
-          </option>
-        </Select>
-      </FormLabel>
+    <TableContainer w="900px" mb={5}>
       <ContentTitle title="Documentos" />
+      <Flex>
+        <FormLabel w="300px">
+          Tipo de documento
+          <Select
+            value={documentType}
+            onChange={(event) => {
+              setDocumentoType(event.target.value as DocumentoTipo);
+              setPagina(1);
+            }}
+          >
+            <option value={DocumentoTipo.ATESTADO}>Atestado</option>
+            <option value={DocumentoTipo.FOLHA_DE_PONTO_ASSINADA}>
+              Folha de ponto
+            </option>
+          </Select>
+        </FormLabel>
+        <FormLabel w="300px">
+          Quantidade por página
+          <Select
+            value={quantidade}
+            onChange={(event) => setQuantidade(parseInt(event.target.value))}
+          >
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+          </Select>
+        </FormLabel>
+      </Flex>
       <Table variant="striped">
         <Thead>
           <Tr>
@@ -104,24 +134,29 @@ export default function EmployeePerformanceTable() {
       </Table>
 
       {data?.documentos.length === 0 && (
-        <Text>Não há documentos cadastrados</Text>
+        <Alert status="info" mt={2}>
+          <AlertIcon />
+          <Text>
+            Não há documentos cadastrados seguindo esses critérios de filtragem
+          </Text>
+        </Alert>
       )}
 
       {data && data.documentos.length > 0 && (
         <Flex mt={5} justifyContent="space-between" alignItems="center">
           <Button
             variant="ghost"
-            isDisabled={currentPage <= 1}
-            onClick={() => setCurrentPage((state) => state - 1)}
+            isDisabled={pagina <= 1}
+            onClick={() => setPagina((state) => state - 1)}
           >
             <ArrowLeftIcon boxSize={3} mr={2} />
             Anterior
           </Button>
-          <Text>Página: {currentPage}</Text>
+          <Text>Página: {pagina}</Text>
           <Button
             variant="ghost"
-            isDisabled={currentPage === pageAmount}
-            onClick={() => setCurrentPage((state) => state + 1)}
+            isDisabled={pagina === data.totalPaginas}
+            onClick={() => setPagina((state) => state + 1)}
           >
             Próxima <ArrowRightIcon boxSize={3} ml={2} />
           </Button>
