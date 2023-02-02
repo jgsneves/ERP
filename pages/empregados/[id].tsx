@@ -14,7 +14,7 @@ import { Employee } from ".";
 import AddressData from "../../components/AddressData";
 import MainContent from "../../components/Containers/MainContent";
 import EmployeePerformance from "../../components/Employee/EmployeePerformance";
-import Summary from "../../components/Employee/Summary";
+import EmployeeSummary from "../../components/Employee/EmployeeSummary";
 import FinancialData from "../../components/FinancialData";
 import { server } from "../../config/server";
 import { ErrorHandler } from "../../utils/ErrorHandler";
@@ -74,7 +74,7 @@ export default function Empregado({ employee }: Props) {
         <TabPanels>
           <TabPanel>
             {/* Sumário */}
-            <Summary employee={employee} />
+            <EmployeeSummary employee={employee} />
           </TabPanel>
           <TabPanel>
             {/* Dados financeiros */}

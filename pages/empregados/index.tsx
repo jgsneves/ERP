@@ -48,7 +48,7 @@ export default function Empregados({ employees }: Props) {
         Empregados
       </Text>
       <Text>Todos os empregados cadastrados na empresa.</Text>
-      {employees ? (
+      {employees.length > 0 ? (
         <EmployeesList employees={employees} />
       ) : (
         <EmptyEntityList

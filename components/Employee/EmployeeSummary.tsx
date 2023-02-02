@@ -25,7 +25,7 @@ interface Props {
   employee: Employee;
 }
 
-export default function Summary({ employee }: Props) {
+export default function EmployeeSummary({ employee }: Props) {
   const [isEditState, setIsEditSate] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
