@@ -34,6 +34,7 @@ export default function Register({ empresaMedicaId, pessoaId }: Props) {
     Logradouro: "",
     ModificadoEm: null,
     PessoaId: pessoaId ?? null,
+    Numero: 0,
   });
 
   const toast = useToast();
@@ -114,6 +115,21 @@ export default function Register({ empresaMedicaId, pessoaId }: Props) {
             id="Logradouro"
             value={formData.Logradouro}
             onChange={handleInputOnChange}
+          />
+        </FormLabel>
+        <FormLabel>
+          Número:
+          <Input
+            isDisabled={isLoading}
+            type="number"
+            id="Numero"
+            value={formData.Numero}
+            onChange={(event) =>
+              setFormData((state) => ({
+                ...state,
+                Numero: Number(event.target.value),
+              }))
+            }
           />
         </FormLabel>
         <FormLabel>

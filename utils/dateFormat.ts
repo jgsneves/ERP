@@ -23,4 +23,11 @@ export class DateFormat {
   public static formatISODateStringToLocale(isoDate: string) {
     return new Date(isoDate).toLocaleDateString();
   }
+
+  /**
+   * Formata a Date em data brasileira
+   */
+  public static formatDateToLocaleString(date: Date) {
+    return date.toLocaleDateString();
+  }
 }

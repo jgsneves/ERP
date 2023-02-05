@@ -33,19 +33,23 @@ enum DocumentoTipo {
 }
 
 model Documentos {
-  Id               String           @id() @db.Uuid
-  Nome             String
-  Tipo             DocumentoTipo
-  Url              String
+  Id                                  String           @id() @db.Uuid
+  Nome                                String
+  Tipo                                DocumentoTipo
+  Url                                 String
 
-  CriadoEm         DateTime         @db.Timestamptz(6)
-  ModificadoEm     DateTime?        @db.Timestamptz(6)
+  CriadoEm                            DateTime              @db.Timestamptz(6)
+  ModificadoEm                        DateTime?             @db.Timestamptz(6)
 
-  PessoaId         String?          @db.Uuid
-  Pessoa           Pessoas?         @relation(fields: [PessoaId], references: [Id])
+  PessoaId                            String?               @db.Uuid
+  Pessoa                              Pessoas?              @relation(fields: [PessoaId], references: [Id])
 
-  EmpresaMedicaId  String?          @db.Uuid
-  EmpresaMedica    EmpresasMedicas? @relation(fields: [EmpresaMedicaId], references: [Id])
+  EmpresaMedicaId                     String?               @db.Uuid
+  EmpresaMedica                       EmpresasMedicas?      @relation(fields: [EmpresaMedicaId], references: [Id])
+
+  EmpregadoPagamentoComprovante       EmpregadosPagamentos? @relation("Comprovante")
+
+  EmpregadoPagamentoRecibo            EmpregadosPagamentos? @relation("Recibo")
 }
 
 enum TipoChavePix {
@@ -96,6 +100,7 @@ model Enderecos {
   Id              String            @id() @db.Uuid
   Cep             String
   Logradouro      String
+  Numero          Int
   Complemento     String
   Bairro          String
   Cidade          String
@@ -157,6 +162,7 @@ model Pessoas {
   StatusAdmissao      StatusAdmissao?
   ModalidadeTrabalho  ModalidadeTrabalho?
   Observacoes         EmpregadosObservacoes[]
+  Pagamentos          EmpregadosPagamentos[]
 }
 
 model EmpregadosObservacoes {
@@ -166,4 +172,27 @@ model EmpregadosObservacoes {
   
   EmpregadoId String    @db.Uuid()
   Empregado   Pessoas   @relation(fields: [EmpregadoId], references: [Id])
+}
+
+enum EmpregadosPagamentosTipo {
+  SALARIO
+  DECIMO_TERCEIRO_SALARIO
+  VALE_DE_TRANSPORTE
+  REEMBOLSO
+}
+
+model EmpregadosPagamentos {
+  Id              String      @id @db.Uuid()
+  EmpregadoId     String      @db.Uuid()
+  Empregado       Pessoas     @relation(fields: [EmpregadoId], references: [Id])
+  Valor           Float
+  Tipo            EmpregadosPagamentosTipo
+  CriadoEm        DateTime    @db.Timestamptz(6)
+  ModificadoEm    DateTime?   @db.Timestamptz(6)
+
+  Comprovante     Documentos  @relation("Comprovante", fields: [ComprovanteId], references: [Id])
+  ComprovanteId   String      @db.Uuid() @unique
+
+  Recibo          Documentos? @relation("Recibo", fields: [ReciboId], references: [Id])
+  ReciboId        String?     @db.Uuid() @unique
 }

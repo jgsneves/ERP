@@ -10,7 +10,7 @@ interface Props {
   isActive: boolean;
 }
 
-enum ComponentState {
+export enum ComponentState {
   EDIT,
   SHOW_DATA,
 }
@@ -33,6 +33,7 @@ export default function Address({ enderecoId, isActive }: Props) {
         <VStack spacing={5} alignItems="flex-start">
           <Text>CEP: {endereco?.Cep}</Text>
           <Text>Logradouro: {endereco?.Logradouro}</Text>
+          <Text>Número: {endereco?.Numero}</Text>
           <Text>Complemento: {endereco?.Complemento}</Text>
           <Text>Bairro: {endereco?.Bairro}</Text>
           <Text>Cidade: {endereco?.Cidade}</Text>
@@ -42,11 +43,14 @@ export default function Address({ enderecoId, isActive }: Props) {
             mt={5}
             colorScheme="green"
           >
-            Editar
+            editar
           </Button>
         </VStack>
       ) : (
-        <EditAddress endereco={endereco} />
+        <EditAddress
+          endereco={endereco}
+          setComponentState={setComponentState}
+        />
       )}
     </>
   );

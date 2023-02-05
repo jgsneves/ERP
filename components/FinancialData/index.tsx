@@ -38,8 +38,8 @@ export default function FinancialData({
   if (isLoading) return <Spinner colorScheme="green" />;
 
   return (
-    <VStack alignItems="flex-start">
-      <ContentTitle title="Contas correntes cadastradas" />
+    <VStack alignItems="flex-start" spacing={4}>
+      <Text as="b">Contas correntes cadastradas</Text>
       {accounts && accounts.length === 0 && (
         <Alert status="info">
           <AlertIcon />

@@ -13,6 +13,7 @@ import { useState } from "react";
 import { Employee } from ".";
 import AddressData from "../../components/AddressData";
 import MainContent from "../../components/Containers/MainContent";
+import EmployeePayments from "../../components/Employee/EmployeePayments";
 import EmployeePerformance from "../../components/Employee/EmployeePerformance";
 import EmployeeSummary from "../../components/Employee/EmployeeSummary";
 import FinancialData from "../../components/FinancialData";
@@ -43,9 +44,7 @@ interface Props {
 }
 
 export default function Empregado({ employee }: Props) {
-  const [activeTabIndex, setActiveTabIndex] = useState<number | undefined>(
-    undefined
-  );
+  const [activeTabIndex, setActiveTabIndex] = useState<number | undefined>(0);
 
   return (
     <MainContent>
@@ -74,7 +73,10 @@ export default function Empregado({ employee }: Props) {
         <TabPanels>
           <TabPanel>
             {/* Sumário */}
-            <EmployeeSummary employee={employee} />
+            <EmployeeSummary
+              isActive={activeTabIndex === 0}
+              employee={employee}
+            />
           </TabPanel>
           <TabPanel>
             {/* Dados financeiros */}
@@ -93,8 +95,11 @@ export default function Empregado({ employee }: Props) {
           </TabPanel>
           <TabPanel>
             {/* Pagamentos */}
-            Todos os pagamentos pros empregados (salário, vale transporte, 13º
-            salário, férias, reembolso)
+            <EmployeePayments
+              empregadoId={employee.Id}
+              salario={employee.Salario}
+              isActive={activeTabIndex === 3}
+            />
           </TabPanel>
           <TabPanel>
             {/* Desempenho */}

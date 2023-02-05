@@ -10,11 +10,30 @@ export class CurrencyFormat {
   }
 
   /**
-   * Diante de uma string no formato R$ 10.000,00 retorna seu valor em número
+   * Retorna um número com duas casas decimais
    */
-  public static formatBrazilianCurrencyToNumber(currency: string): number {
-    return Number(
-      currency.replace("R$ ", "").replace(".", "").replace(",", ".")
+  public static formatNumberTwoDecimals(value: number): number {
+    return Number(value.toFixed(2));
+  }
+
+  /**
+   * Máscara para ser usado em input de text que mostra dinheiro
+   */
+  public static moneyMask(value: string): string {
+    value = value.replace(".", "").replace(",", "").replace(/\D/g, "");
+
+    const options = { minimumFractionDigits: 2 };
+    const result = new Intl.NumberFormat("pt-BR", options).format(
+      parseFloat(value) / 100
     );
+
+    return "R$ " + result;
+  }
+
+  /**
+   * Diante de uma string que é um número, retorna seu valor em reais.
+   */
+  public static formatStringToBrazilianCurrency(stringNumber: string): string {
+    return this.formatNumberToBrazilianCurrency(Number(stringNumber));
   }
 }

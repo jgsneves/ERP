@@ -23,9 +23,10 @@ import { Employee } from "../../pages/empregados/index";
 
 interface Props {
   employee: Employee;
+  isActive: boolean;
 }
 
-export default function EmployeeSummary({ employee }: Props) {
+export default function EmployeeSummary({ employee, isActive }: Props) {
   const [isEditState, setIsEditSate] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -168,7 +169,11 @@ export default function EmployeeSummary({ employee }: Props) {
         id={employee.Id}
       />
       <EmployeeWorkType type={employee.ModalidadeTrabalho} id={employee.Id} />
-      <EmployeeContract />
+      <EmployeeContract
+        empregadoId={employee.Id}
+        empregadoNome={employee.Nome}
+        isActive={isActive}
+      />
     </Flex>
   );
 }

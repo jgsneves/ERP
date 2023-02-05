@@ -15,6 +15,7 @@ import { ContasCorrente } from "@prisma/client";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { EnumFormat } from "../../utils/EnumFormat";
 import { ErrorHandler } from "../../utils/ErrorHandler";
 
 interface Props {
@@ -59,47 +60,56 @@ export default function AccountAccordion({ account, position }: Props) {
       <AccordionItem>
         <AccordionButton>
           <Box flex="1" textAlign="left">
-            Conta corrente nº {position}
+            <Text fontSize="lg">Conta corrente nº {position}</Text>
           </Box>
           <AccordionIcon />
         </AccordionButton>
         <AccordionPanel>
-          <VStack alignItems="flex-start">
-            <Text>
-              Código do banco:
-              {account.CodigoBanco}
-            </Text>
-            <Text>
-              Nome do banco:
-              {account.NomeBanco}
-            </Text>
-            <Text>
-              Agência:
-              {account.Agencia}
-            </Text>
-            <Text>
-              Dígito da agência:
-              {account.AgenciaDigito}
-            </Text>
-            <Text>
-              Conta corrente:
-              {account.Conta}
-            </Text>
-            <Text>
-              Dígito da conta:
-              {account.ContaDigito}
-            </Text>
+          <VStack alignItems="flex-start" spacing={3}>
+            <Flex w="50%">
+              <Text minW="200px">Código do banco:</Text>
+              <Text>{account.CodigoBanco}</Text>
+            </Flex>
+
+            <Flex w="50%">
+              <Text minW="200px">Nome do banco:</Text>
+              <Text>{account.NomeBanco}</Text>
+            </Flex>
+
+            <Flex w="50%">
+              <Text minW="200px">Agência:</Text>
+              <Text>{account.Agencia}</Text>
+            </Flex>
+
+            <Flex w="50%">
+              <Text minW="200px">Dígito da agência:</Text>
+              <Text>{account.AgenciaDigito}</Text>
+            </Flex>
+
+            <Flex w="50%">
+              <Text minW="200px">Conta corrente:</Text>
+              <Text>{account.Conta}</Text>
+            </Flex>
+
+            <Flex w="50%">
+              <Text minW="200px">Dígito da conta:</Text>
+              <Text>{account.ContaDigito}</Text>
+            </Flex>
+
             {account.ChavePix && (
-              <Text>
-                Chave PIX:
-                {account.ChavePix}
-              </Text>
+              <Flex w="50%">
+                <Text minW="200px">Chave PIX:</Text>
+                <Text>{account.ChavePix}</Text>
+              </Flex>
             )}
-            {account.ChavePix && (
-              <Text>
-                Tipo de chave PIX:
-                {account.TipoChavePix}
-              </Text>
+
+            {account.ChavePix && account.TipoChavePix && (
+              <Flex w="50%">
+                <Text minW="200px">Tipo de chave PIX:</Text>
+                <Text>
+                  {EnumFormat.formatTipoChavePixEnum(account.TipoChavePix)}
+                </Text>
+              </Flex>
             )}
           </VStack>
           <Button

@@ -7,19 +7,22 @@ import {
   Input,
   Button,
   useToast,
+  Flex,
 } from "@chakra-ui/react";
 import { Enderecos } from "@prisma/client";
-import axios, { AxiosError } from "axios";
-import React, { useState } from "react";
+import axios from "axios";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { BrasilApi } from "../../services/BrasilApi";
 import { useRouter } from "next/router";
 import { ErrorHandler } from "../../utils/ErrorHandler";
+import { ComponentState } from "./address";
 
 interface Props {
   endereco: Enderecos | undefined;
+  setComponentState: Dispatch<SetStateAction<ComponentState>>;
 }
 
-export default function EditAddress({ endereco }: Props) {
+export default function EditAddress({ endereco, setComponentState }: Props) {
   const {
     Bairro,
     Cep,
@@ -31,6 +34,7 @@ export default function EditAddress({ endereco }: Props) {
     Id,
     Logradouro,
     PessoaId,
+    Numero,
   } = endereco!;
 
   const [formData, setFormData] = useState<Enderecos>({
@@ -42,6 +46,7 @@ export default function EditAddress({ endereco }: Props) {
     Estado,
     Id,
     Logradouro,
+    Numero,
     ModificadoEm: new Date(),
     PessoaId: PessoaId ?? null,
     EmpresaMedicaId: EmpresaMedicaId ?? null,
@@ -126,6 +131,21 @@ export default function EditAddress({ endereco }: Props) {
           />
         </FormLabel>
         <FormLabel>
+          Número:
+          <Input
+            isDisabled={isLoading}
+            id="Numero"
+            type="number"
+            value={formData.Numero}
+            onChange={(event) =>
+              setFormData((state) => ({
+                ...state,
+                Numero: Number(event.target.value),
+              }))
+            }
+          />
+        </FormLabel>
+        <FormLabel>
           Bairro:
           <Input
             isDisabled={isLoading}
@@ -161,14 +181,25 @@ export default function EditAddress({ endereco }: Props) {
             onChange={handleInputOnChange}
           />
         </FormLabel>
-        <Button
-          mt={5}
-          colorScheme="green"
-          onClick={handleOnClick}
-          isLoading={isLoading}
-        >
-          Salvar
-        </Button>
+        <Flex alignItems="center">
+          <Button
+            mt={5}
+            colorScheme="green"
+            onClick={handleOnClick}
+            isLoading={isLoading}
+          >
+            salvar
+          </Button>
+          <Button
+            mt={5}
+            ml={2}
+            colorScheme="green"
+            variant="ghost"
+            onClick={() => setComponentState(ComponentState.SHOW_DATA)}
+          >
+            cancelar
+          </Button>
+        </Flex>
       </FormControl>
     </VStack>
   );

@@ -13,24 +13,30 @@ import { ArrowBackIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import { ModalidadeTrabalho, Pessoas } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useRouter } from "next/router";
 import { formatCPF } from "@brazilian-utils/brazilian-utils";
 import { DateFormat } from "../../utils/DateFormat";
 import { ErrorHandler } from "../../utils/ErrorHandler";
+import { CurrencyFormat } from "../../utils/CurrencyFormat";
+import { parseCurrency } from "@brazilian-utils/brazilian-utils";
+
+interface Empregado extends Omit<Pessoas, "Salario"> {
+  Salario: string;
+}
 
 export default function CadastrarEmpregado() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [birthDateValue, setBirthDateValue] = useState<string>("");
-  const [formData, setFormData] = useState<Pessoas>({
+  const [formData, setFormData] = useState<Empregado>({
     Nome: "",
     Cpf: "",
     DataNascimento: new Date(),
     CriadoEm: new Date(),
     Id: uuidv4(),
     Tipo: "EMPREGADO",
-    Salario: 0,
-    StatusAdmissao: "EMPREGADO",
+    Salario: "150000",
+    StatusAdmissao: "EXPERIENCIA",
     Crm: null,
     EmpresaMedicaId: null,
     EnderecoId: null,
@@ -48,18 +54,7 @@ export default function CadastrarEmpregado() {
     event.preventDefault();
     const { id, value } = event.target;
 
-    setFormData((partner) => {
-      if (id === "Salario") {
-        return {
-          ...partner,
-          [id]: Number(value),
-        };
-      }
-      return {
-        ...partner,
-        [id]: value,
-      };
-    });
+    setFormData((state) => ({ ...state, [id]: value }));
   };
 
   const handleDateInputOnBlur = () => {
@@ -72,7 +67,10 @@ export default function CadastrarEmpregado() {
   const handleSubmit = () => {
     setIsLoading(true);
     axios
-      .post("/api/empregados", formData)
+      .post("/api/empregados", {
+        ...formData,
+        Salario: parseCurrency(formData.Salario),
+      })
       .then(
         () => {
           toast({
@@ -140,10 +138,9 @@ export default function CadastrarEmpregado() {
         </FormLabel>
 
         <FormLabel mt="5">
-          Salário
+          Salário (R$)
           <Input
-            value={formData.Salario?.toString()}
-            type="number"
+            value={CurrencyFormat.moneyMask(formData.Salario)}
             id="Salario"
             onChange={handleInputOnChange}
           />

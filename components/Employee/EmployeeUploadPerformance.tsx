@@ -54,36 +54,36 @@ export default function EmployeeUploadPerformance({ employeeId }: Props) {
 
   const handleSaveOnClick = async () => {
     setIsLoading(true);
-    const { url } = await UploadFileService.uploadFile();
-    setFormData((state) => ({ ...state, Url: url }));
-
-    axios
-      .post(`/api/documentos`, formData)
-      .then(
-        () => {
-          toast({
-            title: "Documento salvo com sucesso!",
-            status: "success",
-            duration: 5000,
-            isClosable: true,
-          });
-          mutation();
-          setFormData(formInitialData);
-        },
-        () => {
-          toast({
-            title: "Houve algum error!",
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          });
-        }
-      )
-      .catch((error) => ErrorHandler.logAxiosPostError(error))
-      .finally(() => {
-        setIsLoading(false);
-        setFileInputValue("");
-      });
+    if (file) {
+      const { url } = await UploadFileService.uploadFile(file);
+      axios
+        .post(`/api/documentos`, { ...formData, Url: url })
+        .then(
+          () => {
+            toast({
+              title: "Documento salvo com sucesso!",
+              status: "success",
+              duration: 5000,
+              isClosable: true,
+            });
+            mutation();
+            setFormData(formInitialData);
+          },
+          () => {
+            toast({
+              title: "Houve algum error!",
+              status: "error",
+              duration: 9000,
+              isClosable: true,
+            });
+          }
+        )
+        .catch((error) => ErrorHandler.logAxiosPostError(error))
+        .finally(() => {
+          setIsLoading(false);
+          setFileInputValue("");
+        });
+    }
   };
 
   return (
