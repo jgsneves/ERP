@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { ContasCorrente, Enderecos, Pessoas } from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
+import { useState } from "react";
 import AddressData from "../../components/AddressData";
 import MainContent from "../../components/Containers/MainContent";
 import FinancialData from "../../components/FinancialData";
@@ -43,6 +44,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 export default function Doctor({ doctor }: Props) {
+  const [activeTab, setActiveTab] = useState<number>(0);
+
   return (
     <MainContent>
       <Text fontSize="5xl" fontWeight={600}>
@@ -54,7 +57,7 @@ export default function Doctor({ doctor }: Props) {
         <ArrowBackIcon boxSize={8} mt="6" cursor="pointer" />
       </Link>
 
-      <Tabs mt={2}>
+      <Tabs mt={2} onChange={(index) => setActiveTab(index)} variant="enclosed">
         <TabList>
           <Tab>Sumário</Tab>
           <Tab>Dados financeiros</Tab>
@@ -67,13 +70,14 @@ export default function Doctor({ doctor }: Props) {
             <h1>sumário</h1>
           </TabPanel>
           <TabPanel>
-            <FinancialData
-              account={doctor.ContasCorrente}
-              pessoaId={doctor.Id}
-            />
+            <FinancialData isActive={activeTab === 1} pessoaId={doctor.Id} />
           </TabPanel>
           <TabPanel>
-            <AddressData pessoaId={doctor.Id} endereco={doctor.Endereco} />
+            <AddressData
+              pessoaId={doctor.Id}
+              isActive={activeTab === 2}
+              enderecoId={doctor.EnderecoId}
+            />
           </TabPanel>
           <TabPanel>
             <h1>Documentos</h1>

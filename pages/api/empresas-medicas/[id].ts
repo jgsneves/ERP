@@ -13,8 +13,6 @@ export default async function handler(
             Id: req.query.id as string,
           },
           include: {
-            ContasCorrentes: true,
-            Endereco: true,
             Socios: true,
           },
         });

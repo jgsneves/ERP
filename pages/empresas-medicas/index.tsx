@@ -16,26 +16,19 @@ import {
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import useSWR from "swr";
 import { fetcher } from "../../utils/fetcher";
-import { EmpresasMedicasResponse } from "../api/empresasmedicas";
+import { EmpresasMedicasResponse } from "../api/empresas-medicas";
 import { useRouter } from "next/router";
 import { formatCNPJ } from "@brazilian-utils/brazilian-utils";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function EmpresasMedicasContainer() {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [pageAmount, setPageAmount] = useState<number>(1);
+  const [quantidade, setQuantidade] = useState<number>(10);
 
   const { data, isLoading } = useSWR<EmpresasMedicasResponse>(
-    `/api/empresasmedicas?pagina=${currentPage}`,
+    `/api/empresas-medicas?pagina=${currentPage}&quantidade=${quantidade}`,
     fetcher
   );
-
-  useEffect(() => {
-    if (data) {
-      setCurrentPage(data.pagina);
-      setPageAmount(data.totalPaginas);
-    }
-  }, [data]);
 
   const router = useRouter();
 
@@ -115,7 +108,7 @@ export default function EmpresasMedicasContainer() {
             <Text>Página: {currentPage}</Text>
             <Button
               variant="ghost"
-              isDisabled={currentPage === pageAmount}
+              isDisabled={currentPage === data.totalPaginas}
               onClick={() => setCurrentPage((state) => state + 1)}
             >
               Próxima <ArrowRightIcon boxSize={3} ml={2} />

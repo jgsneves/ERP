@@ -1,5 +1,5 @@
 import { Flex, VStack, Text, Alert, AlertIcon } from "@chakra-ui/react";
-import Doctor from "../Doctor/DoctorCard";
+import DoctorCard from "../Doctor/DoctorCard";
 import CreateNewDoctor from "./CreateNewDoctor";
 import { Pessoas } from "@prisma/client";
 import ContentTitle from "../Shared/ContentTitle";
@@ -16,13 +16,13 @@ export default function QuadroSocietario({
   socios,
 }: Props) {
   return (
-    <VStack alignItems="flex-start">
-      <ContentTitle title="Sócios" />
+    <VStack alignItems="flex-start" spacing={3}>
+      <Text as="b">Sócios</Text>
 
       <Flex wrap="wrap">
         {socios.length > 0 ? (
           socios.map((doc) => (
-            <Doctor
+            <DoctorCard
               key={doc.Id}
               id={doc.Id}
               CRM={doc.Crm}

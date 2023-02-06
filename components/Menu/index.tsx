@@ -24,7 +24,7 @@ export default function Menu() {
       spacing={5}
       alignItems="start"
     >
-      <Image src={brandLogo} alt="LysiMed" />
+      <Image src={brandLogo} alt="LysiMed" priority />
       <MenuButton selected={router.route === "/"} href="/" content="Métricas" />
       <MenuButton
         selected={router.route.includes("socios")}

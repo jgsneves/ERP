@@ -50,7 +50,7 @@ export default function CadastrarEmpresaMedica() {
   const handleSaveOnClick = () => {
     setIsLoading(true);
     axios
-      .post("/api/empresasmedicas", formData)
+      .post("/api/empresas-medicas", formData)
       .then(() => {
         toast({
           duration: 5000,

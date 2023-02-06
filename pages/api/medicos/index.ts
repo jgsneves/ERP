@@ -20,17 +20,18 @@ export default async function handler(
     case "GET":
       try {
         const pagina = parseInt(req.query.pagina as string) || 1;
-        const perPage = parseInt(req.query.perPage as string) || 10;
-        const empresaId = (req.query.empresaMedicaId as string) ?? "";
+        const quantidade = parseInt(req.query.quantidade as string) || 10;
+        const empresaMedicaId = req.query.empresaMedicaId;
 
         const whereClause = {
-          EmpresaMedicaId: empresaId.length === 0 ? undefined : empresaId,
+          EmpresaMedicaId:
+            typeof empresaMedicaId === "string" ? empresaMedicaId : undefined,
           Tipo: PessoasTipo.MEDICO,
         };
 
         const doctors = await prisma.pessoas.findMany({
-          skip: (pagina - 1) * perPage,
-          take: perPage,
+          skip: (pagina - 1) * quantidade,
+          take: quantidade,
           orderBy: {
             Nome: "asc",
           },
@@ -41,7 +42,7 @@ export default async function handler(
         });
 
         const count = doctors.length;
-        const totalPaginas = Math.ceil(count / perPage);
+        const totalPaginas = Math.ceil(count / quantidade);
         res.json({ pagina, totalPaginas, doctors });
       } catch (error) {
         res.status(500).send({ error });

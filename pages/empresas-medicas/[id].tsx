@@ -23,6 +23,7 @@ import AddressData from "../../components/AddressData";
 import QuadroSocietario from "../../components/MedicalCompany/QuadroSocietario";
 import Documentos from "../../components/MedicalCompany/Documentos";
 import { ErrorHandler } from "../../utils/ErrorHandler";
+import { useState } from "react";
 
 interface Company extends EmpresasMedicas {
   Endereco: Enderecos | null;
@@ -35,7 +36,7 @@ interface Props {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
-    const url = `${server}/api/empresasmedicas/${context.params?.id}`;
+    const url = `${server}/api/empresas-medicas/${context.params?.id}`;
 
     const result = await fetch(url, {
       method: "GET",
@@ -53,6 +54,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 export default function EmpresaMedica({ company }: Props) {
+  const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
+
   return (
     <MainContent>
       <Text fontSize="5xl" fontWeight={600}>
@@ -64,7 +67,11 @@ export default function EmpresaMedica({ company }: Props) {
         <ArrowBackIcon boxSize={8} mt="6" cursor="pointer" />
       </Link>
 
-      <Tabs mt={2}>
+      <Tabs
+        mt={2}
+        onChange={(index) => setActiveTabIndex(index)}
+        variant="enclosed"
+      >
         <TabList>
           <Tab>Dados da sociedade</Tab>
           <Tab>Dados financeiros</Tab>
@@ -86,14 +93,15 @@ export default function EmpresaMedica({ company }: Props) {
             {/* Dados financeiros */}
             <FinancialData
               empresaMedicaId={company.Id}
-              accounts={company.ContasCorrentes}
+              isActive={activeTabIndex === 1}
             />
           </TabPanel>
           <TabPanel>
             {/* Dados de endereço */}
             <AddressData
-              endereco={company.Endereco}
+              isActive={activeTabIndex === 2}
               empresaMedicaId={company.Id}
+              enderecoId={company.EnderecoId}
             />
           </TabPanel>
           <TabPanel>
@@ -106,7 +114,8 @@ export default function EmpresaMedica({ company }: Props) {
           </TabPanel>
           <TabPanel>
             {/* Documentos */}
-            <Documentos />
+            {/* <Documentos /> */}
+            <h1>documentos</h1>
           </TabPanel>
           <TabPanel>
             <h1>

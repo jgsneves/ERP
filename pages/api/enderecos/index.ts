@@ -8,30 +8,34 @@ export default async function handler(
   switch (req.method) {
     case "POST":
       try {
-        const result = await prisma.enderecos.create({ data: req.body });
+        const pessoaId = req.body.PessoaId;
+        const empresaMedicaId = req.body.EmpresaMedicaId;
 
-        if (req.body.PessoaId) {
-          await prisma.pessoas.update({
-            where: {
-              Id: req.body.PessoaId,
-            },
-            data: {
-              EnderecoId: result.Id,
-            },
-          });
-        } else if (req.body.EmpresaMedicaId) {
-          await prisma.empresasMedicas.update({
-            where: {
-              Id: req.body.EmpresaMedicaId,
-            },
-            data: {
-              EnderecoId: result.Id,
-            },
-          });
-        }
+        const result = await prisma.enderecos.create({
+          data: {
+            Pessoa:
+              typeof pessoaId === "string"
+                ? {
+                    connect: {
+                      Id: pessoaId,
+                    },
+                  }
+                : undefined,
+            EmpresaMedica:
+              typeof empresaMedicaId === "string"
+                ? {
+                    connect: {
+                      Id: empresaMedicaId,
+                    },
+                  }
+                : undefined,
+            ...req.body,
+          },
+        });
 
         res.json(result);
       } catch (error) {
+        console.log({ error });
         res.status(500).send(error);
       }
       break;

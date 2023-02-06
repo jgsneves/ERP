@@ -27,7 +27,7 @@ export default function Medicos() {
   const router = useRouter();
 
   const { data, isLoading } = useSWR<MedicosResponse>(
-    `/api/medicos/?pagina=${currentPage}`,
+    `/api/medicos?pagina=${currentPage}`,
     fetcher
   );
 

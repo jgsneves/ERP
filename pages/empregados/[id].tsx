@@ -44,7 +44,7 @@ interface Props {
 }
 
 export default function Empregado({ employee }: Props) {
-  const [activeTabIndex, setActiveTabIndex] = useState<number | undefined>(0);
+  const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
 
   return (
     <MainContent>

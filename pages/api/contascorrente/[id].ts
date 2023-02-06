@@ -17,8 +17,7 @@ export default async function handler(
         });
 
         if (result) {
-          res.json(result);
-          return;
+          return res.json(result);
         }
 
         res.status(404).send({ message: "Conta corrente não encontrada." });
