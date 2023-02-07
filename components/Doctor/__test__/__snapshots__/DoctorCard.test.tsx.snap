@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DoctorCard test suite should render 1`] = `
+<DocumentFragment>
+  <a
+    href="/medicos/1"
+  >
+    <div
+      class="css-1naneae"
+    >
+      <span
+        class="chakra-avatar css-1ruhx4w"
+      >
+        <div
+          aria-label="José da Silva"
+          class="chakra-avatar__initials css-0"
+          role="img"
+        >
+          Jd
+        </div>
+      </span>
+      <p
+        class="chakra-text css-0"
+      >
+        Nome: José da Silva
+      </p>
+      <p
+        class="chakra-text css-0"
+      >
+        CRM: 2020
+      </p>
+      <p
+        class="chakra-text css-0"
+      >
+        Empresa médica: ABCD Empresa Médica
+      </p>
+    </div>
+  </a>
+</DocumentFragment>
+`;

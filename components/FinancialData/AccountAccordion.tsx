@@ -15,6 +15,7 @@ import { ContasCorrente } from "@prisma/client";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { BoundedMutationHelper } from "../../utils/BoundedMutationHelper";
 import { EnumFormat } from "../../utils/EnumFormat";
 import { ErrorHandler } from "../../utils/ErrorHandler";
 
@@ -27,7 +28,7 @@ export default function AccountAccordion({ account, position }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const toast = useToast();
-  const router = useRouter();
+  const mutation = BoundedMutationHelper.getFinancialDataMutator();
 
   const handleDeleteOnClick = () => {
     setIsLoading(true);
@@ -35,7 +36,7 @@ export default function AccountAccordion({ account, position }: Props) {
     axios
       .delete(`/api/contascorrente/${account.Id}`)
       .then(
-        () => router.reload(),
+        () => mutation(),
         () => {
           toast({
             duration: 9000,

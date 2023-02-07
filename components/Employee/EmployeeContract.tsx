@@ -1,4 +1,11 @@
-import { Button, FormLabel, Spinner, useToast, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  FormLabel,
+  Spinner,
+  useToast,
+  VStack,
+} from "@chakra-ui/react";
 import ContentTitle from "../Shared/ContentTitle";
 import useSwr from "swr";
 import { fetcher } from "../../utils/fetcher";
@@ -102,7 +109,15 @@ export default function EmployeeContract({
       <ContentTitle title="Contrato de trabalho" />
       {fetchLoading && <Spinner />}
       {data && data.documentos.length > 0 && (
-        <Document tipo={data.documentos[0].Tipo} url={data.documentos[0].Url} />
+        <Flex gap={2}>
+          {data.documentos.map((documento) => (
+            <Document
+              key={documento.Id}
+              tipo={documento.Tipo}
+              url={documento.Url}
+            />
+          ))}
+        </Flex>
       )}
       {data?.documentos.length === 0 && (
         <>

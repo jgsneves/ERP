@@ -19,7 +19,7 @@ interface Props {
   isActive: boolean;
 }
 
-interface Observacoes extends Omit<EmpregadosObservacoes, "Data"> {
+export interface Observacoes extends Omit<EmpregadosObservacoes, "Data"> {
   Data: string;
 }
 
