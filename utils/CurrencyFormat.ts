@@ -10,13 +10,6 @@ export class CurrencyFormat {
   }
 
   /**
-   * Retorna um número com duas casas decimais
-   */
-  public static formatNumberTwoDecimals(value: number): number {
-    return Number(value.toFixed(2));
-  }
-
-  /**
    * Máscara para ser usado em input de text que mostra dinheiro
    */
   public static moneyMask(value: string): string {
