@@ -18,11 +18,14 @@ export default function Menu() {
       borderRight="4px"
       borderColor="gray.200"
       flex="1"
-      maxWidth="300px"
-      minHeight="100vh"
+      w="300px"
+      h="100vh"
       p={3}
       spacing={5}
       alignItems="start"
+      position="fixed"
+      top="0"
+      left="0"
     >
       <Image src={brandLogo} alt="LysiMed" priority />
       <MenuButton selected={router.route === "/"} href="/" content="Métricas" />

@@ -5,5 +5,9 @@ interface Props {
 }
 
 export default function MainContent({ children }: Props) {
-  return <Box padding="4">{children}</Box>;
+  return (
+    <Box padding="4" ml="300px">
+      {children}
+    </Box>
+  );
 }
