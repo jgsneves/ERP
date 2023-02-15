@@ -1,3 +1,11 @@
-export default function Home() {
-  return <h1>Hello world!</h1>;
-}
+import MainContent from "components/Containers/MainContent";
+
+const Home = () => {
+  return (
+    <MainContent>
+      <h1>hello world</h1>
+    </MainContent>
+  );
+};
+
+export default Home;

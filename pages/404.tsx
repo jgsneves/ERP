@@ -1,7 +1,7 @@
 import { Text, VStack } from "@chakra-ui/react";
 import MainContent from "components/Containers/MainContent";
 
-export default function Custom404() {
+const Custom404 = () => {
   return (
     <MainContent>
       <VStack spacing={5}>
@@ -10,4 +10,6 @@ export default function Custom404() {
       </VStack>
     </MainContent>
   );
-}
+};
+
+export default Custom404;
