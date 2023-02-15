@@ -13,6 +13,7 @@ export default async function handler(
 
         const result = await prisma.enderecos.create({
           data: {
+            // transaction: update pessoa
             Pessoa:
               typeof pessoaId === "string"
                 ? {
@@ -21,6 +22,7 @@ export default async function handler(
                     },
                   }
                 : undefined,
+            // transaction: update pessoa
             EmpresaMedica:
               typeof empresaMedicaId === "string"
                 ? {

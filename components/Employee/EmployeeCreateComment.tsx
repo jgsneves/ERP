@@ -16,14 +16,18 @@ interface Props {
   empregadoId: string;
 }
 
+const getInitialStateFormData = (empregadoId: string) => ({
+  Conteudo: "",
+  Data: new Date(),
+  EmpregadoId: empregadoId,
+  Id: uuid4(),
+});
+
 export default function EmployeeCreateComment({ empregadoId }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formData, setFormData] = useState<EmpregadosObservacoes>({
-    Conteudo: "",
-    Data: new Date(),
-    EmpregadoId: empregadoId,
-    Id: uuid4(),
-  });
+  const [formData, setFormData] = useState<EmpregadosObservacoes>(
+    getInitialStateFormData(empregadoId)
+  );
 
   const toast = useToast();
   const mutation = BoundedMutationHelper.getEmployeeObservacoesMutator();
@@ -58,7 +62,10 @@ export default function EmployeeCreateComment({ empregadoId }: Props) {
         }
       )
       .catch((error) => ErrorHandler.logAxiosPostError(error))
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        setIsLoading(false);
+        setFormData(getInitialStateFormData(empregadoId));
+      });
   };
 
   return (
