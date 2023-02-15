@@ -14,8 +14,8 @@ import FinancialData from "../../components/FinancialData";
 import PersonalData from "../../components/Partner/PersonalData";
 import AddressData from "../../components/AddressData";
 import { server } from "../../config/server";
-import { useRouter } from "next/router";
 import { Partner } from ".";
+import { useState } from "react";
 
 interface Props {
   partner: Partner;
@@ -36,7 +36,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 export default function Socio({ partner }: Props) {
-  const router = useRouter();
+  const [activeIndex, setActiveIndex] = useState<number>(0);
 
   return (
     <MainContent>
@@ -49,7 +49,7 @@ export default function Socio({ partner }: Props) {
         <ArrowBackIcon boxSize={8} mt="6" cursor="pointer" />
       </Link>
 
-      <Tabs mt={2}>
+      <Tabs mt={2} onChange={(index) => setActiveIndex(index)}>
         <TabList>
           <Tab>Dados pessoais</Tab>
           <Tab>Dados financeiros</Tab>
@@ -67,16 +67,13 @@ export default function Socio({ partner }: Props) {
             />
           </TabPanel>
           <TabPanel>
-            <FinancialData
-              accountId={partner.ContaCorrenteId}
-              pessoaId={partner.Id}
-            />
+            <FinancialData pessoaId={partner.Id} isActive={activeIndex === 1} />
           </TabPanel>
           <TabPanel>
             <AddressData
-              addressId={partner.EnderecoId}
               pessoaId={partner.Id}
-              pushRouteAfterRequest={() => router.push(`/socios/${partner.Id}`)}
+              isActive={activeIndex === 2}
+              enderecoId={partner.EnderecoId}
             />
           </TabPanel>
         </TabPanels>
