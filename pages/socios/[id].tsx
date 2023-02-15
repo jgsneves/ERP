@@ -9,11 +9,11 @@ import {
 } from "@chakra-ui/react";
 import { GetServerSidePropsContext } from "next";
 import Link from "next/link";
-import MainContent from "../../components/Containers/MainContent";
-import FinancialData from "../../components/FinancialData";
-import PersonalData from "../../components/Partner/PersonalData";
-import AddressData from "../../components/AddressData";
-import { server } from "../../config/server";
+import MainContent from "components/Containers/MainContent";
+import FinancialData from "components/FinancialData";
+import PersonalData from "components/Partner/PersonalData";
+import AddressData from "components/AddressData";
+import { server } from "config/server";
 import { Partner } from ".";
 import { useState } from "react";
 

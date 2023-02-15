@@ -1,6 +1,6 @@
 import { Button, Flex, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { Employee } from "../../pages/empregados";
+import { Employee } from "pages/empregados";
 import EmployeeCard from "./EmployeeCard";
 
 interface Props {

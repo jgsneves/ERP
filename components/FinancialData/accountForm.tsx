@@ -8,12 +8,11 @@ import {
 } from "@chakra-ui/react";
 import { ContasCorrente, TipoChavePix } from "@prisma/client";
 import axios, { AxiosError } from "axios";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { BrasilApi } from "services/BrasilApi";
+import { BoundedMutationHelper } from "utils/BoundedMutationHelper";
+import { ErrorHandler } from "utils/ErrorHandler";
 import { v4 as uuid4 } from "uuid";
-import { BrasilApi } from "../../services/BrasilApi";
-import { BoundedMutationHelper } from "../../utils/BoundedMutationHelper";
-import { ErrorHandler } from "../../utils/ErrorHandler";
 
 interface Props {
   pessoaId?: string;

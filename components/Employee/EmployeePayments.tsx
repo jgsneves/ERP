@@ -10,9 +10,9 @@ import {
 import EmployeeCreatePayment from "./EmployeeCreatePayment";
 import useSwr from "swr";
 import { Documentos, EmpregadosPagamentos } from "@prisma/client";
-import { fetcher } from "../../utils/fetcher";
 import EmployeePaymentAccordion from "./EmployeePaymentAccordion";
-import { BoundedMutationHelper } from "../../utils/BoundedMutationHelper";
+import { fetcher } from "utils/fetcher";
+import { BoundedMutationHelper } from "utils/BoundedMutationHelper";
 
 export interface Pagamento
   extends Omit<EmpregadosPagamentos, "CriadoEm" | "Valor"> {

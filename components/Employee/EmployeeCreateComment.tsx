@@ -9,8 +9,8 @@ import { EmpregadosObservacoes } from "@prisma/client";
 import React, { useState } from "react";
 import { v4 as uuid4 } from "uuid";
 import axios from "axios";
-import { ErrorHandler } from "../../utils/ErrorHandler";
-import { BoundedMutationHelper } from "../../utils/BoundedMutationHelper";
+import { BoundedMutationHelper } from "utils/BoundedMutationHelper";
+import { ErrorHandler } from "utils/ErrorHandler";
 
 interface Props {
   empregadoId: string;

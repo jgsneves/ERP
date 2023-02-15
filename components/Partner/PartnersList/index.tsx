@@ -1,6 +1,6 @@
 import { VStack, Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { Partner as PartnerInterface } from "../../../pages/socios";
+import { Partner as PartnerInterface } from "pages/socios";
 import Partner from "../Partner";
 
 interface Props {

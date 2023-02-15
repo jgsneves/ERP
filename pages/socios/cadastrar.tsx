@@ -1,4 +1,4 @@
-import MainContent from "../../components/Containers/MainContent";
+import MainContent from "components/Containers/MainContent";
 import {
   Button,
   FormControl,
@@ -14,7 +14,7 @@ import { PessoasTipo } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
-import { DateFormat } from "../../utils/DateFormat";
+import { DateFormat } from "utils/DateFormat";
 
 interface FormData {
   Id: string;

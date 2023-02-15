@@ -1,4 +1,4 @@
-import MainContent from "../../components/Containers/MainContent";
+import MainContent from "components/Containers/MainContent";
 import {
   Link,
   Tab,
@@ -10,19 +10,18 @@ import {
 } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { GetServerSidePropsContext } from "next";
-import { server } from "../../config/server";
+import { server } from "config/server";
 import {
   ContasCorrente,
   EmpresasMedicas,
   Enderecos,
   Pessoas,
 } from "@prisma/client";
-import CompanyData from "../../components/MedicalCompany/CompanyData";
-import FinancialData from "../../components/FinancialData";
-import AddressData from "../../components/AddressData";
-import QuadroSocietario from "../../components/MedicalCompany/QuadroSocietario";
-import Documentos from "../../components/MedicalCompany/Documentos";
-import { ErrorHandler } from "../../utils/ErrorHandler";
+import CompanyData from "components/MedicalCompany/CompanyData";
+import FinancialData from "components/FinancialData";
+import AddressData from "components/AddressData";
+import QuadroSocietario from "components/MedicalCompany/QuadroSocietario";
+import { ErrorHandler } from "utils/ErrorHandler";
 import { useState } from "react";
 
 interface Company extends EmpresasMedicas {

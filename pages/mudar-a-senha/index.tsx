@@ -9,7 +9,7 @@ import {
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import MainContent from "../../components/Containers/MainContent";
+import MainContent from "components/Containers/MainContent";
 
 export default function MudarSenha() {
   const [formData, setFormData] = useState<string>("");

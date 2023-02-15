@@ -1,6 +1,6 @@
 import Image from "next/image";
 import MenuButton from "./button";
-import brandLogo from "../../public/lysimed.png";
+import brandLogo from "public/lysimed.png";
 import { Button, Flex, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";

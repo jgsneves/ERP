@@ -15,13 +15,13 @@ import {
   EmpregadosPagamentosTipo,
 } from "@prisma/client";
 import axios from "axios";
+import ContentTitle from "components/Shared/ContentTitle";
 import { useState } from "react";
+import { UploadFileService } from "services/UploadFileService";
+import { BoundedMutationHelper } from "utils/BoundedMutationHelper";
+import { CurrencyFormat } from "utils/CurrencyFormat";
+import { ErrorHandler } from "utils/ErrorHandler";
 import { v4 as uuid4 } from "uuid";
-import { UploadFileService } from "../../services/UploadFileService";
-import { BoundedMutationHelper } from "../../utils/BoundedMutationHelper";
-import { CurrencyFormat } from "../../utils/CurrencyFormat";
-import { ErrorHandler } from "../../utils/ErrorHandler";
-import ContentTitle from "../Shared/ContentTitle";
 
 interface Props {
   empregadoId: string;

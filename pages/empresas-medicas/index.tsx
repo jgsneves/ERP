@@ -1,4 +1,4 @@
-import MainContent from "../../components/Containers/MainContent";
+import MainContent from "components/Containers/MainContent";
 import {
   Button,
   Flex,
@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import useSWR from "swr";
-import { fetcher } from "../../utils/fetcher";
+import { fetcher } from "utils/fetcher";
 import { EmpresasMedicasResponse } from "../api/empresas-medicas";
 import { useRouter } from "next/router";
 import { formatCNPJ } from "@brazilian-utils/brazilian-utils";

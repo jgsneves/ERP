@@ -5,8 +5,8 @@ import { Button, Input, Text, useToast } from "@chakra-ui/react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 import { State } from ".";
-import { server } from "../../config/server";
-import { ErrorHandler } from "../../utils/ErrorHandler";
+import { server } from "config/server";
+import { ErrorHandler } from "utils/ErrorHandler";
 
 interface Props {
   setState: Dispatch<SetStateAction<State>>;

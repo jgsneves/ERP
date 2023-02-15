@@ -8,12 +8,12 @@ import {
 } from "@chakra-ui/react";
 import { Documentos, DocumentoTipo } from "@prisma/client";
 import { useState } from "react";
-import ContentTitle from "../Shared/ContentTitle";
 import { v4 as uuid4 } from "uuid";
 import axios from "axios";
-import { ErrorHandler } from "../../utils/ErrorHandler";
-import { UploadFileService } from "../../services/UploadFileService";
-import { BoundedMutationHelper } from "../../utils/BoundedMutationHelper";
+import ContentTitle from "components/Shared/ContentTitle";
+import { UploadFileService } from "services/UploadFileService";
+import { BoundedMutationHelper } from "utils/BoundedMutationHelper";
+import { ErrorHandler } from "utils/ErrorHandler";
 
 interface Props {
   employeeId: string;

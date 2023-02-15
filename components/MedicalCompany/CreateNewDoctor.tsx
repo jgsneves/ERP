@@ -10,10 +10,10 @@ import { Pessoas } from "@prisma/client";
 import React, { useState } from "react";
 import { v4 as uuid4 } from "uuid";
 import { formatCPF } from "@brazilian-utils/brazilian-utils";
-import { DateFormat } from "../../utils/DateFormat";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { ErrorHandler } from "../../utils/ErrorHandler";
+import { DateFormat } from "utils/DateFormat";
+import { ErrorHandler } from "utils/ErrorHandler";
 
 interface Props {
   empresaId: string;

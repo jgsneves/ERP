@@ -1,7 +1,7 @@
 import { Grid, Avatar } from "@chakra-ui/react";
 import Link from "next/link";
 import { Text } from "@chakra-ui/react";
-import { CurrencyFormat } from "../../utils/CurrencyFormat";
+import { CurrencyFormat } from "utils/CurrencyFormat";
 
 interface Props {
   name: string;

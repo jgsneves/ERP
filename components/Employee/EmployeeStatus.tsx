@@ -13,10 +13,10 @@ import {
 } from "@chakra-ui/react";
 import { StatusAdmissao } from "@prisma/client";
 import axios from "axios";
+import ContentTitle from "components/Shared/ContentTitle";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { ErrorHandler } from "../../utils/ErrorHandler";
-import ContentTitle from "../Shared/ContentTitle";
+import { ErrorHandler } from "utils/ErrorHandler";
 
 interface Props {
   statusAdmissao: StatusAdmissao | null;

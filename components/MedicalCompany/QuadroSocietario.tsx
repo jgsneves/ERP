@@ -1,8 +1,8 @@
 import { Flex, VStack, Text, Alert, AlertIcon } from "@chakra-ui/react";
-import DoctorCard from "../Doctor/DoctorCard";
-import CreateNewDoctor from "./CreateNewDoctor";
 import { Pessoas } from "@prisma/client";
-import ContentTitle from "../Shared/ContentTitle";
+import DoctorCard from "components/Doctor/DoctorCard";
+import ContentTitle from "components/Shared/ContentTitle";
+import CreateNewDoctor from "./CreateNewDoctor";
 
 interface Props {
   empresaId: string;

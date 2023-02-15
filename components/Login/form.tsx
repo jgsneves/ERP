@@ -13,7 +13,7 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 import { State } from ".";
 import { useRouter } from "next/router";
-import { ErrorHandler } from "../../utils/ErrorHandler";
+import { ErrorHandler } from "utils/ErrorHandler";
 
 interface Props {
   setState: Dispatch<SetStateAction<State>>;

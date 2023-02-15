@@ -1,9 +1,9 @@
 import { Text } from "@chakra-ui/react";
 import { Pessoas } from "@prisma/client";
-import MainContent from "../../components/Containers/MainContent";
-import EmptyEntityList from "../../components/EmptyEntityList";
-import PartnersList from "../../components/Partner/PartnersList";
-import { server } from "../../config/server";
+import MainContent from "components/Containers/MainContent";
+import EmptyEntityList from "components/EmptyEntityList";
+import PartnersList from "components/Partner/PartnersList";
+import { server } from "config/server";
 
 export interface Partner
   extends Omit<

@@ -1,4 +1,4 @@
-import MainContent from "../../components/Containers/MainContent";
+import MainContent from "components/Containers/MainContent";
 import {
   Button,
   FormControl,
@@ -16,9 +16,9 @@ import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { formatCPF } from "@brazilian-utils/brazilian-utils";
-import { DateFormat } from "../../utils/DateFormat";
-import { ErrorHandler } from "../../utils/ErrorHandler";
-import { CurrencyFormat } from "../../utils/CurrencyFormat";
+import { DateFormat } from "utils/DateFormat";
+import { ErrorHandler } from "utils/ErrorHandler";
+import { CurrencyFormat } from "utils/CurrencyFormat";
 import { parseCurrency } from "@brazilian-utils/brazilian-utils";
 
 interface Empregado extends Omit<Pessoas, "Salario"> {

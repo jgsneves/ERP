@@ -1,5 +1,5 @@
 import { Text, VStack } from "@chakra-ui/react";
-import MainContent from "../components/Containers/MainContent";
+import MainContent from "components/Containers/MainContent";
 
 export default function Custom404() {
   return (

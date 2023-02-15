@@ -21,15 +21,15 @@ import {
   AlertIcon,
 } from "@chakra-ui/react";
 import { DocumentoTipo } from "@prisma/client";
+import ContentTitle from "components/Shared/ContentTitle";
+import { GetDocumentosResponse } from "pages/api/documentos";
 import { useState } from "react";
 import useSWR from "swr";
-import { GetDocumentosResponse } from "../../pages/api/documentos";
-import { BoundedMutationHelper } from "../../utils/BoundedMutationHelper";
-import { DateFormat } from "../../utils/DateFormat";
-import { EnumFormat } from "../../utils/EnumFormat";
-import { ErrorHandler } from "../../utils/ErrorHandler";
-import { fetcher } from "../../utils/fetcher";
-import ContentTitle from "../Shared/ContentTitle";
+import { BoundedMutationHelper } from "utils/BoundedMutationHelper";
+import { DateFormat } from "utils/DateFormat";
+import { EnumFormat } from "utils/EnumFormat";
+import { ErrorHandler } from "utils/ErrorHandler";
+import { fetcher } from "utils/fetcher";
 
 interface Props {
   isActive: boolean;

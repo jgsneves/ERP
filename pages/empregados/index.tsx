@@ -1,10 +1,10 @@
 import { Text } from "@chakra-ui/react";
 import { Pessoas } from "@prisma/client";
-import MainContent from "../../components/Containers/MainContent";
-import EmployeesList from "../../components/Employee/EmployeesList";
-import EmptyEntityList from "../../components/EmptyEntityList";
-import { server } from "../../config/server";
-import { ErrorHandler } from "../../utils/ErrorHandler";
+import MainContent from "components/Containers/MainContent";
+import EmployeesList from "components/Employee/EmployeesList";
+import EmptyEntityList from "components/EmptyEntityList";
+import { server } from "config/server";
+import { ErrorHandler } from "utils/ErrorHandler";
 
 export interface Employee
   extends Omit<

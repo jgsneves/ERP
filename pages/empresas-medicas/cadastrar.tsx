@@ -1,4 +1,4 @@
-import MainContent from "../../components/Containers/MainContent";
+import MainContent from "components/Containers/MainContent";
 import {
   Button,
   FormControl,
@@ -12,7 +12,7 @@ import {
 import React, { useState } from "react";
 import { EmpresasMedicas } from "@prisma/client";
 import { v4 as uuid4 } from "uuid";
-import { BrasilApi } from "../../services/BrasilApi";
+import { BrasilApi } from "services/BrasilApi";
 import { useRouter } from "next/router";
 import axios, { AxiosError } from "axios";
 import { isValidCNPJ, formatCNPJ } from "@brazilian-utils/brazilian-utils";

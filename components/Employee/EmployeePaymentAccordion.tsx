@@ -12,22 +12,22 @@ import {
   useToast,
   VStack,
 } from "@chakra-ui/react";
-import { DateFormat } from "../../utils/DateFormat";
 import { Pagamento } from "./EmployeePayments";
-import { CurrencyFormat } from "../../utils/CurrencyFormat";
-import { EnumFormat } from "../../utils/EnumFormat";
 import { useState } from "react";
 import {
   Documentos,
   EmpregadosPagamentos,
   EmpregadosPagamentosTipo,
 } from "@prisma/client";
-import Document from "../Document";
-import { UploadFileService } from "../../services/UploadFileService";
+import Document from "components/Document";
 import { v4 } from "uuid";
 import axios from "axios";
-import { ErrorHandler } from "../../utils/ErrorHandler";
-import { BoundedMutationHelper } from "../../utils/BoundedMutationHelper";
+import { UploadFileService } from "services/UploadFileService";
+import { BoundedMutationHelper } from "utils/BoundedMutationHelper";
+import { CurrencyFormat } from "utils/CurrencyFormat";
+import { DateFormat } from "utils/DateFormat";
+import { EnumFormat } from "utils/EnumFormat";
+import { ErrorHandler } from "utils/ErrorHandler";
 
 interface Props {
   pagamento: Pagamento;

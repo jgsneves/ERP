@@ -4,8 +4,8 @@ import ContentTitle from "../Shared/ContentTitle";
 import AccountAccordion from "./AccountAccordion";
 import AccountForm from "./AccountForm";
 import useSWR from "swr";
-import { fetcher } from "../../utils/fetcher";
-import { BoundedMutationHelper } from "../../utils/BoundedMutationHelper";
+import { BoundedMutationHelper } from "utils/BoundedMutationHelper";
+import { fetcher } from "utils/fetcher";
 
 interface Props {
   pessoaId?: string;

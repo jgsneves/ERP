@@ -1,6 +1,6 @@
 import { Stat, StatNumber, VStack } from "@chakra-ui/react";
-import { CurrencyFormat } from "../../utils/CurrencyFormat";
-import ContentTitle from "../Shared/ContentTitle";
+import ContentTitle from "components/Shared/ContentTitle";
+import { CurrencyFormat } from "utils/CurrencyFormat";
 
 interface Props {
   salary: number | null;

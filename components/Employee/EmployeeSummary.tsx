@@ -10,16 +10,16 @@ import {
 } from "@chakra-ui/react";
 import { Pessoas } from "@prisma/client";
 import axios from "axios";
+import ContentTitle from "components/Shared/ContentTitle";
 import { useRouter } from "next/router";
+import { Employee } from "pages/empregados";
 import React, { useState } from "react";
-import { DateFormat } from "../../utils/DateFormat";
-import { ErrorHandler } from "../../utils/ErrorHandler";
-import ContentTitle from "../Shared/ContentTitle";
+import { DateFormat } from "utils/DateFormat";
+import { ErrorHandler } from "utils/ErrorHandler";
 import EmployeeContract from "./EmployeeContract";
 import EmployeeSalary from "./EmployeeSalary";
 import EmployeeStatus from "./EmployeeStatus";
 import EmployeeWorkType from "./EmployeeWorkType";
-import { Employee } from "../../pages/empregados/index";
 
 interface Props {
   employee: Employee;

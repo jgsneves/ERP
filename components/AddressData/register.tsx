@@ -12,9 +12,9 @@ import {
 } from "@chakra-ui/react";
 import { isValidCEP } from "@brazilian-utils/brazilian-utils";
 import axios from "axios";
-import { BrasilApi } from "../../services/BrasilApi";
 import { useRouter } from "next/router";
-import { ErrorHandler } from "../../utils/ErrorHandler";
+import { BrasilApi } from "services/BrasilApi";
+import { ErrorHandler } from "utils/ErrorHandler";
 
 interface Props {
   empresaMedicaId?: string;

@@ -11,10 +11,10 @@ import {
 import { ContasCorrente, Enderecos, Pessoas } from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
 import { useState } from "react";
-import AddressData from "../../components/AddressData";
-import MainContent from "../../components/Containers/MainContent";
-import FinancialData from "../../components/FinancialData";
-import { server } from "../../config/server";
+import AddressData from "components/AddressData";
+import MainContent from "components/Containers/MainContent";
+import FinancialData from "components/FinancialData";
+import { server } from "config/server";
 
 export interface DoctorEntity
   extends Omit<

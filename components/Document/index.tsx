@@ -1,8 +1,8 @@
 import { Text, VStack } from "@chakra-ui/react";
 import { DocumentoTipo } from "@prisma/client";
-import { EnumFormat } from "../../utils/EnumFormat";
-import pdfImage from "../../public/pdf-file-image.png";
+import pdfImage from "public/pdf-file-image.png";
 import Image from "next/image";
+import { EnumFormat } from "utils/EnumFormat";
 
 interface Props {
   url: string;

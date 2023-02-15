@@ -9,8 +9,8 @@ import { ChakraProvider, Spinner } from "@chakra-ui/react";
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { SessionContextProvider, Session } from "@supabase/auth-helpers-react";
 
-import Layout from "../components/Layout";
-import Loading from "../components/Layout/loading";
+import Layout from "components/Layout";
+import Loading from "components/Layout/loading";
 
 export default function App({
   Component,

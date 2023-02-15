@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { Flex, VStack } from "@chakra-ui/react";
 
-import Lysi from "../../public/lysi.jpg";
+import Lysi from "public/lysi.jpg";
 import Form from "./form";
 import ResetPassword from "./resetPassword";
 

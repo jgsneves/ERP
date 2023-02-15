@@ -6,17 +6,17 @@ import {
   useToast,
   VStack,
 } from "@chakra-ui/react";
-import ContentTitle from "../Shared/ContentTitle";
 import useSwr from "swr";
-import { fetcher } from "../../utils/fetcher";
 import { Documentos, DocumentoTipo } from "@prisma/client";
-import Document from "../Document";
-import { GetDocumentosResponse } from "../../pages/api/documentos";
+import Document from "components/Document";
 import React, { useState } from "react";
-import { UploadFileService } from "../../services/UploadFileService";
 import axios from "axios";
 import { v4 } from "uuid";
-import { ErrorHandler } from "../../utils/ErrorHandler";
+import ContentTitle from "components/Shared/ContentTitle";
+import { GetDocumentosResponse } from "pages/api/documentos";
+import { UploadFileService } from "services/UploadFileService";
+import { ErrorHandler } from "utils/ErrorHandler";
+import { fetcher } from "utils/fetcher";
 
 interface Props {
   empregadoId: string;

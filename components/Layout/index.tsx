@@ -4,10 +4,9 @@ import Head from "next/head";
 import { Box, Flex, Spinner } from "@chakra-ui/react";
 
 import { useSessionContext } from "@supabase/auth-helpers-react";
-
-import Menu from "../Menu";
-import Login from "../Login";
+import Login from "components/Login";
 import Loading from "./loading";
+import Menu from "components/Menu";
 
 const inter = Inter({ subsets: ["latin"] });
 

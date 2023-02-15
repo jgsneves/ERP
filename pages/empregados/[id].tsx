@@ -11,14 +11,14 @@ import { GetServerSidePropsContext } from "next";
 import Link from "next/link";
 import { useState } from "react";
 import { Employee } from ".";
-import AddressData from "../../components/AddressData";
-import MainContent from "../../components/Containers/MainContent";
-import EmployeePayments from "../../components/Employee/EmployeePayments";
-import EmployeePerformance from "../../components/Employee/EmployeePerformance";
-import EmployeeSummary from "../../components/Employee/EmployeeSummary";
-import FinancialData from "../../components/FinancialData";
-import { server } from "../../config/server";
-import { ErrorHandler } from "../../utils/ErrorHandler";
+import AddressData from "components/AddressData";
+import MainContent from "components/Containers/MainContent";
+import EmployeePayments from "components/Employee/EmployeePayments";
+import EmployeePerformance from "components/Employee/EmployeePerformance";
+import EmployeeSummary from "components/Employee/EmployeeSummary";
+import FinancialData from "components/FinancialData";
+import { server } from "config/server";
+import { ErrorHandler } from "utils/ErrorHandler";
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   try {

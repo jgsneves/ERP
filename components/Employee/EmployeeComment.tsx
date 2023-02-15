@@ -1,5 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
-import { DateFormat } from "../../utils/DateFormat";
+import { DateFormat } from "utils/DateFormat";
 
 interface Props {
   date: string;

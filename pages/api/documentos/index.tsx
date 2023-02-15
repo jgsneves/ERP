@@ -1,6 +1,6 @@
 import { Documentos, DocumentoTipo } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import prisma from "../../../services/Prisma";
+import prisma from "services/Prisma";
 
 export interface DocumentoWithDate extends Omit<Documentos, "CriadoEm"> {
   CriadoEm: string;

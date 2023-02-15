@@ -12,10 +12,10 @@ import {
 import { Enderecos } from "@prisma/client";
 import axios from "axios";
 import React, { Dispatch, SetStateAction, useState } from "react";
-import { BrasilApi } from "../../services/BrasilApi";
 import { useRouter } from "next/router";
-import { ErrorHandler } from "../../utils/ErrorHandler";
 import { ComponentState } from "./address";
+import { BrasilApi } from "services/BrasilApi";
+import { ErrorHandler } from "utils/ErrorHandler";
 
 interface Props {
   endereco: Enderecos | undefined;

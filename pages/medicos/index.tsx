@@ -1,4 +1,4 @@
-import MainContent from "../../components/Containers/MainContent";
+import MainContent from "components/Containers/MainContent";
 import {
   Button,
   Flex,
@@ -16,7 +16,7 @@ import { formatCPF } from "@brazilian-utils/brazilian-utils";
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
-import { fetcher } from "../../utils/fetcher";
+import { fetcher } from "utils/fetcher";
 import { MedicosResponse } from "../api/medicos";
 import { useRouter } from "next/router";
 

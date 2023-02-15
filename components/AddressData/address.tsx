@@ -2,8 +2,8 @@ import { Button, Spinner, Text, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import EditAddress from "./editAddress";
 import useSwr from "swr";
-import { fetcher } from "../../utils/fetcher";
 import { Enderecos } from "@prisma/client";
+import { fetcher } from "utils/fetcher";
 
 interface Props {
   enderecoId: string;

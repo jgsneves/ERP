@@ -1,6 +1,6 @@
 import { EmpresasMedicas, Pessoas, PessoasTipo } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import prisma from "../../../services/Prisma";
+import prisma from "services/Prisma";
 
 interface Doctors extends Pessoas {
   EmpresaMedica: EmpresasMedicas;

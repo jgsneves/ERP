@@ -6,13 +6,13 @@ import {
   Flex,
   Spinner,
 } from "@chakra-ui/react";
-import ContentTitle from "../Shared/ContentTitle";
+import useSWR from "swr";
+import { EmpregadosObservacoes } from "@prisma/client";
+import ContentTitle from "components/Shared/ContentTitle";
+import { BoundedMutationHelper } from "utils/BoundedMutationHelper";
+import { fetcher } from "utils/fetcher";
 import EmployeeComment from "./EmployeeComment";
 import EmployeeCreateComment from "./EmployeeCreateComment";
-import useSWR from "swr";
-import { fetcher } from "../../utils/fetcher";
-import { BoundedMutationHelper } from "../../utils/BoundedMutationHelper";
-import { EmpregadosObservacoes } from "@prisma/client";
 
 interface Props {
   employeeId: string;

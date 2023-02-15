@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import prisma from "../../../services/Prisma";
+import prisma from "services/Prisma";
 
 export default async function handler(
   req: NextApiRequest,
@@ -36,7 +36,7 @@ export default async function handler(
           },
           data: body,
         });
-        res.json(result)
+        res.json(result);
       } catch (error) {
         res.status(500).send({ error });
       }
