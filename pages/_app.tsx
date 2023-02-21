@@ -28,7 +28,7 @@ export default function App({
     throw new Error("Forneça supabaseUrl e supabaseAnonKey");
   }
 
-  const client = createClient(supabaseUrl, supabaseAnonKey);
+  const [client] = useState(() => createClient(supabaseUrl, supabaseAnonKey));
 
   React.useEffect(() => {
     const start = () => {
