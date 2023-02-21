@@ -11,13 +11,28 @@ import { SessionContextProvider, Session } from "@supabase/auth-helpers-react";
 
 import Layout from "components/Layout";
 import Loading from "components/Layout/loading";
+import { createClient } from "@supabase/supabase-js";
 
 export default function App({
   Component,
   pageProps,
 }: AppProps<{ initialSession: Session }>) {
   const [loading, setLoading] = React.useState(false);
-  const [supabase] = useState(() => createBrowserSupabaseClient());
+
+  const supabaseUrl =
+    process.env.NODE_ENV === "production"
+      ? process.env.SUPABASE_URL
+      : process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey =
+    process.env.NODE_ENV === "production"
+      ? process.env.SUPABASE_ANON_KEY
+      : process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error("Forneça suapabaseUrl e supabaseAnonKey");
+  }
+
+  const client = createClient(supabaseUrl, supabaseAnonKey);
 
   React.useEffect(() => {
     const start = () => {
@@ -38,7 +53,7 @@ export default function App({
 
   return (
     <SessionContextProvider
-      supabaseClient={supabase}
+      supabaseClient={client}
       initialSession={pageProps.initialSession}
     >
       <ChakraProvider>
