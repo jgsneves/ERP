@@ -6,12 +6,11 @@ import { useState } from "react";
 import { Router } from "next/router";
 
 import { ChakraProvider, Spinner } from "@chakra-ui/react";
-import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { SessionContextProvider, Session } from "@supabase/auth-helpers-react";
 
 import Layout from "components/Layout";
 import Loading from "components/Layout/loading";
-import { createClient, SupabaseClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
 
 App.getInitialProps = async () => {
   const supabaseUrl =
@@ -23,8 +22,6 @@ App.getInitialProps = async () => {
     process.env.SUPABASE_ANON_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!supabaseAnonKey) throw new Error("Forneça a ANONKEY do supabase!");
-
-  console.log({ supabaseAnonKey, supabaseUrl });
 
   return {
     supabaseUrl,
