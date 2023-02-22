@@ -11,6 +11,7 @@ import { SessionContextProvider, Session } from "@supabase/auth-helpers-react";
 import Layout from "components/Layout";
 import Loading from "components/Layout/loading";
 import { createClient } from "@supabase/supabase-js";
+import { ErrorBoundery } from "components/ErrorBoundery/ErrorBoundery";
 
 App.getInitialProps = async () => {
   const supabaseUrl =
@@ -45,8 +46,6 @@ export default function App({
   const [loading, setLoading] = React.useState(false);
   const [client] = useState(() => createClient(supabaseUrl, supabaseAnonKey));
 
-  console.log({ initialSession, supabaseAnonKey, supabaseUrl });
-
   React.useEffect(() => {
     const start = () => {
       setLoading(true);
@@ -76,7 +75,9 @@ export default function App({
           </Loading>
         ) : (
           <Layout>
-            <Component {...pageProps} />
+            <ErrorBoundery>
+              <Component {...pageProps} />
+            </ErrorBoundery>
           </Layout>
         )}
       </ChakraProvider>

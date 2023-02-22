@@ -19,6 +19,7 @@ import EmployeeSummary from "components/Employee/EmployeeSummary";
 import FinancialData from "components/FinancialData";
 import { server } from "config/server";
 import { ErrorHandler } from "utils/ErrorHandler";
+import ErrorPage from "components/ErrorPage/ErrorPage";
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   try {
@@ -35,16 +36,22 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
       props: { employee },
     };
   } catch (error) {
-    ErrorHandler.logAxiosGetError(error);
+    ErrorHandler.logServerSideRenderPropsError(error);
+    return {
+      props: { error },
+    };
   }
 }
 
 interface Props {
   employee: Employee;
+  error?: any;
 }
 
-export default function Empregado({ employee }: Props) {
+export default function Empregado({ employee, error }: Props) {
   const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
+
+  if (error) return <ErrorPage />;
 
   return (
     <MainContent>

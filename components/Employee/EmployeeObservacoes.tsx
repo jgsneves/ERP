@@ -13,6 +13,7 @@ import { BoundedMutationHelper } from "utils/BoundedMutationHelper";
 import { fetcher } from "utils/fetcher";
 import EmployeeComment from "./EmployeeComment";
 import EmployeeCreateComment from "./EmployeeCreateComment";
+import ErrorPage from "components/ErrorPage/ErrorPage";
 
 interface Props {
   employeeId: string;
@@ -27,6 +28,7 @@ export default function EmployeeObservacoes({ employeeId, isActive }: Props) {
   const {
     data: observacoes,
     isLoading,
+    error,
     mutate,
   } = useSWR<Observacoes[]>(
     isActive ? `/api/empregados-observacoes?empregadoId=${employeeId}` : null,
@@ -40,6 +42,8 @@ export default function EmployeeObservacoes({ employeeId, isActive }: Props) {
       <Spinner colorScheme="green" />
     </Flex>;
   }
+
+  if (error) return <ErrorPage />;
 
   return (
     <VStack width="500px" alignItems="flex-start" spacing={5}>

@@ -28,6 +28,7 @@
     "eslint-config-next": "13.0.7",
     "framer-motion": "^7.10.3",
     "next": "13.0.7",
+    "next-axiom": "^0.17.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "sharp": "^0.31.3",

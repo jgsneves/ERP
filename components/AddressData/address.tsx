@@ -4,6 +4,7 @@ import EditAddress from "./editAddress";
 import useSwr from "swr";
 import { Enderecos } from "@prisma/client";
 import { fetcher } from "utils/fetcher";
+import ErrorPage from "components/ErrorPage/ErrorPage";
 
 interface Props {
   enderecoId: string;
@@ -20,12 +21,18 @@ export default function Address({ enderecoId, isActive }: Props) {
     ComponentState.SHOW_DATA
   );
 
-  const { data: endereco, isLoading } = useSwr<Enderecos>(
+  const {
+    data: endereco,
+    isLoading,
+    error,
+  } = useSwr<Enderecos>(
     isActive ? `/api/enderecos/${enderecoId}` : null,
     fetcher
   );
 
   if (isLoading) return <Spinner colorScheme="green" />;
+
+  if (error) return <ErrorPage />;
 
   return (
     <>

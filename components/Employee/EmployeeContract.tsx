@@ -40,6 +40,7 @@ export default function EmployeeContract({
   const {
     data,
     isLoading: fetchLoading,
+    error,
     mutate,
   } = useSwr<GetDocumentosResponse>(
     isActive
@@ -119,26 +120,27 @@ export default function EmployeeContract({
           ))}
         </Flex>
       )}
-      {data?.documentos.length === 0 && (
-        <>
-          <FormLabel display="flex" flexDirection="column">
-            Faça upload do arquivo
-            <input
-              type="file"
-              accept="application/pdf"
-              value={fileInputName}
-              onChange={handleInputFileOnChange}
-            />
-          </FormLabel>
-          <Button
-            colorScheme="green"
-            isLoading={isLoading}
-            onClick={handleSaveOnClick}
-          >
-            salvar
-          </Button>
-        </>
-      )}
+      {!data ||
+        (data.documentos.length === 0 && (
+          <>
+            <FormLabel display="flex" flexDirection="column">
+              Faça upload do arquivo
+              <input
+                type="file"
+                accept="application/pdf"
+                value={fileInputName}
+                onChange={handleInputFileOnChange}
+              />
+            </FormLabel>
+            <Button
+              colorScheme="green"
+              isLoading={isLoading}
+              onClick={handleSaveOnClick}
+            >
+              salvar
+            </Button>
+          </>
+        ))}
     </VStack>
   );
 }

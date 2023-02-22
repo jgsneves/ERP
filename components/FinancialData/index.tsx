@@ -6,6 +6,7 @@ import AccountForm from "./AccountForm";
 import useSWR from "swr";
 import { BoundedMutationHelper } from "utils/BoundedMutationHelper";
 import { fetcher } from "utils/fetcher";
+import ErrorPage from "components/ErrorPage/ErrorPage";
 
 interface Props {
   pessoaId?: string;
@@ -27,6 +28,7 @@ export default function FinancialData({
   const {
     data: accounts,
     isLoading,
+    error,
     mutate,
   } = useSWR<ContasCorrente[]>(
     isActive ? `/api/contascorrente/?${searchParams.toString()}` : null,
@@ -36,6 +38,8 @@ export default function FinancialData({
   BoundedMutationHelper.setFinancialDataMutator(mutate);
 
   if (isLoading) return <Spinner colorScheme="green" />;
+
+  if (error) return <ErrorPage />;
 
   return (
     <VStack alignItems="flex-start" spacing={4}>

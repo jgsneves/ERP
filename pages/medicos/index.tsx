@@ -19,6 +19,7 @@ import useSWR from "swr";
 import { fetcher } from "utils/fetcher";
 import { MedicosResponse } from "../api/medicos";
 import { useRouter } from "next/router";
+import ErrorPage from "components/ErrorPage/ErrorPage";
 
 export default function Medicos() {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -26,7 +27,7 @@ export default function Medicos() {
 
   const router = useRouter();
 
-  const { data, isLoading } = useSWR<MedicosResponse>(
+  const { data, isLoading, error } = useSWR<MedicosResponse>(
     `/api/medicos?pagina=${currentPage}`,
     fetcher
   );
@@ -43,6 +44,8 @@ export default function Medicos() {
   };
 
   if (isLoading) return <Spinner />;
+
+  if (error) return <ErrorPage />;
 
   return (
     <MainContent>

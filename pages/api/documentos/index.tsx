@@ -1,6 +1,7 @@
 import { Documentos, DocumentoTipo } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "services/Prisma";
+import { ErrorHandler } from "utils/ErrorHandler";
 
 export interface DocumentoWithDate extends Omit<Documentos, "CriadoEm"> {
   CriadoEm: string;
@@ -51,6 +52,7 @@ export default async function handler(
         const totalPaginas = Math.ceil(count / quantidade);
         res.json({ pagina, totalPaginas, documentos });
       } catch (error) {
+        ErrorHandler.logPrismaError(error);
         res.status(500).send({ error });
       }
       break;
@@ -62,6 +64,7 @@ export default async function handler(
         });
         res.json(result);
       } catch (error) {
+        ErrorHandler.logPrismaError(error);
         res.status(500).send({ error });
       }
       break;

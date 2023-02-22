@@ -13,6 +13,7 @@ import { Documentos, EmpregadosPagamentos } from "@prisma/client";
 import EmployeePaymentAccordion from "./EmployeePaymentAccordion";
 import { fetcher } from "utils/fetcher";
 import { BoundedMutationHelper } from "utils/BoundedMutationHelper";
+import ErrorPage from "components/ErrorPage/ErrorPage";
 
 export interface Pagamento
   extends Omit<EmpregadosPagamentos, "CriadoEm" | "Valor"> {
@@ -33,7 +34,7 @@ export default function EmployeePayments({
   salario,
   isActive,
 }: Props) {
-  const { data, isLoading, mutate } = useSwr<Pagamento[]>(
+  const { data, isLoading, mutate, error } = useSwr<Pagamento[]>(
     isActive ? `/api/empregados-pagamentos?empregadoId=${empregadoId}` : null,
     fetcher
   );
@@ -41,6 +42,8 @@ export default function EmployeePayments({
   BoundedMutationHelper.setEmployeePaymentsMutator(mutate);
 
   if (isLoading) return <Spinner />;
+
+  if (error) return <ErrorPage />;
 
   return (
     <VStack alignItems="flex-start" spacing={8}>

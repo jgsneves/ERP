@@ -21,6 +21,7 @@ import {
   AlertIcon,
 } from "@chakra-ui/react";
 import { DocumentoTipo } from "@prisma/client";
+import ErrorPage from "components/ErrorPage/ErrorPage";
 import ContentTitle from "components/Shared/ContentTitle";
 import { GetDocumentosResponse } from "pages/api/documentos";
 import { useState } from "react";
@@ -28,7 +29,6 @@ import useSWR from "swr";
 import { BoundedMutationHelper } from "utils/BoundedMutationHelper";
 import { DateFormat } from "utils/DateFormat";
 import { EnumFormat } from "utils/EnumFormat";
-import { ErrorHandler } from "utils/ErrorHandler";
 import { fetcher } from "utils/fetcher";
 
 interface Props {
@@ -59,7 +59,7 @@ export default function EmployeePerformanceTable({
     window.open(url, "_blank")?.focus();
   };
 
-  if (error) ErrorHandler.logAxiosGetError(error);
+  if (error) return <ErrorPage />;
 
   if (isLoading)
     return (

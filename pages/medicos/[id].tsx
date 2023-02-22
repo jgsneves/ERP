@@ -15,6 +15,8 @@ import AddressData from "components/AddressData";
 import MainContent from "components/Containers/MainContent";
 import FinancialData from "components/FinancialData";
 import { server } from "config/server";
+import { ErrorHandler } from "utils/ErrorHandler";
+import ErrorPage from "components/ErrorPage/ErrorPage";
 
 export interface DoctorEntity
   extends Omit<
@@ -27,24 +29,34 @@ export interface DoctorEntity
 
 interface Props {
   doctor: DoctorEntity;
+  error?: any;
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const url = `${server}/api/medicos/${context.params?.id}`;
-  const result = await fetch(url, {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  });
+  try {
+    const url = `${server}/api/medicos/${context.params?.id}`;
+    const result = await fetch(url, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
 
-  const doctor = await result.json();
+    const doctor = await result.json();
 
-  return {
-    props: { doctor },
-  };
+    return {
+      props: { doctor },
+    };
+  } catch (error) {
+    ErrorHandler.logServerSideRenderPropsError(error);
+    return {
+      props: { error },
+    };
+  }
 }
 
-export default function Doctor({ doctor }: Props) {
+export default function Doctor({ doctor, error }: Props) {
   const [activeTab, setActiveTab] = useState<number>(0);
+
+  if (error) return <ErrorPage />;
 
   return (
     <MainContent>

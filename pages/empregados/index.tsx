@@ -3,6 +3,7 @@ import { Pessoas } from "@prisma/client";
 import MainContent from "components/Containers/MainContent";
 import EmployeesList from "components/Employee/EmployeesList";
 import EmptyEntityList from "components/EmptyEntityList";
+import ErrorPage from "components/ErrorPage/ErrorPage";
 import { server } from "config/server";
 import { ErrorHandler } from "utils/ErrorHandler";
 
@@ -22,6 +23,7 @@ export interface Employee
 
 interface Props {
   employees: Employee[];
+  error?: any;
 }
 
 export async function getServerSideProps() {
@@ -37,11 +39,16 @@ export async function getServerSideProps() {
       props: { employees },
     };
   } catch (error) {
-    ErrorHandler.logAxiosGetError(error);
+    ErrorHandler.logServerSideRenderPropsError(error);
+    return {
+      props: { error },
+    };
   }
 }
 
-export default function Empregados({ employees }: Props) {
+export default function Empregados({ employees, error }: Props) {
+  if (error) return <ErrorPage />;
+
   return (
     <MainContent>
       <Text fontSize="5xl" fontWeight={600}>

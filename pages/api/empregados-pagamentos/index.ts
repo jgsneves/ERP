@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "services/Prisma";
+import { ErrorHandler } from "utils/ErrorHandler";
 
 export default async function handler(
   req: NextApiRequest,
@@ -13,6 +14,7 @@ export default async function handler(
         });
         res.json(pagamento);
       } catch (error) {
+        ErrorHandler.logPrismaError(error);
         res.status(500).send({ error });
       }
       break;
@@ -34,9 +36,9 @@ export default async function handler(
             CriadoEm: "desc",
           },
         });
-        console.log({ pagamentos });
         res.json(pagamentos);
       } catch (error) {
+        ErrorHandler.logPrismaError(error);
         res.status(500).send({ error });
       }
       break;

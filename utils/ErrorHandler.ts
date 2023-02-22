@@ -54,4 +54,25 @@ export class ErrorHandler {
   public static logResetPasswordSupabaseError(error: any) {
     console.log({ error });
   }
+
+  /**
+   * Cria um log toda vez que alguma requisição dentro de getServerSideProps um erro.
+   */
+  public static logServerSideRenderPropsError(error: any) {
+    console.log({ error });
+  }
+
+  /**
+   * Cria um log toda vez que o ErrorBoundery for utilizado.
+   */
+  public static logErrorBoundery(error: any, errorInfo: React.ErrorInfo) {
+    console.log({ error, errorInfo });
+  }
+
+  /**
+   * Cria um log toda vez que a API Route encontrar um erro no Prisma
+   */
+  public static logPrismaError(error: any) {
+    console.log({ error });
+  }
 }

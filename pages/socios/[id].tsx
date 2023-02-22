@@ -16,27 +16,39 @@ import AddressData from "components/AddressData";
 import { server } from "config/server";
 import { Partner } from ".";
 import { useState } from "react";
+import { ErrorHandler } from "utils/ErrorHandler";
+import ErrorPage from "components/ErrorPage/ErrorPage";
 
 interface Props {
   partner: Partner;
+  error?: any;
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const url = `${server}/api/socios/${context.params?.id}`;
-  const result = await fetch(url, {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  });
+  try {
+    const url = `${server}/api/socios/${context.params?.id}`;
+    const result = await fetch(url, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
 
-  const partner = await result.json();
+    const partner = await result.json();
 
-  return {
-    props: { partner },
-  };
+    return {
+      props: { partner },
+    };
+  } catch (error) {
+    ErrorHandler.logServerSideRenderPropsError(error);
+    return {
+      props: { error },
+    };
+  }
 }
 
-export default function Socio({ partner }: Props) {
+export default function Socio({ partner, error }: Props) {
   const [activeIndex, setActiveIndex] = useState<number>(0);
+
+  if (error) return <ErrorPage />;
 
   return (
     <MainContent>

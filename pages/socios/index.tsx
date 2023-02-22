@@ -2,8 +2,10 @@ import { Text } from "@chakra-ui/react";
 import { Pessoas } from "@prisma/client";
 import MainContent from "components/Containers/MainContent";
 import EmptyEntityList from "components/EmptyEntityList";
+import ErrorPage from "components/ErrorPage/ErrorPage";
 import PartnersList from "components/Partner/PartnersList";
 import { server } from "config/server";
+import { ErrorHandler } from "utils/ErrorHandler";
 
 export interface Partner
   extends Omit<
@@ -19,22 +21,32 @@ export interface Partner
 }
 interface Props {
   partners: Partner[];
+  error?: any;
 }
 
 export async function getServerSideProps() {
-  const result = await fetch(`${server}/api/socios`, {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  });
+  try {
+    const result = await fetch(`${server}/api/socios`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
 
-  const partners = await result.json();
+    const partners = await result.json();
 
-  return {
-    props: { partners },
-  };
+    return {
+      props: { partners },
+    };
+  } catch (error) {
+    ErrorHandler.logServerSideRenderPropsError(error);
+    return {
+      props: { error },
+    };
+  }
 }
 
-export default function Socios({ partners }: Props) {
+export default function Socios({ partners, error }: Props) {
+  if (error) return <ErrorPage />;
+
   return (
     <MainContent>
       <Text fontSize="5xl" fontWeight={600}>

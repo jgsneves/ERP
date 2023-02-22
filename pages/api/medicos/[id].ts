@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "services/Prisma";
+import { ErrorHandler } from "utils/ErrorHandler";
 
 export default async function handler(
   req: NextApiRequest,
@@ -24,6 +25,7 @@ export default async function handler(
 
         res.status(404).send({ message: "Médico não encontrado." });
       } catch (error) {
+        ErrorHandler.logPrismaError(error);
         res.status(500).send({ error });
       }
       break;

@@ -20,12 +20,13 @@ import { EmpresasMedicasResponse } from "../api/empresas-medicas";
 import { useRouter } from "next/router";
 import { formatCNPJ } from "@brazilian-utils/brazilian-utils";
 import { useState } from "react";
+import ErrorPage from "components/ErrorPage/ErrorPage";
 
 export default function EmpresasMedicasContainer() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [quantidade, setQuantidade] = useState<number>(10);
 
-  const { data, isLoading } = useSWR<EmpresasMedicasResponse>(
+  const { data, isLoading, error } = useSWR<EmpresasMedicasResponse>(
     `/api/empresas-medicas?pagina=${currentPage}&quantidade=${quantidade}`,
     fetcher
   );
@@ -40,6 +41,8 @@ export default function EmpresasMedicasContainer() {
   };
 
   if (isLoading) return <Spinner />;
+
+  if (error) return <ErrorPage />;
 
   return (
     <MainContent>

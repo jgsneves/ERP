@@ -23,6 +23,7 @@ import AddressData from "components/AddressData";
 import QuadroSocietario from "components/MedicalCompany/QuadroSocietario";
 import { ErrorHandler } from "utils/ErrorHandler";
 import { useState } from "react";
+import ErrorPage from "components/ErrorPage/ErrorPage";
 
 interface Company extends EmpresasMedicas {
   Endereco: Enderecos | null;
@@ -31,6 +32,7 @@ interface Company extends EmpresasMedicas {
 }
 interface Props {
   company: Company;
+  error?: any;
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -48,12 +50,17 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       props: { company },
     };
   } catch (error) {
-    ErrorHandler.logAxiosGetError(error);
+    ErrorHandler.logServerSideRenderPropsError(error);
+    return {
+      props: { error },
+    };
   }
 }
 
-export default function EmpresaMedica({ company }: Props) {
+export default function EmpresaMedica({ company, error }: Props) {
   const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
+
+  if (error) return <ErrorPage />;
 
   return (
     <MainContent>
