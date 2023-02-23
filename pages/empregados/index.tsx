@@ -4,7 +4,8 @@ import MainContent from "components/Containers/MainContent";
 import EmployeesList from "components/Employee/EmployeesList";
 import EmptyEntityList from "components/EmptyEntityList";
 import ErrorPage from "components/ErrorPage/ErrorPage";
-import { server } from "config/server";
+import { GetServerSideProps } from "next";
+import prisma from "services/Prisma";
 import { ErrorHandler } from "utils/ErrorHandler";
 
 export interface Employee
@@ -26,17 +27,16 @@ interface Props {
   error?: any;
 }
 
-export async function getServerSideProps() {
+export const getServerSideProps: GetServerSideProps = async () => {
   try {
-    const result = await fetch(`${server}/api/empregados`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
+    const result = await prisma.pessoas.findMany({
+      where: {
+        Tipo: "EMPREGADO",
+      },
     });
 
-    const employees = await result.json();
-
     return {
-      props: { employees },
+      props: { employees: result },
     };
   } catch (error) {
     ErrorHandler.logServerSideRenderPropsError(error);
@@ -44,7 +44,7 @@ export async function getServerSideProps() {
       props: { error },
     };
   }
-}
+};
 
 export default function Empregados({ employees, error }: Props) {
   if (error) return <ErrorPage />;

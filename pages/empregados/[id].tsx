@@ -20,20 +20,19 @@ import FinancialData from "components/FinancialData";
 import { server } from "config/server";
 import { ErrorHandler } from "utils/ErrorHandler";
 import ErrorPage from "components/ErrorPage/ErrorPage";
+import prisma from "services/Prisma";
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   try {
-    const url = `${server}/api/empregados/${ctx.params?.id}`;
-
-    const result = await fetch(url, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
+    const id = ctx.params?.id;
+    const result = await prisma.pessoas.findUnique({
+      where: {
+        Id: id as string,
+      },
     });
 
-    const employee = await result.json();
-
     return {
-      props: { employee },
+      props: { employee: result },
     };
   } catch (error) {
     ErrorHandler.logServerSideRenderPropsError(error);
