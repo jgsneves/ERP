@@ -1,12 +1,11 @@
-import { Text } from "@chakra-ui/react";
+import { Spinner, Text } from "@chakra-ui/react";
 import { Pessoas } from "@prisma/client";
 import MainContent from "components/Containers/MainContent";
 import EmployeesList from "components/Employee/EmployeesList";
 import EmptyEntityList from "components/EmptyEntityList";
 import ErrorPage from "components/ErrorPage/ErrorPage";
-import { GetServerSideProps } from "next";
-import prisma from "services/Prisma";
-import { ErrorHandler } from "utils/ErrorHandler";
+import useSwr from "swr";
+import { fetcher } from "utils/fetcher";
 
 export interface Employee
   extends Omit<
@@ -22,32 +21,17 @@ export interface Employee
   CriadoEm: string;
 }
 
-interface Props {
-  employees: Employee[];
-  error?: any;
-}
+export default function Empregados() {
+  const { data, isLoading, error } = useSwr<Employee[]>(
+    `/api/empregados`,
+    fetcher
+  );
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  try {
-    const result = await prisma.pessoas.findMany({
-      where: {
-        Tipo: "EMPREGADO",
-      },
-    });
+  console.log(data);
 
-    return {
-      props: { employees: result },
-    };
-  } catch (error) {
-    ErrorHandler.logServerSideRenderPropsError(error);
-    return {
-      props: { error },
-    };
-  }
-};
+  if (isLoading) return <Spinner />;
 
-export default function Empregados({ employees, error }: Props) {
-  if (error) return <ErrorPage />;
+  if (error || !data) return <ErrorPage />;
 
   return (
     <MainContent>
@@ -55,8 +39,8 @@ export default function Empregados({ employees, error }: Props) {
         Empregados
       </Text>
       <Text>Todos os empregados cadastrados na empresa.</Text>
-      {employees.length > 0 ? (
-        <EmployeesList employees={employees} />
+      {data.length > 0 ? (
+        <EmployeesList employees={data} />
       ) : (
         <EmptyEntityList
           helperText="Não há empregados cadastrados na empresa."
