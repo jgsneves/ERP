@@ -45,7 +45,12 @@ export default function Medicos() {
 
   if (isLoading) return <Spinner />;
 
-  if (error) return <ErrorPage />;
+  if (error)
+    return (
+      <MainContent>
+        <ErrorPage />
+      </MainContent>
+    );
 
   return (
     <MainContent>

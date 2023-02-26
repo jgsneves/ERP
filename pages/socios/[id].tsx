@@ -48,7 +48,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 export default function Socio({ partner, error }: Props) {
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
-  if (error) return <ErrorPage />;
+  if (error)
+    return (
+      <MainContent>
+        <ErrorPage />
+      </MainContent>
+    );
 
   return (
     <MainContent>

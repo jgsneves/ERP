@@ -45,7 +45,12 @@ export async function getServerSideProps() {
 }
 
 export default function Socios({ partners, error }: Props) {
-  if (error) return <ErrorPage />;
+  if (error)
+    return (
+      <MainContent>
+        <ErrorPage />
+      </MainContent>
+    );
 
   return (
     <MainContent>

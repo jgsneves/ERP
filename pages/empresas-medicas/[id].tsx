@@ -60,7 +60,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 export default function EmpresaMedica({ company, error }: Props) {
   const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
 
-  if (error) return <ErrorPage />;
+  if (error)
+    return (
+      <MainContent>
+        <ErrorPage />
+      </MainContent>
+    );
 
   return (
     <MainContent>

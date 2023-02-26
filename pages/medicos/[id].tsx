@@ -56,7 +56,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 export default function Doctor({ doctor, error }: Props) {
   const [activeTab, setActiveTab] = useState<number>(0);
 
-  if (error) return <ErrorPage />;
+  if (error)
+    return (
+      <MainContent>
+        <ErrorPage />
+      </MainContent>
+    );
 
   return (
     <MainContent>
