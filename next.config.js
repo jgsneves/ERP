@@ -2,19 +2,15 @@
 // with Sentry.
 // https://nextjs.org/docs/api-reference/next.config.js/introduction
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
-const { withSentryConfig } = require('@sentry/nextjs');
-
-const { withAxiom } = require("next-axiom");
+const { withSentryConfig } = require("@sentry/nextjs");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
 };
 
-module.exports = withAxiom({ ...nextConfig });
-
 module.exports = withSentryConfig(
   module.exports,
   { silent: true },
-  { hideSourcemaps: true },
+  { hideSourcemaps: true }
 );
