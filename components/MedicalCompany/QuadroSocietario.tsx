@@ -2,7 +2,6 @@ import { Flex, VStack, Text, Alert, AlertIcon } from "@chakra-ui/react";
 import { Pessoas } from "@prisma/client";
 import DoctorCard from "components/Doctor/DoctorCard";
 import ContentTitle from "components/Shared/ContentTitle";
-import CreateNewDoctor from "./CreateNewDoctor";
 
 interface Props {
   empresaId: string;
@@ -37,9 +36,6 @@ export default function QuadroSocietario({
           </Alert>
         )}
       </Flex>
-
-      <ContentTitle title="Cadastrar novo sócio" />
-      <CreateNewDoctor empresaId={empresaId} />
     </VStack>
   );
 }

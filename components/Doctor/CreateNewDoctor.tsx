@@ -15,17 +15,13 @@ import { useRouter } from "next/router";
 import { DateFormat } from "utils/DateFormat";
 import { ErrorHandler } from "utils/ErrorHandler";
 
-interface Props {
-  empresaId: string;
-}
-
-export default function CreateNewDoctor({ empresaId }: Props) {
+export default function CreateNewDoctor() {
   const [formData, setFormData] = useState<Pessoas>({
     Cpf: "",
     CriadoEm: new Date(),
     Crm: "",
     DataNascimento: new Date(),
-    EmpresaMedicaId: empresaId,
+    EmpresaMedicaId: null,
     EnderecoId: null,
     Id: uuid4(),
     ModificadoEm: null,

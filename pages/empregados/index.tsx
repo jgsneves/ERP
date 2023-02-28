@@ -29,9 +29,19 @@ export default function Empregados() {
 
   console.log(data);
 
-  if (isLoading) return <Spinner />;
+  if (isLoading)
+    return (
+      <MainContent>
+        <Spinner />
+      </MainContent>
+    );
 
-  if (error || !data) return <ErrorPage />;
+  if (error || !data)
+    return (
+      <MainContent>
+        <ErrorPage />
+      </MainContent>
+    );
 
   return (
     <MainContent>

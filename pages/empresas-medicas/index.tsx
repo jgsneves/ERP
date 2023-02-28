@@ -40,7 +40,12 @@ export default function EmpresasMedicasContainer() {
     router.push(`/empresas-medicas/${id}`);
   };
 
-  if (isLoading) return <Spinner />;
+  if (isLoading)
+    return (
+      <MainContent>
+        <Spinner />
+      </MainContent>
+    );
 
   if (error)
     return (

@@ -43,7 +43,16 @@ export default function Medicos() {
     router.push(`/medicos/${id}`);
   };
 
-  if (isLoading) return <Spinner />;
+  const handleCreateNewDoctorOnClick = () => {
+    router.push("/medicos/cadastrar");
+  };
+
+  if (isLoading)
+    return (
+      <MainContent>
+        <Spinner />
+      </MainContent>
+    );
 
   if (error)
     return (
@@ -111,6 +120,9 @@ export default function Medicos() {
           </Flex>
         )}
       </TableContainer>
+      <Button colorScheme="green" mt={2} onClick={handleCreateNewDoctorOnClick}>
+        cadastrar novo médico
+      </Button>
     </MainContent>
   );
 }
