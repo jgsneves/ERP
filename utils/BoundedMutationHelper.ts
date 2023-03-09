@@ -1,8 +1,10 @@
 export class BoundedMutationHelper {
   private static employeePerformanceTableMutator: Function;
   private static employeeObservacoesMutator: Function;
-  private static financialDataMutator: Function;
   private static employeePaymentsMutator: Function;
+  private static employeeDocumentosMutator: Function;
+
+  private static financialDataMutator: Function;
 
   /**
    * Método para salvar o mutator de EmployeePaymentsMutator. Um mutator é uma função que refetch dados após um POST
@@ -44,6 +46,20 @@ export class BoundedMutationHelper {
    */
   public static getEmployeeObservacoesMutator() {
     return this.employeeObservacoesMutator;
+  }
+
+  /**
+   * Método para salvar o mutator de EmployeeDocumentosMutator. Um mutator é uma função que refetch dados após um POST
+   */
+  public static setEmployeeDocumentosMutator(mutation: Function): void {
+    this.employeeDocumentosMutator = mutation;
+  }
+
+  /**
+   * Método para usar o mutator de EmployeeDocumentosMutator. Um mutator é uma função que refetch dados após um POST
+   */
+  public static getEmployeeDocumentosMutator() {
+    return this.employeeDocumentosMutator;
   }
 
   /**

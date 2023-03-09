@@ -16,7 +16,7 @@ import { Employee } from "pages/empregados";
 import React, { useState } from "react";
 import { DateFormat } from "utils/DateFormat";
 import { ErrorHandler } from "utils/ErrorHandler";
-import EmployeeContract from "./EmployeeContract";
+import EmployeeDocuments from "./EmployeeDocuments";
 import EmployeeSalary from "./EmployeeSalary";
 import EmployeeStatus from "./EmployeeStatus";
 import EmployeeWorkType from "./EmployeeWorkType";
@@ -169,7 +169,7 @@ export default function EmployeeSummary({ employee, isActive }: Props) {
         id={employee.Id}
       />
       <EmployeeWorkType type={employee.ModalidadeTrabalho} id={employee.Id} />
-      <EmployeeContract
+      <EmployeeDocuments
         empregadoId={employee.Id}
         empregadoNome={employee.Nome}
         isActive={isActive}

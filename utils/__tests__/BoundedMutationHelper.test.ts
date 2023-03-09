@@ -32,4 +32,12 @@ describe("BoundedMutationHelper test suite", () => {
     mutator();
     expect(mockedFunction).toBeCalledTimes(1);
   });
+
+  it("employeeDocumentosMutator should return correct function", () => {
+    const mockedFunction = jest.fn();
+    BoundedMutationHelper.setEmployeeDocumentosMutator(mockedFunction);
+    const mutator = BoundedMutationHelper.getEmployeeDocumentosMutator();
+    mutator();
+    expect(mockedFunction).toBeCalledTimes(1);
+  });
 });

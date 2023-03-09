@@ -13,6 +13,26 @@ export interface GetDocumentosResponse {
   documentos: DocumentoWithDate[];
 }
 
+const parseQueryParamTipo = (
+  param: string | string[] | undefined
+): DocumentoTipo | DocumentoTipo[] | undefined => {
+  if (typeof param === "string") return param as DocumentoTipo;
+  if (Array.isArray(param)) return param as DocumentoTipo[];
+  return param;
+};
+
+const mapWhereOrClause = (
+  tipo: DocumentoTipo | DocumentoTipo[] | undefined
+) => {
+  if (Array.isArray(tipo)) {
+    return tipo.map((documentoTipo) => ({ Tipo: documentoTipo }));
+  }
+
+  if (!tipo) return [{ Tipo: undefined }];
+
+  return [{ Tipo: tipo }];
+};
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -26,7 +46,7 @@ export default async function handler(
           typeof req.query.quantidade === "string"
             ? parseInt(req.query.quantidade)
             : 5;
-        const tipo = req.query.tipo;
+        const tipo = parseQueryParamTipo(req.query.tipo);
         const pessoaId = req.query.pessoaId;
         const empresaMedicaId = req.query.empresaMedicaId;
 
@@ -34,7 +54,7 @@ export default async function handler(
           skip: (pagina - 1) * quantidade,
           take: quantidade,
           where: {
-            Tipo: tipo ? (tipo as DocumentoTipo) : undefined,
+            OR: mapWhereOrClause(tipo),
             PessoaId: typeof pessoaId === "string" ? pessoaId : undefined,
             EmpresaMedicaId:
               typeof empresaMedicaId === "string" ? empresaMedicaId : undefined,
@@ -43,10 +63,10 @@ export default async function handler(
 
         const count = await prisma.documentos.count({
           where: {
+            OR: mapWhereOrClause(tipo),
             PessoaId: typeof pessoaId === "string" ? pessoaId : undefined,
             EmpresaMedicaId:
               typeof empresaMedicaId === "string" ? empresaMedicaId : undefined,
-            Tipo: tipo ? (tipo as DocumentoTipo) : undefined,
           },
         });
         const totalPaginas = Math.ceil(count / quantidade);

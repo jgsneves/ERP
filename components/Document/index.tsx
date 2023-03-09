@@ -13,10 +13,7 @@ export default function Document({ tipo, url }: Props) {
   return (
     <a href={url} target="_blank" rel="noreferrer">
       <VStack
-        borderStyle="solid"
-        borderColor="blackAlpha.800"
         borderRadius="lg"
-        borderWidth="2px"
         p={3}
         _hover={{ backgroundColor: "gray.300" }}
         w="150px"

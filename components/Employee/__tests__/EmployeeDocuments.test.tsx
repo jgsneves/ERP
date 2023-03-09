@@ -3,7 +3,7 @@ import {
   DocumentoWithDate,
   GetDocumentosResponse,
 } from "../../../pages/api/documentos";
-import EmployeeContract from "../EmployeeContract";
+import EmployeeDocuments from "../EmployeeDocuments";
 
 jest.mock("swr", () => {
   const originalModule = jest.requireActual("swr");
@@ -43,25 +43,27 @@ jest.mock("swr", () => {
   };
 });
 
-describe("EmployeeContract test suite", () => {
+describe("EmployeeDocuments test suite", () => {
   it("should render document of type contrato_de_trabalho_assinado", () => {
     const { getByText } = render(
-      <EmployeeContract
+      <EmployeeDocuments
         empregadoId="1"
         empregadoNome="José da Silva"
         isActive={true}
       />
     );
     expect(getByText(/contrato social assinado/i)).toBeInTheDocument();
+    expect(getByText(/faça upload do documento/i)).toBeInTheDocument();
   });
   it("should not render document list", () => {
-    const { getByText } = render(
-      <EmployeeContract
+    const { getByText, queryByText } = render(
+      <EmployeeDocuments
         empregadoId="1"
         empregadoNome="José da Silva"
         isActive={true}
       />
     );
-    expect(getByText(/faça upload do arquivo/i)).toBeInTheDocument();
+    expect(queryByText(/contrato social assinado/i)).toBeNull();
+    expect(getByText(/faça upload do documento/i)).toBeInTheDocument();
   });
 });
