@@ -15,7 +15,7 @@ import ContentTitle from "components/Shared/ContentTitle";
 import { useRouter } from "next/router";
 import { Employee } from "pages/empregados";
 import React, { useState } from "react";
-import { CellphoneNumberFormat } from "utils/cellphoneNumberFormat";
+import { CellphoneNumberFormat } from "utils/CellphoneNumberFormat";
 import { DateFormat } from "utils/DateFormat";
 import { ErrorHandler } from "utils/ErrorHandler";
 import EmployeeDocuments from "./EmployeeDocuments";

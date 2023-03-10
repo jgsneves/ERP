@@ -26,6 +26,8 @@ export class EnumFormat {
       TFF: "TFF",
       RECIBO_DE_REEMBOLSO: "recibo de reembolso",
       FOLHA_DE_PONTO_ASSINADA: "folha de ponto assinada",
+      CARTEIRA_NACIONAL_HABILITACAO: "carteira nacional de habilitação",
+      REGISTRO_GERAL: "registro geral",
     };
     return literal[documentType];
   }
