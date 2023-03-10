@@ -4,7 +4,7 @@ import prisma from "services/Prisma";
 import { ErrorHandler } from "utils/ErrorHandler";
 
 interface Doctors extends Pessoas {
-  EmpresaMedica: EmpresasMedicas;
+  EmpresaMedica: EmpresasMedicas | null;
 }
 
 export interface MedicosResponse {

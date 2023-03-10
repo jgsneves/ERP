@@ -17,14 +17,19 @@ import FinancialData from "components/FinancialData";
 import { server } from "config/server";
 import { ErrorHandler } from "utils/ErrorHandler";
 import ErrorPage from "components/ErrorPage/ErrorPage";
+import DoctorSummary from "components/Doctor/DoctorSummary";
 
 export interface DoctorEntity
   extends Omit<
     Pessoas,
-    "DataNascimento" | "Tipo" | "Participacao" | "Salario" | "StatusAdmissao"
+    | "DataNascimento"
+    | "Tipo"
+    | "Participacao"
+    | "Salario"
+    | "StatusAdmissao"
+    | "ModalidadeTrabalho"
   > {
-  Endereco: Enderecos | null;
-  ContasCorrente: ContasCorrente | null;
+  DataNascimento: string;
 }
 
 interface Props {
@@ -84,7 +89,7 @@ export default function Doctor({ doctor, error }: Props) {
 
         <TabPanels>
           <TabPanel>
-            <h1>sumário</h1>
+            <DoctorSummary doctor={doctor} />
           </TabPanel>
           <TabPanel>
             <FinancialData isActive={activeTab === 1} pessoaId={doctor.Id} />

@@ -7,13 +7,15 @@ import {
   FormLabel,
   Input,
   useToast,
+  Select,
 } from "@chakra-ui/react";
-import { Pessoas } from "@prisma/client";
+import { EstadoCivil, Pessoas } from "@prisma/client";
 import axios from "axios";
 import ContentTitle from "components/Shared/ContentTitle";
 import { useRouter } from "next/router";
 import { Employee } from "pages/empregados";
 import React, { useState } from "react";
+import { CellphoneNumberFormat } from "utils/cellphoneNumberFormat";
 import { DateFormat } from "utils/DateFormat";
 import { ErrorHandler } from "utils/ErrorHandler";
 import EmployeeDocuments from "./EmployeeDocuments";
@@ -34,6 +36,13 @@ export default function EmployeeSummary({ employee, isActive }: Props) {
     Cpf: employee.Cpf,
     CriadoEm: new Date(employee.CriadoEm),
     Crm: null,
+    Email: employee.Email,
+    EstadoCivil: employee.EstadoCivil,
+    Nacionalidade: employee.Nacionalidade,
+    PIS: employee.PIS,
+    RG: employee.RG,
+    TelefonePessoal: employee.TelefonePessoal,
+    TituloEleitor: employee.TituloEleitor,
     DataNascimento: new Date(employee.DataNascimento),
     EmpresaMedicaId: null,
     EnderecoId: employee.EnderecoId,
@@ -54,7 +63,9 @@ export default function EmployeeSummary({ employee, isActive }: Props) {
   const toast = useToast();
   const router = useRouter();
 
-  const handleInputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputOnChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { id, value } = event.target;
     setFormData((state) => ({ ...state, [id]: value }));
   };
@@ -108,6 +119,24 @@ export default function EmployeeSummary({ employee, isActive }: Props) {
                 isDisabled={isLoading}
               />
             </FormLabel>
+            <FormLabel>
+              Telefone pessoal:
+              <Input
+                value={CellphoneNumberFormat.format(formData.TelefonePessoal)}
+                id="TelefonePessoal"
+                onChange={handleInputOnChange}
+              />
+            </FormLabel>
+
+            <FormLabel>
+              E-mail:
+              <Input
+                value={formData.Email}
+                id="Email"
+                onChange={handleInputOnChange}
+                type="email"
+              />
+            </FormLabel>
             <FormLabel w="100%">
               Cpf
               <Input
@@ -117,6 +146,24 @@ export default function EmployeeSummary({ employee, isActive }: Props) {
                 isDisabled={isLoading}
               />
             </FormLabel>
+            <FormLabel>
+              RG:
+              <Input
+                value={formData.RG}
+                id="RG"
+                onChange={handleInputOnChange}
+              />
+            </FormLabel>
+
+            <FormLabel>
+              PIS:
+              <Input
+                value={formData.PIS ?? ""}
+                id="PIS"
+                onChange={handleInputOnChange}
+              />
+            </FormLabel>
+
             <FormLabel w="100%">
               Data de nascimento
               <Input
@@ -126,6 +173,29 @@ export default function EmployeeSummary({ employee, isActive }: Props) {
                 onBlur={handleDateInputOnBlur}
                 isDisabled={isLoading}
               />
+            </FormLabel>
+            <FormLabel>
+              Nacionalidade:
+              <Input
+                value={formData.Nacionalidade}
+                id="Nacionalidade"
+                onChange={handleInputOnChange}
+              />
+            </FormLabel>
+
+            <FormLabel>
+              Estado civil:
+              <Select
+                value={formData.EstadoCivil}
+                onChange={handleInputOnChange}
+                id="EstadoCivil"
+              >
+                {Object.values(EstadoCivil).map((estadoCivil) => (
+                  <option key={estadoCivil} value={estadoCivil}>
+                    {estadoCivil}
+                  </option>
+                ))}
+              </Select>
             </FormLabel>
             <Flex w="100%" justifyContent="space-between">
               <Button
@@ -147,11 +217,17 @@ export default function EmployeeSummary({ employee, isActive }: Props) {
         ) : (
           <>
             <Text>Nome: {employee.Nome}</Text>
+            <Text>Telefone Pessoal: {employee.TelefonePessoal}</Text>
+            <Text>E-mail: {employee.Email}</Text>
             <Text>CPF: {employee.Cpf}</Text>
+            <Text>RG: {employee.RG}</Text>
+            <Text>PIS: {employee.PIS}</Text>
             <Text>
               Data de nascimento:{" "}
               {DateFormat.formatISODateStringToLocale(employee.DataNascimento)}
             </Text>
+            <Text>Nacionalidade: {employee.Nacionalidade}</Text>
+            <Text>Estado Civil: {employee.EstadoCivil}</Text>
             <Text>
               Data de admissão:{" "}
               {DateFormat.formatISODateStringToLocale(employee.CriadoEm)}

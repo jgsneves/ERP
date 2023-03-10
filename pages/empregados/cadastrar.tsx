@@ -11,7 +11,7 @@ import {
 import React, { useState } from "react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import Link from "next/link";
-import { ModalidadeTrabalho, Pessoas } from "@prisma/client";
+import { EstadoCivil, ModalidadeTrabalho, Pessoas } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -20,6 +20,7 @@ import { DateFormat } from "utils/DateFormat";
 import { ErrorHandler } from "utils/ErrorHandler";
 import { CurrencyFormat } from "utils/CurrencyFormat";
 import { parseCurrency } from "@brazilian-utils/brazilian-utils";
+import { CellphoneNumberFormat } from "utils/CellphoneNumberFormat";
 
 interface Empregado extends Omit<Pessoas, "Salario"> {
   Salario: string;
@@ -31,6 +32,13 @@ export default function CadastrarEmpregado() {
   const [formData, setFormData] = useState<Empregado>({
     Nome: "",
     Cpf: "",
+    Email: "",
+    EstadoCivil: "SOLTEIRO",
+    Nacionalidade: "",
+    PIS: "",
+    RG: "",
+    TelefonePessoal: "",
+    TituloEleitor: "",
     DataNascimento: new Date(),
     CriadoEm: new Date(),
     Id: uuidv4(),
@@ -117,7 +125,26 @@ export default function CadastrarEmpregado() {
           />
         </FormLabel>
 
-        <FormLabel mt="5">
+        <FormLabel>
+          Telefone pessoal:
+          <Input
+            value={CellphoneNumberFormat.format(formData.TelefonePessoal)}
+            id="TelefonePessoal"
+            onChange={handleInputOnChange}
+          />
+        </FormLabel>
+
+        <FormLabel>
+          E-mail:
+          <Input
+            value={formData.Email}
+            id="Email"
+            onChange={handleInputOnChange}
+            type="email"
+          />
+        </FormLabel>
+
+        <FormLabel>
           Cpf:
           <Input
             value={formatCPF(formData.Cpf)}
@@ -126,7 +153,21 @@ export default function CadastrarEmpregado() {
           />
         </FormLabel>
 
-        <FormLabel mt="5">
+        <FormLabel>
+          RG:
+          <Input value={formData.RG} id="RG" onChange={handleInputOnChange} />
+        </FormLabel>
+
+        <FormLabel>
+          PIS:
+          <Input
+            value={formData.PIS ?? ""}
+            id="PIS"
+            onChange={handleInputOnChange}
+          />
+        </FormLabel>
+
+        <FormLabel>
           Data de nascimento:
           <Input
             value={birthDateValue}
@@ -137,7 +178,31 @@ export default function CadastrarEmpregado() {
           />
         </FormLabel>
 
-        <FormLabel mt="5">
+        <FormLabel>
+          Nacionalidade:
+          <Input
+            value={formData.Nacionalidade}
+            id="Nacionalidade"
+            onChange={handleInputOnChange}
+          />
+        </FormLabel>
+
+        <FormLabel>
+          Estado civil:
+          <Select
+            value={formData.EstadoCivil}
+            onChange={handleInputOnChange}
+            id="EstadoCivil"
+          >
+            {Object.values(EstadoCivil).map((estadoCivil) => (
+              <option key={estadoCivil} value={estadoCivil}>
+                {estadoCivil}
+              </option>
+            ))}
+          </Select>
+        </FormLabel>
+
+        <FormLabel>
           Salário (R$)
           <Input
             value={CurrencyFormat.moneyMask(formData.Salario)}
@@ -146,7 +211,7 @@ export default function CadastrarEmpregado() {
           />
         </FormLabel>
 
-        <FormLabel mt="5">
+        <FormLabel>
           Modalidade de trabalho
           <Select
             value={formData.ModalidadeTrabalho ?? ""}

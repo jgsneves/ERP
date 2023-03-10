@@ -13,10 +13,6 @@ export default async function handler(
           where: {
             Id: req.query.id as string,
           },
-          include: {
-            ContasCorrentes: true,
-            Endereco: true,
-          },
         });
 
         if (result) {
@@ -30,6 +26,23 @@ export default async function handler(
       }
       break;
 
+    case "PATCH":
+      try {
+        const requestBody = req.body;
+
+        await prisma.pessoas.update({
+          where: {
+            Id: req.query.id as string,
+          },
+          data: requestBody,
+        });
+
+        res.status(200).send({ message: "Médico atualizado com sucesso!" });
+      } catch (error) {
+        ErrorHandler.logPrismaError(error);
+        res.status(500).send({ error });
+      }
+      break;
     default:
       res.status(400).send({
         method: req.method,

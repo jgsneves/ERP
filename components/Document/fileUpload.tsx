@@ -27,9 +27,7 @@ export default function FileUpload({
   const [fileInputName, setFileInputName] = useState<string | undefined>(
     undefined
   );
-  const [fileType, setFileType] = useState<DocumentoTipo>(
-    DocumentoTipo.ALTERACAO_DE_CONTRATO_SOCIAL
-  );
+  const [fileType, setFileType] = useState<DocumentoTipo>(options[0]);
 
   const toast = useToast();
   const mutation = BoundedMutationHelper.getEmployeeDocumentosMutator();

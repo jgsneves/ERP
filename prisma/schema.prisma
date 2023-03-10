@@ -11,6 +11,8 @@ enum DocumentoTipo {
   COMPROVANTE_ENDERECO
   COMPROVANTE_CONTA_CORRENTE
   COMPROVANTE_TRANSFERENCIA
+  REGISTRO_GERAL
+  CARTEIRA_NACIONAL_HABILITACAO
 
   // Empregado
   CONTRATO_DE_TRABALHO_ASSINADO
@@ -33,7 +35,7 @@ enum DocumentoTipo {
 }
 
 model Documentos {
-  Id                                  String           @id() @db.Uuid
+  Id                                  String                @id() @db.Uuid
   Nome                                String
   Tipo                                DocumentoTipo
   Url                                 String
@@ -133,10 +135,25 @@ enum ModalidadeTrabalho {
   PRESENCIAL
 }
 
+enum EstadoCivil {
+  SOLTEIRO
+  CASADO
+  SEPARADO
+  DIVORCIADO
+  VIUVO
+}
+
 model Pessoas {
   Id                  String           @id() @db.Uuid
   Nome                String
   Cpf                 String
+  Nacionalidade       String
+  EstadoCivil         EstadoCivil
+  RG                  String
+  PIS                 String?
+  TituloEleitor       String?
+  Email               String
+  TelefonePessoal     String
   DataNascimento      DateTime         @db.Timestamptz(6)
   CriadoEm            DateTime         @db.Timestamptz(6)
   ModificadoEm        DateTime?        @db.Timestamptz(6)

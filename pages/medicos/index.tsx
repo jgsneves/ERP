@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { formatCPF } from "@brazilian-utils/brazilian-utils";
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useSWR from "swr";
 import { fetcher } from "utils/fetcher";
 import { MedicosResponse } from "../api/medicos";
@@ -23,7 +23,6 @@ import ErrorPage from "components/ErrorPage/ErrorPage";
 
 export default function Medicos() {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [pageAmount, setPageAmount] = useState<number>(1);
 
   const router = useRouter();
 
@@ -31,13 +30,6 @@ export default function Medicos() {
     `/api/medicos?pagina=${currentPage}`,
     fetcher
   );
-
-  useEffect(() => {
-    if (data) {
-      setCurrentPage(data.pagina);
-      setPageAmount(data.totalPaginas);
-    }
-  }, [data]);
 
   const handleRowOnClick = (id: string) => {
     router.push(`/medicos/${id}`);
@@ -91,7 +83,7 @@ export default function Medicos() {
                     <Td>{doc.Nome}</Td>
                     <Td>{formatCPF(doc.Cpf)}</Td>
                     <Td>{doc.Crm}</Td>
-                    <Td>{doc.EmpresaMedica.RazaoSocial}</Td>
+                    <Td>{doc.EmpresaMedica?.RazaoSocial ?? "n/a"}</Td>
                   </Tr>
                 ))}
               </>
@@ -112,7 +104,7 @@ export default function Medicos() {
             <Text>Página: {currentPage}</Text>
             <Button
               variant="ghost"
-              isDisabled={currentPage === pageAmount}
+              isDisabled={currentPage === data.totalPaginas}
               onClick={() => setCurrentPage((state) => state + 1)}
             >
               Próxima <ArrowRightIcon boxSize={3} ml={2} />

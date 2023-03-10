@@ -4,7 +4,9 @@ import MainContent from "components/Containers/MainContent";
 import EmployeesList from "components/Employee/EmployeesList";
 import EmptyEntityList from "components/EmptyEntityList";
 import ErrorPage from "components/ErrorPage/ErrorPage";
+import { server } from "config/server";
 import useSwr from "swr";
+import { ErrorHandler } from "utils/ErrorHandler";
 import { fetcher } from "utils/fetcher";
 
 export interface Employee
@@ -21,22 +23,33 @@ export interface Employee
   CriadoEm: string;
 }
 
-export default function Empregados() {
-  const { data, isLoading, error } = useSwr<Employee[]>(
-    `/api/empregados`,
-    fetcher
-  );
+interface Props {
+  empregados: Employee[];
+  error?: any;
+}
 
-  console.log(data);
+export async function getServerSideProps() {
+  try {
+    const result = await fetch(`${server}/api/empregados`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
 
-  if (isLoading)
-    return (
-      <MainContent>
-        <Spinner />
-      </MainContent>
-    );
+    const empregados = await result.json();
 
-  if (error || !data)
+    return {
+      props: { empregados },
+    };
+  } catch (error) {
+    ErrorHandler.logServerSideRenderPropsError(error);
+    return {
+      props: { error },
+    };
+  }
+}
+
+export default function Empregados({ empregados, error }: Props) {
+  if (error || !empregados)
     return (
       <MainContent>
         <ErrorPage />
@@ -49,8 +62,8 @@ export default function Empregados() {
         Empregados
       </Text>
       <Text>Todos os empregados cadastrados na empresa.</Text>
-      {data.length > 0 ? (
-        <EmployeesList employees={data} />
+      {empregados.length > 0 ? (
+        <EmployeesList employees={empregados} />
       ) : (
         <EmptyEntityList
           helperText="Não há empregados cadastrados na empresa."

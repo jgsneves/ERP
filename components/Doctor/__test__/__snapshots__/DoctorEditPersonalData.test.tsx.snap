@@ -1,0 +1,212 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DoctorEditPersonalData should rende proper snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="chakra-stack css-1h4ws66"
+  >
+    <div
+      class="css-8v4id7"
+    >
+      <b
+        class="chakra-text css-r262sy"
+      >
+        Dados pessoais
+      </b>
+      <hr
+        aria-orientation="horizontal"
+        class="chakra-divider css-1upb9tn"
+      />
+    </div>
+    <div
+      class="chakra-form-control css-1cl7zdz"
+      role="group"
+    >
+      <label
+        class="chakra-form__label css-uvho5g"
+        for="field-:r0:"
+        id="field-:r0:-label"
+      >
+        Nome
+        <input
+          class="chakra-input css-0"
+          id="Nome"
+          value="José"
+        />
+      </label>
+      <label
+        class="chakra-form__label css-uvho5g"
+        for="field-:r0:"
+        id="field-:r0:-label"
+      >
+        Telefone pessoal:
+        <input
+          class="chakra-input css-0"
+          id="TelefonePessoal"
+          value="(71) 999-9999"
+        />
+      </label>
+      <label
+        class="chakra-form__label css-uvho5g"
+        for="field-:r0:"
+        id="field-:r0:-label"
+      >
+        E-mail:
+        <input
+          class="chakra-input css-0"
+          id="Email"
+          type="email"
+          value="teste@gmail.com"
+        />
+      </label>
+      <label
+        class="chakra-form__label css-uvho5g"
+        for="field-:r0:"
+        id="field-:r0:-label"
+      >
+        CPF
+        <input
+          class="chakra-input css-0"
+          id="Cpf"
+          value="022.022.022-22"
+        />
+      </label>
+      <label
+        class="chakra-form__label css-uvho5g"
+        for="field-:r0:"
+        id="field-:r0:-label"
+      >
+        CRM
+        <input
+          class="chakra-input css-0"
+          id="Crm"
+          value="4645"
+        />
+      </label>
+      <label
+        class="chakra-form__label css-uvho5g"
+        for="field-:r0:"
+        id="field-:r0:-label"
+      >
+        RG:
+        <input
+          class="chakra-input css-0"
+          id="RG"
+          value="11111"
+        />
+      </label>
+      <label
+        class="chakra-form__label css-uvho5g"
+        for="field-:r0:"
+        id="field-:r0:-label"
+      >
+        PIS:
+        <input
+          class="chakra-input css-0"
+          id="PIS"
+          value=""
+        />
+      </label>
+      <label
+        class="chakra-form__label css-uvho5g"
+        for="field-:r0:"
+        id="field-:r0:-label"
+      >
+        Date de nascimento
+        <input
+          class="chakra-input css-0"
+          id="field-:r0:"
+          type="date"
+          value="Invalid Date-Invalid Date-Invalid Date"
+        />
+      </label>
+      <label
+        class="chakra-form__label css-uvho5g"
+        for="field-:r0:"
+        id="field-:r0:-label"
+      >
+        Nacionalidade:
+        <input
+          class="chakra-input css-0"
+          id="Nacionalidade"
+          value="brasileiro"
+        />
+      </label>
+      <label
+        class="chakra-form__label css-uvho5g"
+        for="field-:r0:"
+        id="field-:r0:-label"
+      >
+        Estado civil:
+        <div
+          class="chakra-select__wrapper css-42b2qy"
+        >
+          <select
+            class="chakra-select css-1ik61og"
+            id="EstadoCivil"
+          >
+            <option
+              value="SOLTEIRO"
+            >
+              SOLTEIRO
+            </option>
+            <option
+              value="CASADO"
+            >
+              CASADO
+            </option>
+            <option
+              value="SEPARADO"
+            >
+              SEPARADO
+            </option>
+            <option
+              value="DIVORCIADO"
+            >
+              DIVORCIADO
+            </option>
+            <option
+              value="VIUVO"
+            >
+              VIUVO
+            </option>
+          </select>
+          <div
+            class="chakra-select__icon-wrapper css-162mkon"
+          >
+            <svg
+              aria-hidden="true"
+              class="chakra-select__icon"
+              focusable="false"
+              role="presentation"
+              style="width: 1em; height: 1em; color: currentColor;"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
+        </div>
+      </label>
+      <div
+        class="css-tff4n3"
+      >
+        <button
+          class="chakra-button css-4xx2wk"
+          type="button"
+        >
+          salvar
+        </button>
+        <button
+          class="chakra-button css-4xx2wk"
+          type="button"
+        >
+          cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
