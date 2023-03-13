@@ -37,7 +37,7 @@ interface Props {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
-    const url = `${server}/api/empresas-medicas/${context.params?.id}`;
+    const url = `${server}/api/empresas-medicas/${context.params?.id}?mostrarSocios=true`;
 
     const result = await fetch(url, {
       method: "GET",

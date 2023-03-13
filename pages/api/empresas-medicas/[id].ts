@@ -9,12 +9,14 @@ export default async function handler(
   switch (req.method) {
     case "GET":
       try {
+        const mostrarSocios = req.query.mostrarSocios as string;
+
         const result = await prisma.empresasMedicas.findUnique({
           where: {
             Id: req.query.id as string,
           },
           include: {
-            Socios: true,
+            Socios: mostrarSocios === "true" ? true : false,
           },
         });
 

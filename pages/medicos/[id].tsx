@@ -8,7 +8,7 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import { ContasCorrente, Enderecos, Pessoas } from "@prisma/client";
+import { Pessoas } from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
 import { useState } from "react";
 import AddressData from "components/AddressData";

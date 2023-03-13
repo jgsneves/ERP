@@ -1,10 +1,14 @@
-import { EmpresasMedicas, Pessoas, PessoasTipo } from "@prisma/client";
+import { Pessoas, PessoasTipo } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "services/Prisma";
 import { ErrorHandler } from "utils/ErrorHandler";
 
+interface EmpresaMedicaRazaoSocial {
+  RazaoSocial: string;
+}
+
 interface Doctors extends Pessoas {
-  EmpresaMedica: EmpresasMedicas | null;
+  EmpresaMedica: EmpresaMedicaRazaoSocial | null;
 }
 
 export interface MedicosResponse {
@@ -38,7 +42,11 @@ export default async function handler(
           },
           where: whereClause,
           include: {
-            EmpresaMedica: true,
+            EmpresaMedica: {
+              select: {
+                RazaoSocial: true,
+              },
+            },
           },
         });
 

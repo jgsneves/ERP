@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DoctorCompany test suite should not render a badge 1`] = `
+<DocumentFragment>
+  <div
+    class="chakra-stack css-1av7kul"
+  >
+    <div
+      class="css-8v4id7"
+    >
+      <b
+        class="chakra-text css-r262sy"
+      >
+        Vinculado à empresa
+      </b>
+      <hr
+        aria-orientation="horizontal"
+        class="chakra-divider css-1upb9tn"
+      />
+    </div>
+    <div
+      class="css-0"
+    >
+      <p
+        class="chakra-text css-0"
+      >
+        Vincule este médico a uma empresa médica:
+      </p>
+      <input
+        class="chakra-input css-0"
+        placeholder="procure uma empresa por nome"
+        value=""
+      />
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`DoctorCompany test suite should show badge 1`] = `
+<DocumentFragment>
+  <div
+    class="chakra-stack css-1av7kul"
+  >
+    <div
+      class="css-8v4id7"
+    >
+      <b
+        class="chakra-text css-r262sy"
+      >
+        Vinculado à empresa
+      </b>
+      <hr
+        aria-orientation="horizontal"
+        class="chakra-divider css-1upb9tn"
+      />
+    </div>
+    <span
+      class="chakra-badge css-ifsvay"
+    >
+      ABCD Empresa Médica
+    </span>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`DoctorCompany test suite should show error 1`] = `
+<DocumentFragment>
+  <p
+    class="chakra-text css-0"
+  >
+    Houve um erro na busca da empresa médica.
+  </p>
+</DocumentFragment>
+`;
